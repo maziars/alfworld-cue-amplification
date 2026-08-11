@@ -25,7 +25,7 @@ class ProxyClient:
         }
         self._owns_client = client is None
         self._client = client or httpx.AsyncClient(
-            timeout=timeout or httpx.Timeout(300.0, connect=10.0),
+            timeout=timeout or httpx.Timeout(1200.0, connect=10.0),
             trust_env=False,
             verify=verify,
         )
