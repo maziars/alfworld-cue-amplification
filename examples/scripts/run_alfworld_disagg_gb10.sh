@@ -169,7 +169,7 @@ ROLLOUT_ARGS=(
    --num-rollout "${NUM_ROLLOUT:-5}"
    --rollout-batch-size "${ROLLOUT_BATCH_SIZE:-4}"
    --n-samples-per-prompt "${N_SAMPLES_PER_PROMPT:-4}"
-   --rollout-max-response-len "${ROLLOUT_MAX_RESPONSE_LEN:-1024}"
+   --rollout-max-response-len "${ROLLOUT_MAX_RESPONSE_LEN:-4096}"
    --global-batch-size "${GLOBAL_BATCH_SIZE:-16}"
    --balance-data
 )
@@ -211,12 +211,14 @@ OPTIMIZER_ARGS=(
    --adam-beta2 0.98
 )
 
-WANDB_ARGS=(
-   # --use-wandb
-   # --wandb-project slime-dev
-   # --wandb-group alfworld-qwen3.5-4B-whitebox-disagg
-   # --wandb-key ${WANDB_KEY}
-)
+WANDB_ARGS=()
+if [ "${USE_WANDB:-1}" = "1" ]; then
+  WANDB_ARGS=(
+     --use-wandb
+     --wandb-project "${WANDB_PROJECT:-dressage-alfworld-gb10}"
+     --wandb-group "${WANDB_GROUP:-alfworld-4B-disagg}"
+  )
+fi
 
 SGLANG_ARGS=(
    --rollout-num-gpus-per-engine 1

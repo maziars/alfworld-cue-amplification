@@ -161,10 +161,15 @@ def make_env(game_file: str, max_episode_steps: int):
         description=True,
         inventory=True,
     )
+    wrappers = []
+    if os.environ.get("ALFWORLD_DEMANGLE", "1") == "1":
+        from alfworld.agents.environment.alfred_tw_env import AlfredDemangler
+        wrappers = [AlfredDemangler]
     env_id = textworld.gym.register_game(
         game_file,
         request_infos=request_infos,
         max_episode_steps=max_episode_steps,
+        wrappers=wrappers,
     )
     return textworld.gym.make(env_id)
 

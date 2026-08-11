@@ -234,9 +234,10 @@ WANDB_ARGS=(
 
 SGLANG_ARGS=(
    --rollout-num-gpus-per-engine 1
-   --sglang-mem-fraction-static 0.15
+   --sglang-mem-fraction-static 0.5
+   --sglang-attention-backend triton
    --sglang-router-port "${SGLANG_ROUTER_PORT}"
-   --router-policy consistent_hashing
+   --router-policy cache_aware
 )
 
 MISC_ARGS=(
@@ -244,7 +245,7 @@ MISC_ARGS=(
    --hidden-dropout 0.0
    --accumulate-allreduce-grads-in-fp32
    --attention-softmax-in-fp32
-   --attention-backend flash
+   --attention-backend auto
 )
 
 # --- Start Dressage proxy ---

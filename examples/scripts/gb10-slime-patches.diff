@@ -1,0 +1,249 @@
+diff --git a/docker/Dockerfile.gb10 b/docker/Dockerfile.gb10
+index 0da26bca..03896592 100644
+--- a/docker/Dockerfile.gb10
++++ b/docker/Dockerfile.gb10
+@@ -145,7 +145,7 @@ RUN NVCC_APPEND_FLAGS="--threads 4" MAX_JOBS=8 \
+ # Megatron-LM (+ slime's megatron.patch)
+ # =============================================================================
+ # slime pins Megatron commit 3714d81d...
+-ARG MEGATRON_COMMIT=3714d81d418c9f1bca4594fc35f9e8289f652862
++ARG MEGATRON_COMMIT=1dcf0dafa884ad52ffb243625717a3471643e087
+ RUN git clone https://github.com/NVIDIA/Megatron-LM.git /root/src/Megatron-LM \
+     && cd /root/src/Megatron-LM \
+     && git checkout ${MEGATRON_COMMIT}
+diff --git a/slime/backends/megatron_utils/actor.py b/slime/backends/megatron_utils/actor.py
+index 7627e7a9..657e0ccd 100644
+--- a/slime/backends/megatron_utils/actor.py
++++ b/slime/backends/megatron_utils/actor.py
+@@ -122,7 +122,8 @@ class MegatronTrainRayActor(TrainRayActor):
+                 self.model,
+                 convert_to_global_name=args.megatron_to_hf_mode == "raw",
+             ),
+-            single_tag=None,
++            master_tag="actor",  # MASTER-PARAM TRICK: virtual actor rebuilt from fp32 master
++            restore_master_fn=self._restore_actor_from_master,
+         )
+         self._active_model_tag: str | None = "actor"
+         self.weights_backuper.backup("actor")
+@@ -288,7 +289,22 @@ class MegatronTrainRayActor(TrainRayActor):
+             ]
+         return rollout_data
+ 
++    @torch.no_grad()
++    def _restore_actor_from_master(self) -> None:
++        """Rebuild the actor's bf16 weights from the always-resident fp32 optimizer master
++        (deterministic fp32->bf16 cast). Read-only wrt the master; the ref excursion is
++        forward-only so the master is unchanged since the last actor backup, making the
++        rebuilt actor bit-identical to the dropped pinned backup. Master-param trick (#12)."""
++        opts = getattr(self.optimizer, "chained_optimizers", [self.optimizer])
++        for opt in opts:
++            opt._copy_main_params_to_model_params()
++        for model_chunk in self.model:
++            model_chunk.start_param_sync(force_sync=True)
++        torch.cuda.synchronize()
++
+     def _switch_model(self, target_tag: str) -> None:
++        if getattr(self, "_active_model_tag", None) == target_tag:
++            return  # DROP-BACKUP: skip redundant self-restore
+         if target_tag not in self.weights_backuper.backup_tags:
+             raise ValueError(f"Cannot switch to unknown model tag: {target_tag}")
+         self.weights_backuper.restore(target_tag)
+@@ -412,6 +428,16 @@ class MegatronTrainRayActor(TrainRayActor):
+         return {}
+ 
+     def train_actor(self, rollout_id: int, rollout_data: RolloutBatch, external_data=None) -> None:
++        import torch as _tr; _tr.cuda.reset_peak_memory_stats()  # PER-STEP-PEAK reset
++        try:
++            if rollout_id == 1:
++                _tr.cuda.memory._record_memory_history(max_entries=500000)
++            elif rollout_id == 2:
++                _tr.cuda.memory._dump_snapshot('/workspace/tito-dressage/mem_snap.pickle')
++                _tr.cuda.memory._record_memory_history(enabled=None)
++                import logging as _lg; _lg.getLogger(__name__).warning('[SNAP] dumped mem_snap.pickle')
++        except Exception as _e:
++            import logging as _lg; _lg.getLogger(__name__).warning(f'[SNAP-ERR] {_e}')
+         # Create data iterator for log_probs and train.
+         data_iterator = get_data_iterator(rollout_data)
+         num_microbatches = rollout_data["num_microbatches"]
+diff --git a/slime/backends/megatron_utils/arguments.py b/slime/backends/megatron_utils/arguments.py
+index 833af4a0..e7fa9098 100644
+--- a/slime/backends/megatron_utils/arguments.py
++++ b/slime/backends/megatron_utils/arguments.py
+@@ -151,7 +151,17 @@ def _set_default_megatron_args(args):
+     args.bf16 = not args.fp16
+     # Checkpoint I/O defaults: these keep checkpoint contents unchanged while
+     # reducing repeated validation/planning work and parallelizing load.
+-    args.use_persistent_ckpt_worker = True
++    # UNIFIED-MEMORY FIX: the persistent-ckpt-worker stages the full checkpoint GPU->Host
++    # for a background writer; on GB10/Grace-Blackwell that host copy shares the SAME
++    # physical pool as the GPU tensors, doubling the checkpoint footprint and OOMing the
++    # save. Detect unified memory and save in-process (sync) there; keep async on discrete.
++    import torch as _t_ckpt, psutil as _ps_ckpt
++    _p_ckpt = _t_ckpt.cuda.get_device_properties(0) if _t_ckpt.cuda.is_available() else None
++    _unified_mem = bool(_p_ckpt and (getattr(_p_ckpt, 'is_integrated', 0)
++                        or _p_ckpt.total_memory >= 0.9 * _ps_ckpt.virtual_memory().total))
++    args.use_persistent_ckpt_worker = not _unified_mem
++    import logging as _lg_ckpt
++    _lg_ckpt.getLogger(__name__).warning(f'[CKPT-UNIFIED] unified_mem={_unified_mem} use_persistent_ckpt_worker={args.use_persistent_ckpt_worker}')
+     args.ckpt_assume_constant_structure = True
+     args.ckpt_fully_parallel_load = True
+     # placeholders
+diff --git a/slime/backends/megatron_utils/loss.py b/slime/backends/megatron_utils/loss.py
+index adfa5d67..b145b641 100644
+--- a/slime/backends/megatron_utils/loss.py
++++ b/slime/backends/megatron_utils/loss.py
+@@ -500,6 +500,13 @@ def get_log_probs_and_entropy(
+         logits = logits / rollout_temperature
+     logits = logits.contiguous()
+     T = logits.size(0)
++    import torch as _t, logging as _l
++    _l.getLogger(__name__).warning(
++        f'[LOGIT-PROBE] T={T} V={logits.size(-1)} dtype={logits.dtype} '
++        f'reserved_GB={_t.cuda.memory_reserved()/1024**3:.2f} '
++        f'max_reserved_GB={_t.cuda.max_memory_reserved()/1024**3:.2f} '
++        f'alloc_GB={_t.cuda.memory_allocated()/1024**3:.2f}'
++    )
+     device = logits.device
+     tp_group = mpu.get_tensor_model_parallel_group()
+     chunk_size = args.log_probs_chunk_size
+diff --git a/slime/ray/rollout.py b/slime/ray/rollout.py
+index badeb8dc..90c4cfe3 100644
+--- a/slime/ray/rollout.py
++++ b/slime/ray/rollout.py
+@@ -1272,6 +1272,8 @@ def _log_eval_rollout_data(rollout_id, args, data, extra_metrics: dict[str, Any]
+ 
+ 
+ def _log_rollout_data(rollout_id, args, samples, rollout_extra_metrics, rollout_time):
++    if args.load_debug_rollout_data or getattr(args, "load_forge_rollout_data", None):  # DEBUG/FORGE-REPLAY: skip rollout logging (metrics are None on replay)
++        return
+     if args.custom_rollout_log_function_path is not None:
+         custom_log_func = load_function(args.custom_rollout_log_function_path)
+         if custom_log_func(rollout_id, args, samples, rollout_extra_metrics, rollout_time):
+diff --git a/slime/utils/memory_utils.py b/slime/utils/memory_utils.py
+index d4b2d893..83b0eb16 100644
+--- a/slime/utils/memory_utils.py
++++ b/slime/utils/memory_utils.py
+@@ -27,10 +27,15 @@ def available_memory():
+         "used_GB": _byte_to_gb(total - free),
+         "allocated_GB": _byte_to_gb(torch.cuda.memory_allocated(device)),
+         "reserved_GB": _byte_to_gb(torch.cuda.memory_reserved(device)),
++        "peak_reserved_GB": _byte_to_gb(torch.cuda.max_memory_reserved(device)),
++        "peak_allocated_GB": _byte_to_gb(torch.cuda.max_memory_allocated(device)),
+         "host_total_GB": _byte_to_gb(vm.total),
+         "host_available_GB": _byte_to_gb(vm.available),
+         "host_used_GB": _byte_to_gb(vm.used),
+         "host_free_GB": _byte_to_gb(vm.free),
++        "shmem_GB": _byte_to_gb(getattr(vm, "shared", 0)),
++        "cached_GB": _byte_to_gb(getattr(vm, "cached", 0)),
++        "actor_rss_GB": _byte_to_gb(psutil.Process().memory_info().rss),
+     }
+ 
+ 
+diff --git a/slime/utils/tensor_backper.py b/slime/utils/tensor_backper.py
+index 2fc2a635..29ec03ef 100644
+--- a/slime/utils/tensor_backper.py
++++ b/slime/utils/tensor_backper.py
+@@ -9,7 +9,13 @@ _SourceGetter = Callable[[], Iterable[tuple[str, torch.Tensor]]]
+ 
+ class TensorBackuper(ABC):
+     @staticmethod
+-    def create(source_getter, single_tag):
++    def create(source_getter, single_tag=None, master_tag=None, restore_master_fn=None):
++        if master_tag is not None:
++            return _TensorBackuperMasterActor(
++                source_getter=source_getter,
++                master_tag=master_tag,
++                restore_master_fn=restore_master_fn,
++            )
+         if single_tag is None:
+             return _TensorBackuperNormal(source_getter=source_getter)
+         else:
+@@ -49,6 +55,7 @@ class _TensorBackuperNormal(TensorBackuper):
+         return list(self._backups)
+ 
+     def get(self, tag: str):
++        import logging as _l; _l.getLogger(__name__).warning(f'[BACKUP-GET] tag={tag}')
+         return self._backups[tag]
+ 
+     @torch.no_grad()
+@@ -59,6 +66,10 @@ class _TensorBackuperNormal(TensorBackuper):
+                 backup_dict[name] = torch.empty_like(param, device=torch.device("cpu"), pin_memory=True)
+             backup_dict[name].copy_(param.detach(), non_blocking=True)
+         torch.cuda.synchronize()
++        import logging as _l
++        _sz = sum(t.numel()*t.element_size() for t in backup_dict.values())
++        _pin = next(iter(backup_dict.values())).is_pinned() if backup_dict else None
++        _l.getLogger(__name__).warning(f'[BACKUP-MADE] tag={tag} size_GB={_sz/1024**3:.2f} n={len(backup_dict)} pinned={_pin}')
+ 
+     @torch.no_grad()
+     def copy(self, *, src_tag: str, dst_tag: str):
+@@ -67,6 +78,7 @@ class _TensorBackuperNormal(TensorBackuper):
+ 
+     @torch.no_grad()
+     def restore(self, tag: str) -> None:
++        import logging as _l; _l.getLogger(__name__).warning(f'[BACKUP-RESTORE] tag={tag}')
+         backup_dict = self._backups[tag]
+         for name, param in self._source_getter():
+             assert name in backup_dict
+@@ -102,6 +114,61 @@ class _TensorBackuperNoop(TensorBackuper):
+         torch.cuda.synchronize()
+ 
+ 
++class _TensorBackuperMasterActor(TensorBackuper):
++    """Hybrid backuper for the master-param trick.
++
++    The `master_tag` (the trainable actor) is VIRTUAL: no pinned CPU backup is kept. Its
++    bf16 weights are reconstructed on demand from the always-resident fp32 optimizer master
++    via `restore_master_fn` (deterministic fp32->bf16 cast => bit-identical to the
++    pre-excursion actor, since the ref forward is forward-only so the master is unchanged).
++    All other tags (e.g. "ref") keep real pinned backups. Saves one full model backup
++    (~7.83 GiB for 4B) when KL/ref is enabled, with no training-math change. task #12.
++    """
++
++    def __init__(self, source_getter, master_tag, restore_master_fn):
++        super().__init__(source_getter=source_getter)
++        self._master_tag = master_tag
++        self._restore_master_fn = restore_master_fn
++        self._inner = _TensorBackuperNormal(source_getter=source_getter)
++        self._master_hash_dict = None  # lightweight safety guard, not a real backup
++
++    @property
++    def backup_tags(self):
++        return [self._master_tag] + self._inner.backup_tags
++
++    def get(self, tag: str):
++        if tag == self._master_tag:
++            ans = {k: v.detach() for k, v in dict(self._source_getter()).items()}
++            if self._master_hash_dict is not None:
++                assert _compute_hash_dict(ans) == self._master_hash_dict, (
++                    "master-param trick: live model != last actor backup at get()"
++                )
++            return ans
++        return self._inner.get(tag)
++
++    def backup(self, tag: str) -> None:
++        if tag == self._master_tag:
++            self._master_hash_dict = _compute_hash_dict(dict(self._source_getter()))
++            torch.cuda.synchronize()
++            return
++        self._inner.backup(tag)
++
++    def copy(self, *, src_tag: str, dst_tag: str):
++        assert self._master_tag not in (src_tag, dst_tag), "cannot copy to/from virtual master tag"
++        self._inner.copy(src_tag=src_tag, dst_tag=dst_tag)
++
++    def restore(self, tag: str) -> None:
++        if tag == self._master_tag:
++            self._restore_master_fn()
++            if self._master_hash_dict is not None:
++                assert _compute_hash_dict(dict(self._source_getter())) == self._master_hash_dict, (
++                    "master-param trick: rebuilt actor != last actor backup at restore()"
++                )
++            torch.cuda.synchronize()
++            return
++        self._inner.restore(tag)
++
++
+ def _compute_hash_dict(tensors: dict[str, torch.Tensor]):
+     return {k: _compute_hash_tensor(v) for k, v in tensors.items()}
+ 
