@@ -95,6 +95,34 @@ def sample_to_record(sample: Any) -> dict:
                 record[key] = meta[key]
         # The full decoded conversation (system/user/assistant/tool turns).
         record["messages"] = meta.get("messages")
+
+    # Logprob-capture diagnostics: the gen-time rollout logprobs (from SGLang)
+    # should be present for every trainable token; a high zero-fraction means the
+    # proxy's TITO assembly is dropping them (which makes train_rollout_logprob_abs_diff
+    # meaningless). We log summary stats always, and the full array when
+    # DRESSAGE_LOG_ROLLOUT_LOGPROBS=1 (heavier). loss_mask lets us restrict the
+    # zero-fraction to *trainable* tokens (env observations are legitimately 0).
+    rlp = _get(sample, "rollout_log_probs")
+    if isinstance(rlp, (list, tuple)) and rlp:
+        vals = [float(x) for x in rlp if isinstance(x, (int, float))]
+        nz = [x for x in vals if abs(x) > 1e-9]
+        lm = _get(sample, "loss_mask")
+        trainable = zero_on_trainable = None
+        if isinstance(lm, (list, tuple)) and len(lm) == len(vals):
+            trainable = sum(1 for m in lm if m)
+            zero_on_trainable = sum(
+                1 for m, v in zip(lm, vals) if m and abs(v) <= 1e-9
+            )
+        record["rollout_logprobs_stats"] = {
+            "n": len(vals),
+            "nonzero": len(nz),
+            "zero_frac": round(1.0 - len(nz) / len(vals), 4),
+            "mean_nonzero": round(sum(nz) / len(nz), 4) if nz else None,
+            "trainable": trainable,
+            "zero_on_trainable": zero_on_trainable,
+        }
+        if os.environ.get("DRESSAGE_LOG_ROLLOUT_LOGPROBS", "0") == "1":
+            record["rollout_log_probs"] = vals
     return record
 
 
