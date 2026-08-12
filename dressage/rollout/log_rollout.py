@@ -107,6 +107,16 @@ def log_rollout_data(
     """
     _define_staleness_wandb_metrics(args)
 
+    # Persist readable trajectories (gzipped JSONL, one file per rollout) when
+    # DRESSAGE_TRAJECTORY_JSONL_DIR is set. No-op otherwise; fully defensive so
+    # it can never break the training loop.
+    try:
+        from dressage.rollout.trajectory_logger import write_rollout
+
+        write_rollout(rollout_id, samples)
+    except Exception:  # pragma: no cover - logging must never break training
+        pass
+
     parent_traj_ids: list[str] = []
     segment_indices: list[int] = []
     raw_rewards: list[float] = []
