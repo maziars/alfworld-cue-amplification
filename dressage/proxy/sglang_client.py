@@ -189,7 +189,17 @@ class SGLangRouterClient:
             "sampling_params": sampling_params,
             "return_logprob": return_logprob,
             "logprob_start_len": logprob_start_len,
-            "return_text_in_logprobs": True,
+            # NOTE: return_text_in_logprobs must stay False. On the GB10 SGLang
+            # build, requesting per-token text COLLAPSES output_token_logprobs to a
+            # single entry [first_token_logprob, first_token_id, full_output_text]
+            # instead of one [logprob, token_id, text] per token — so all but the
+            # first token's rollout logprob is lost, and _normalize_logprobs then
+            # zero-pads ~97% of the trainable tokens. That silently turns
+            # train_rollout_logprob_abs_diff into a meaningless artifact (~0.5-0.6)
+            # and denies TIS/off-policy correction any real old-policy logprobs.
+            # The per-token texts are not consumed downstream (mask-builder rebuilds
+            # from messages; training reads tokens/logprobs/loss_mask only).
+            "return_text_in_logprobs": False,
         }
         if return_routed_experts or self._return_routed_experts:
             payload["return_routed_experts"] = True
