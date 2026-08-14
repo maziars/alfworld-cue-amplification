@@ -15,8 +15,9 @@ so create() is patched exactly once, by virtual_ref, which subclasses the source
 
 
 def install() -> None:
-    from dressage.training import chunked_logprob, master_param, virtual_ref, streaming_load
+    from dressage.training import chunked_logprob, master_param, virtual_ref, streaming_load, resume_weight_fix
     chunked_logprob.install()
     master_param.install()
     virtual_ref.install()
     streaming_load.install()
+    resume_weight_fix.install()

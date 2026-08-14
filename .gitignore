@@ -42,3 +42,17 @@ CLAUDE.md
 AGENTS.md
 .claude
 
+
+# runtime artifacts / junk (clean provenance)
+*.log
+*.status
+*.bak
+*.bak_*
+__pycache__/
+*.pyc
+/192
+/dbgroll/
+/fa2_probe.py
+/gb10_probe.py
+examples/scripts/log/
+wandb/
