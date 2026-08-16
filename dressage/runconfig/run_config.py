@@ -39,6 +39,7 @@ class RunConfig:
     tensor_parallel: int = 1
     pipeline_parallel: int = 1
     context_parallel: int = 1
+    colocate: bool = False  # time-share GPUs: DP-parallel train + N SGLang engines (1/GPU) behind 1 cache-aware router
 
     # ---- rollout mode ----
     rollout_mode: str = "sync"  # "sync" -> sync_rollout ; "async" -> fully_async_rollout
@@ -205,6 +206,10 @@ class RunConfig:
         a: list[str] = []
         # rollout mode (override the script's hardcoded rollout-function-path)
         a += ["--rollout-function-path", self.rollout_function_path()]
+        # colocate: actor + SGLang time-share the GPUs; slime auto-switches to CUDA-IPC weight sync
+        # and auto-sets offload_train/offload_rollout. Topology (2 nodes / 2 rollout gpus) flows via to_env().
+        if self.colocate:
+            a += ["--colocate"]
         # GRPO
         a += ["--advantage-estimator", self.advantage_estimator,
               "--entropy-coef", str(self.entropy_coef),
@@ -276,6 +281,11 @@ def _validate(cfg: RunConfig) -> None:
         f"({cfg.rollout_batch_size}*{cfg.n_samples_per_prompt})")
     if cfg.use_tis and not cfg.use_rollout_logprobs:
         raise AssertionError("use_tis requires use_rollout_logprobs=True")
+    if cfg.colocate:
+        total_actor_gpus = cfg.actor_num_nodes * cfg.actor_num_gpus_per_node
+        assert cfg.rollout_num_gpus == total_actor_gpus, (
+            f"colocate requires rollout_num_gpus ({cfg.rollout_num_gpus}) == total actor GPUs "
+            f"({total_actor_gpus}); actor and rollout share the same physical GPUs")
     if cfg.rollout_mode == "async" and cfg.keep_versions == 0:
         import warnings
         warnings.warn("async with keep_versions=0 => UNBOUNDED staleness (async-collapse regime)")
@@ -301,6 +311,24 @@ ASYNC_ALFWORLD_4B_GB10 = SYNC_ALFWORLD_4B_GB10.edit().set(
     wandb_group="async-alfworld-4b",
 ).freeze()
 
+#: 2-node GB10 COLOCATE SYNC — both GPUs time-share: DP=2 train (samples distributed, TP=PP=1) +
+#: 2 SGLang engines (1/GPU) behind one cache-aware router. slime auto-switches to CUDA-IPC weight sync
+#: (UpdateWeightFromTensor) and auto-sets offload_train/offload_rollout. use_distributed_optimizer shards
+#: the 48 GiB optimizer 2-way (~24 GiB/GPU) -> train-phase peak DROPS ~25-35 GiB vs disagg. sglang_mem_fraction
+#: 0.7->0.6 so the trainer's ~32 GiB persistent state coexists with the SGLang engine during generation
+#: (measured headroom, see memory note gb10-colocate-viability); drop to ~0.5 if the memtest OOMs at the
+#: train->generate flip. All 5 GB10 plugins carry over unchanged (they patch below the transport).
+COLOCATE_ALFWORLD_4B_GB10 = SYNC_ALFWORLD_4B_GB10.edit().set(
+    preset_name="COLOCATE_ALFWORLD_4B_GB10",
+    run_name="colocate-alfworld-4b-gb10",
+    actor_num_nodes=2,      # DP=2 across the two 1-GPU nodes
+    rollout_num_gpus=2,     # 2 SGLang engines (rollout-num-gpus-per-engine=1 in the run script)
+    colocate=True,
+    sglang_mem_fraction=0.6,
+    wandb_group="colocate-alfworld-4b",
+).freeze()
+
 PRESETS: dict[str, RunConfig] = {
-    p.preset_name: p for p in (SYNC_ALFWORLD_4B_GB10, ASYNC_ALFWORLD_4B_GB10)
+    p.preset_name: p
+    for p in (SYNC_ALFWORLD_4B_GB10, ASYNC_ALFWORLD_4B_GB10, COLOCATE_ALFWORLD_4B_GB10)
 }
