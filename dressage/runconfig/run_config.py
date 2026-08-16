@@ -95,6 +95,10 @@ class RunConfig:
     recompute_method: str = "uniform"
     recompute_num_layers: int = 1
     empty_unused_memory_level: int = 1
+    # PYTORCH_CUDA_ALLOC_CONF override. "" = run-script default (expandable_segments:True, best for disagg).
+    # COLOCATE MUST NOT use expandable_segments: torch_memory_saver (the offload/wake mechanism) hard-fails
+    # with "TorchMemorySaver is disabled ... expandable_segments is not supported" -> set a TMS-safe value.
+    cuda_alloc_conf: str = ""
 
     # ---- SGLang ----
     sglang_mem_fraction: float = 0.7
@@ -198,6 +202,8 @@ class RunConfig:
             "USE_WANDB": b(self.use_wandb),
             "WANDB_PROJECT": self.wandb_project,
             "WANDB_GROUP": self.wandb_group,
+            # only override the run-script default when set (colocate disables expandable_segments)
+            **({"PYTORCH_CUDA_ALLOC_CONF": self.cuda_alloc_conf} if self.cuda_alloc_conf else {}),
         }
 
     def to_extra_train_args(self) -> list[str]:
@@ -206,10 +212,13 @@ class RunConfig:
         a: list[str] = []
         # rollout mode (override the script's hardcoded rollout-function-path)
         a += ["--rollout-function-path", self.rollout_function_path()]
-        # colocate: actor + SGLang time-share the GPUs; slime auto-switches to CUDA-IPC weight sync
-        # and auto-sets offload_train/offload_rollout. Topology (2 nodes / 2 rollout gpus) flows via to_env().
+        # colocate: actor + SGLang co-reside on the shared GPUs (slime uses CUDA-IPC weight sync).
+        # GB10: DISABLE offload. torch_memory_saver's offload frees no physical memory on unified memory
+        # (measured) AND its disable()/MemPool path throws cudaErrorIllegalAddress (TMS 0.0.9 / torch2.11 /
+        # CUDA13 / aarch64). --no-offload-* runs co-resident, dodging the bug + matching unified-mem reality.
+        # (These survive slime's --colocate post-processing, which only forces offload when the value is None.)
         if self.colocate:
-            a += ["--colocate"]
+            a += ["--colocate", "--no-offload-train", "--no-offload-rollout"]
         # GRPO
         a += ["--advantage-estimator", self.advantage_estimator,
               "--entropy-coef", str(self.entropy_coef),
@@ -325,6 +334,7 @@ COLOCATE_ALFWORLD_4B_GB10 = SYNC_ALFWORLD_4B_GB10.edit().set(
     rollout_num_gpus=2,     # 2 SGLang engines (rollout-num-gpus-per-engine=1 in the run script)
     colocate=True,
     sglang_mem_fraction=0.6,
+    cuda_alloc_conf="garbage_collection_threshold:0.8",  # NO expandable_segments (torch_memory_saver requires it off)
     wandb_group="colocate-alfworld-4b",
 ).freeze()
 
