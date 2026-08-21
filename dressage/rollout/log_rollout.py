@@ -39,6 +39,9 @@ def _define_staleness_wandb_metrics(args: Any) -> None:
     # Sandbox-prewarm observability (hit rate / wait time), see
     # dressage.rollout.multi_segment.compute_prewarm_metrics.
     wandb.define_metric("prewarm/*", step_metric="rollout/step")
+    # Per-phase rollout timing (llm_gen / env_step / env_reset), see
+    # _accumulate_phase_time_metrics.
+    wandb.define_metric("rollout/time/*", step_metric="rollout/step")
     _ROLLOUT_WANDB_METRICS_DEFINED = True
 
 
@@ -86,6 +89,70 @@ def _sample_reward_value(args: Any, sample: Any) -> float:
             return 0.0
         reward = reward.get(reward_key)
     return float(reward) if reward is not None else 0.0
+
+
+def _accumulate_phase_time_metrics(samples, extra_metrics, rollout_time):
+    """Sum per-phase rollout times across DISTINCT trajectories and emit
+    ``rollout/time/*`` aggregates into *extra_metrics*.
+
+    Pure observability, fully defensive: any failure is swallowed so timing
+    logging can never break the training loop. Dedupes by trajectory
+    (``_trajectory_key``) so a multi-segment trajectory -- whose N samples all
+    carry the same copied ``phase_times`` dict -- is counted once, mirroring
+    compute_prewarm_metrics.
+    """
+    try:
+        seen = set()
+        phase_totals = defaultdict(float)
+        n_traj = 0
+        llm_turns_total = 0
+        for position, sample in enumerate(samples):
+            meta = getattr(sample, "metadata", None) or {}
+            phase_times = meta.get("phase_times")
+            if not isinstance(phase_times, dict):
+                continue
+            traj_key = _trajectory_key(sample, meta, position)
+            if traj_key in seen:
+                continue
+            seen.add(traj_key)
+            n_traj += 1
+            for name, value in phase_times.items():
+                try:
+                    phase_totals[str(name)] += float(value)
+                except (TypeError, ValueError):
+                    continue
+            try:
+                llm_turns_total += int(meta.get("num_llm_turns", 0) or 0)
+            except (TypeError, ValueError):
+                pass
+
+        if n_traj == 0:
+            return
+
+        for name, total in phase_totals.items():
+            extra_metrics["rollout/time/" + name] = total / n_traj
+
+        env_step_total = phase_totals.get("env_step", 0.0)
+        extra_metrics["rollout/time/env_step_total"] = env_step_total
+
+        sum_phases = sum(phase_totals.values())
+        if sum_phases > 0:
+            extra_metrics["rollout/time/llm_gen_frac"] = (
+                phase_totals.get("llm_gen", 0.0) / sum_phases
+            )
+            extra_metrics["rollout/time/env_step_frac"] = env_step_total / sum_phases
+
+        try:
+            if rollout_time and float(rollout_time) > 0:
+                extra_metrics["rollout/time/env_step_wall_frac"] = (
+                    env_step_total / float(rollout_time)
+                )
+        except (TypeError, ValueError):
+            pass
+
+        extra_metrics["rollout/time/num_llm_turns_mean"] = llm_turns_total / n_traj
+    except Exception:  # pragma: no cover - observability must never break training
+        pass
 
 
 def log_rollout_data(
@@ -173,5 +240,7 @@ def log_rollout_data(
                 "rollout/mopd/raw_reward_trainable_trajectory_mean/"
                 f"{_metric_component(teacher_id)}"
             ] = routed_mean
+
+    _accumulate_phase_time_metrics(samples, extra_metrics, rollout_time)
 
     return False

@@ -32,6 +32,9 @@ from __future__ import annotations
 import logging
 import uuid
 from abc import ABC, abstractmethod
+from collections import defaultdict
+from contextlib import contextmanager
+from time import perf_counter
 from typing import TYPE_CHECKING, Any, ClassVar
 
 from dressage.rollout import multi_segment
@@ -114,6 +117,26 @@ class WhiteboxAgent(ABC):
     def proxy(self) -> ProxyClient:
         return get_proxy_client()
 
+    @contextmanager
+    def _phase(self, name):
+        """Accumulate wall-time for a rollout phase; fully defensive, never breaks the rollout."""
+        try:
+            start = perf_counter()
+        except Exception:
+            start = None
+        try:
+            yield
+        finally:
+            if start is not None:
+                try:
+                    times = getattr(self, "_phase_times", None)
+                    if times is None:
+                        times = defaultdict(float)
+                        self._phase_times = times
+                    times[name] += perf_counter() - start
+                except Exception:
+                    pass
+
     @abstractmethod
     async def rollout(
         self, sample: Any, sampling_params: dict[str, Any],
@@ -127,12 +150,18 @@ class WhiteboxAgent(ABC):
         *,
         turn_id: str | None = None,
     ) -> dict[str, Any]:
-        return await self.proxy.chat_completions(
-            body,
-            session_id=self.session_id,
-            instance_id=self.instance_id,
-            turn_id=turn_id,
-        )
+        with self._phase("llm_gen"):
+            response = await self.proxy.chat_completions(
+                body,
+                session_id=self.session_id,
+                instance_id=self.instance_id,
+                turn_id=turn_id,
+            )
+        try:
+            self._llm_turns = getattr(self, "_llm_turns", 0) + 1
+        except Exception:
+            pass
+        return response
 
     async def setup(self, sample: Any) -> None:
         """Called before ``rollout()``. Override for initialization."""
@@ -339,6 +368,13 @@ def make_generate(agent_cls: type[WhiteboxAgent]):
             )
 
         agent = agent_cls()
+        # Per-phase rollout-timing accumulator (pure observability). A failure
+        # here must never prevent the rollout from running.
+        try:
+            agent._phase_times = defaultdict(float)
+            agent._llm_turns = 0
+        except Exception:
+            pass
         agent.args = args
         agent.session_id = _agent_session_id(sample, agent.session_prefix)
         agent.instance_id = _resolve_instance_id(sample)

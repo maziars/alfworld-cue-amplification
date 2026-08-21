@@ -63,7 +63,8 @@ class ALFWorldWhiteboxAgent(WhiteboxAgent):
         executed_steps = 0
 
         try:
-            obs, infos = env.reset()
+            with self._phase("env_reset"):
+                obs, infos = env.reset()
             task_text = extract_task_text(obs, extract_prompt_fallback(sample.prompt))
             admissible = list(infos.get("admissible_commands", []) or [])
 
@@ -136,7 +137,8 @@ class ALFWorldWhiteboxAgent(WhiteboxAgent):
                         break
                     continue
 
-                obs, _reward, done, infos = env.step(command)
+                with self._phase("env_step"):
+                    obs, _reward, done, infos = env.step(command)
                 executed_steps += 1
                 admissible = list(infos.get("admissible_commands", []) or [])
                 messages.append(
@@ -166,6 +168,12 @@ class ALFWorldWhiteboxAgent(WhiteboxAgent):
         metadata["task_success"] = task_success
         metadata["num_steps"] = executed_steps
         metadata["invalid_action_count"] = invalid_action_count
+        # Per-phase rollout timing (pure observability; never break the rollout).
+        try:
+            metadata["phase_times"] = dict(getattr(self, "_phase_times", {}) or {})
+            metadata["num_llm_turns"] = int(getattr(self, "_llm_turns", 0) or 0)
+        except Exception:
+            pass
         return "".join(full_response_parts)
 
 
