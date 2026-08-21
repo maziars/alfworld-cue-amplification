@@ -65,6 +65,14 @@ ALFWORLD_TOOL_SCHEMAS = [
 _TOOL_CALL_BLOCK_RE = re.compile(r"<tool_call>(.*?)</tool_call>", re.DOTALL)
 
 
+# ALFWORLD_NAV_SPLIT=1 => per-turn tool responses omit the constant
+# "go to <receptacle>" navigation lines (listed once in the initial user
+# message; still VALID actions -- validation is unchanged). The invalid-retry
+# response and the initial message always keep the FULL list. Default "0" =>
+# byte-identical to the reference prompt.
+_NAV_SPLIT = os.environ.get("ALFWORLD_NAV_SPLIT", "0") == "1"
+
+
 def load_config() -> dict[str, Any]:
     return {
         "max_steps": int(os.environ.get("ALFWORLD_MAX_STEPS", "50")),
@@ -174,10 +182,14 @@ def make_env(game_file: str, max_episode_steps: int):
     return textworld.gym.make(env_id)
 
 
-def format_admissible(commands: list[str]) -> str:
+def format_admissible(commands: list[str], include_nav: bool = True) -> str:
     if not commands:
         return "None"
-    return "\n".join(f"- {cmd}" for cmd in commands if cmd != "help")
+    return "\n".join(
+        f"- {cmd}"
+        for cmd in commands
+        if cmd != "help" and (include_nav or not cmd.startswith("go to "))
+    )
 
 
 def extract_task_text(observation: str, fallback: str) -> str:
@@ -202,11 +214,24 @@ def extract_prompt_fallback(prompt: Any) -> str:
     return ""
 
 
-def format_tool_response(observation: str, admissible: list[str]) -> str:
+def format_tool_response(
+    observation: str,
+    admissible: list[str],
+    include_nav: bool | None = None,
+) -> str:
     obs = (observation or "").strip()[:2000]
+    if include_nav is None:
+        include_nav = not _NAV_SPLIT
+    if include_nav:
+        header = "### Admissible Commands"
+    else:
+        header = (
+            "### Admissible Commands (state-dependent; navigation "
+            "'go to <receptacle>' targets are listed in the initial message above)"
+        )
     return (
         f"### Observation\n{obs}\n\n"
-        f"### Admissible Commands\n{format_admissible(admissible)}"
+        f"{header}\n{format_admissible(admissible, include_nav=include_nav)}"
     )
 
 
@@ -220,5 +245,5 @@ def format_invalid_response(
         '{"command": "<one admissible command>"}. '
         f"Reason: {reason}\n\n"
         "Environment state did not change.\n\n"
-        f"{format_tool_response(previous_obs, admissible)}"
+        f"{format_tool_response(previous_obs, admissible, include_nav=True)}"
     )

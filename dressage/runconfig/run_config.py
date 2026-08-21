@@ -218,7 +218,10 @@ class RunConfig:
         # CUDA13 / aarch64). --no-offload-* runs co-resident, dodging the bug + matching unified-mem reality.
         # (These survive slime's --colocate post-processing, which only forces offload when the value is None.)
         if self.colocate:
-            a += ["--colocate", "--no-offload-train", "--no-offload-rollout"]
+            import os as _ps_os
+            # phase-swap needs the offload/onload dance (needs_offload) so our sglang overrides free/rebuild
+            _ps_ofl = "--offload-rollout" if _ps_os.environ.get("PHASE_SWAP_TRAINER") == "1" else "--no-offload-rollout"
+            a += ["--colocate", "--no-offload-train", _ps_ofl]
         # GRPO
         a += ["--advantage-estimator", self.advantage_estimator,
               "--entropy-coef", str(self.entropy_coef),
@@ -333,7 +336,8 @@ COLOCATE_ALFWORLD_4B_GB10 = SYNC_ALFWORLD_4B_GB10.edit().set(
     actor_num_nodes=2,      # DP=2 across the two 1-GPU nodes
     rollout_num_gpus=2,     # 2 SGLang engines (rollout-num-gpus-per-engine=1 in the run script)
     colocate=True,
-    sglang_mem_fraction=0.6,
+    sglang_mem_fraction=0.4,   # co-resident with the ~49GiB actor (offload frees nothing on unified mem)
+    sglang_max_mamba_cache=128,  # ↓ from disagg's 400: 400 mamba states = 19.2GiB fixed; 128 covers ~64 traj/engine, saves ~13GiB
     cuda_alloc_conf="garbage_collection_threshold:0.8",  # NO expandable_segments (torch_memory_saver requires it off)
     wandb_group="colocate-alfworld-4b",
 ).freeze()
