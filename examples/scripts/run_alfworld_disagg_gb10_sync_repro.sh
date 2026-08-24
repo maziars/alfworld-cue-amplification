@@ -315,7 +315,13 @@ RUNTIME_ENV_JSON=$(cat <<EOF_JSON
     "STREAMING_LOAD_FORCE": "${STREAMING_LOAD_FORCE:-0}",
     "USE_MASTER_PARAM": "${USE_MASTER_PARAM:-0}",
     "CHUNKED_LOGPROB_CHUNK_SIZE": "${CHUNKED_LOGPROB_CHUNK_SIZE:-1024}",
-    "CHUNKED_LOGPROB_FP32_MATMUL": "${CHUNKED_LOGPROB_FP32_MATMUL:-0}"
+    "CHUNKED_LOGPROB_FP32_MATMUL": "${CHUNKED_LOGPROB_FP32_MATMUL:-0}",
+    "WANDB_MODE": "${WANDB_MODE:-online}",
+    "WANDB_INIT_TIMEOUT": "${WANDB_INIT_TIMEOUT:-90}",
+    "DP_EQUIV_CAPTURE": "${DP_EQUIV_CAPTURE:-}",
+    "DP_EQUIV_DUMP": "${DP_EQUIV_DUMP:-}",
+    "DP_EQUIV_MOCK_DIR": "${DP_EQUIV_MOCK_DIR:-}",
+    "DP_EQUIV_STEP_DUMP": "${DP_EQUIV_STEP_DUMP:-}"
   },
   "worker_process_setup_hook": "dressage.training.gb10_setup.install"
 }
@@ -324,7 +330,7 @@ EOF_JSON
 
 ray job submit --address="http://127.0.0.1:8265" \
    --runtime-env-json="${RUNTIME_ENV_JSON}" \
-   -- python3 -m train \
+   -- python3 -m "${DP_EQUIV_ENTRY:-train}" \
    --actor-num-nodes "${ACTOR_NUM_NODES}" \
    --actor-num-gpus-per-node "${ACTOR_NUM_GPUS_PER_NODE}" \
    --rollout-num-gpus "${ROLLOUT_NUM_GPUS}" \
