@@ -321,7 +321,13 @@ RUNTIME_ENV_JSON=$(cat <<EOF_JSON
     "DP_EQUIV_CAPTURE": "${DP_EQUIV_CAPTURE:-}",
     "DP_EQUIV_DUMP": "${DP_EQUIV_DUMP:-}",
     "DP_EQUIV_MOCK_DIR": "${DP_EQUIV_MOCK_DIR:-}",
-    "DP_EQUIV_STEP_DUMP": "${DP_EQUIV_STEP_DUMP:-}"
+    "DP_EQUIV_STEP_DUMP": "${DP_EQUIV_STEP_DUMP:-}",
+    "DP_EQUIV_GRAD_PROBE": "${DP_EQUIV_GRAD_PROBE:-}",
+    "DP_EQUIV_N_REPEATS": "${DP_EQUIV_N_REPEATS:-}",
+    "DP_EQUIV_NORMALIZE_ADV": "${DP_EQUIV_NORMALIZE_ADV:-}",
+    "DP_EQUIV_ALL_PARAMS": "${DP_EQUIV_ALL_PARAMS:-}",
+    "DP_EQUIV_ACCUM": "${DP_EQUIV_ACCUM:-}",
+    "DP_EQUIV_K": "${DP_EQUIV_K:-}"
   },
   "worker_process_setup_hook": "dressage.training.gb10_setup.install"
 }
