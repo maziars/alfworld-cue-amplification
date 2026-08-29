@@ -9,10 +9,31 @@ Registered via ``--custom-reward-post-process-path``.  Handles:
 from __future__ import annotations
 
 import logging
+import os
 from collections import defaultdict
 from typing import Any
 
 logger = logging.getLogger(__name__)
+
+
+def _compact_filter_enabled() -> bool:
+    """Compact filtering (a la rLLM/DeepSWE ``overlong_filter``): treat a
+    trajectory that exceeded the training token cap as a reward-0 failure with
+    NO gradient, while keeping it in the GRPO baseline. Enabled by env
+    ``DRESSAGE_COMPACT_FILTER``. See memory dressage-truncation-handling."""
+    return os.environ.get("DRESSAGE_COMPACT_FILTER", "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    )
+
+
+def _should_compact_filter(sample: Any) -> bool:
+    """True iff this trajectory's full length exceeded the training token cap
+    (``metadata['truncated']`` set by ``samples.write_sample_from_segment``)."""
+    meta = getattr(sample, "metadata", None) or {}
+    return bool(meta.get("truncated"))
 
 
 def _compute_parent_groups(
@@ -113,13 +134,33 @@ def reward_post_process(
             r = r[reward_key] if reward_key else 0.0
         raw_rewards.append(float(r) if r is not None else 0.0)
 
+    # Compact filtering: the rewards that feed the GRPO baseline + advantage.
+    # A truncated (origin > token_cap) trajectory is forced to reward 0 — it
+    # counts as a failure in its group's mean (so short successes get a larger
+    # advantage) but its gradient is separately suppressed by zeroing its
+    # loss_mask in convert_samples_to_train_data. ``raw_rewards`` is left as the
+    # TRUE reward for logging (raw_reward metric / trajectory JSONL).
+    baseline_rewards = list(raw_rewards)
+    if _compact_filter_enabled():
+        n_filtered = 0
+        for i, s in enumerate(samples):
+            if _should_compact_filter(s) and baseline_rewards[i] != 0.0:
+                baseline_rewards[i] = 0.0
+                n_filtered += 1
+        if n_filtered:
+            logger.warning(
+                "compact_filter: zeroed reward for %d truncated trajectories "
+                "(kept in GRPO baseline as reward-0, loss masked)",
+                n_filtered,
+            )
+
     parent_groups, parent_anchor = _compute_parent_groups(samples)
 
     advantage_estimator = getattr(args, "advantage_estimator", "grpo")
     do_normalization = getattr(args, "rewards_normalization", True)
 
     if advantage_estimator not in ("grpo", "gspo", "reinforce_plus_plus_baseline") or not do_normalization:
-        rewards = list(raw_rewards)
+        rewards = list(baseline_rewards)
         if parent_groups:
             _broadcast_to_segments(rewards, parent_groups, parent_anchor)
         return raw_rewards, rewards
@@ -135,11 +176,11 @@ def reward_post_process(
             continue
         gi = s.group_index if s.group_index is not None else _NONE_GROUP
         if i in parent_representative_indices:
-            groups[gi].append((i, raw_rewards[i]))
+            groups[gi].append((i, baseline_rewards[i]))
         elif not (s.metadata and s.metadata.get("parent_traj_id")):
-            groups[gi].append((i, raw_rewards[i]))
+            groups[gi].append((i, baseline_rewards[i]))
 
-    rewards = list(raw_rewards)
+    rewards = list(baseline_rewards)
 
     for gi, members in groups.items():
         indices = [m[0] for m in members]

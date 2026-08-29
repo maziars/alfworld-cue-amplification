@@ -29,6 +29,9 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
+# One-time announcement of the logging state (fail-loud vs silent no-op).
+_ANNOUNCED = False
+
 # Lightweight sample fields worth keeping verbatim.
 _KEEP_TOP = (
     "group_index",
@@ -52,6 +55,17 @@ _KEEP_META = (
     "num_steps",
     "invalid_action_count",
     "truncated",
+    # length provenance (P0): the TRUE pre-truncation length + the cap, so the
+    # real trajectory length is recoverable from the record (not just the
+    # cap-saturated response_length). See dressage-truncation-handling.
+    "origin_tokens_len",
+    "token_cap",
+    "prompt_tokens_len",
+    "gen_finish_reason",
+    # compact-filter effect (set by log_rollout when DRESSAGE_COMPACT_FILTER=1).
+    "compact_filtered",
+    "reward_prefilter",
+    "reward_postfilter",
     "segment_count",
     "selected_segment_index",
     "segment_index",
@@ -121,6 +135,20 @@ def write_rollout(
     never break the training loop.
     """
     directory = log_dir()
+
+    # Fail-loud: announce the logging state ONCE so a silent no-op (unset env
+    # var) is visible in the run log rather than mistaken for "logging on".
+    global _ANNOUNCED
+    if not _ANNOUNCED:
+        _ANNOUNCED = True
+        if directory:
+            logger.warning("[traj-log] ENABLED -> %s", directory)
+        else:
+            logger.warning(
+                "[traj-log] DISABLED: DRESSAGE_TRAJECTORY_JSONL_DIR is unset; "
+                "NO per-trajectory JSONL will be written this run"
+            )
+
     if not directory:
         return None
 
@@ -129,9 +157,13 @@ def write_rollout(
         out_dir.mkdir(parents=True, exist_ok=True)
         tag = ("eval_" if evaluation else "") + str(rollout_id)
         path = out_dir / f"rollout_{tag}.jsonl.gz"
+        # Atomic write: stream into a per-pid temp file, fsync, then rename.
+        # A SIGKILL (OOM / NVML wedge — both recur on this rig) mid-write then
+        # leaves a stray .tmp instead of a corrupt .gz under the real name.
+        tmp = out_dir / f".rollout_{tag}.jsonl.gz.{os.getpid()}.tmp"
 
         written = 0
-        with gzip.open(path, "wt", encoding="utf-8") as handle:
+        with gzip.open(tmp, "wt", encoding="utf-8") as handle:
             for sample in _flatten(samples):
                 try:
                     record = sample_to_record(sample)
@@ -141,6 +173,13 @@ def write_rollout(
                     written += 1
                 except Exception as exc:  # per-sample isolation
                     logger.warning("[traj-log] skipped a sample: %s", exc)
+        try:  # fsync the fully-written (gzip-finalized) temp file for durability
+            fd = os.open(str(tmp), os.O_RDONLY)
+            os.fsync(fd)
+            os.close(fd)
+        except OSError:
+            pass
+        os.replace(tmp, path)
 
         size_kb = path.stat().st_size / 1024
         logger.warning(

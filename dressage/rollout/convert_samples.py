@@ -84,9 +84,14 @@ def _prompt_equal_rollout_mask_sums(
 
 def convert_samples_to_train_data(args: Any, samples: list) -> dict:
     """Dressage replacement for ``RolloutManager._convert_samples_to_train_data``."""
-    from dressage.training.reward_post_process import reward_post_process
+    from dressage.training.reward_post_process import (
+        _compact_filter_enabled,
+        _should_compact_filter,
+        reward_post_process,
+    )
 
     raw_rewards, rewards = reward_post_process(args, samples)
+    _compact = _compact_filter_enabled()
 
     assert len(raw_rewards) == len(samples)
     assert len(rewards) == len(samples)
@@ -126,7 +131,10 @@ def convert_samples_to_train_data(args: Any, samples: list) -> dict:
         assert (
             len(sample.loss_mask) == sample.response_length
         ), f"loss mask length {len(sample.loss_mask)} != response length {sample.response_length}"
-        if sample.remove_sample:
+        # Zero the loss mask for dead samples AND compact-filtered truncated
+        # trajectories: the latter still sit in the GRPO baseline as reward-0
+        # (see reward_post_process) but must contribute NO gradient.
+        if sample.remove_sample or (_compact and _should_compact_filter(sample)):
             sample.loss_mask = [0] * sample.response_length
         loss_masks.append(sample.loss_mask)
     train_data["loss_masks"] = loss_masks

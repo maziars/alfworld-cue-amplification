@@ -322,6 +322,12 @@ def write_sample_from_segment(
     sample.metadata["instance_id"] = instance_id
     sample.metadata["messages"] = messages
     sample.metadata["proxy_extra_info"] = segment.get("extra_info") or {}
+    _seg_extra = segment.get("extra_info") or {}
+    if hasattr(sample, "prefix_cache_info"):
+        sample.prefix_cache_info.cached_tokens = int(_seg_extra.get("cached_tokens", 0) or 0)
+        sample.prefix_cache_info.total_prompt_tokens = int(
+            _seg_extra.get("prompt_tokens", 0) or 0
+        )
     sample.metadata.pop("dressage_partial_rollout", None)
     sample.metadata.pop("dressage_async_group_id", None)
     sample.metadata.pop("response_versions", None)
@@ -345,8 +351,15 @@ def write_sample_from_segment(
     sample.metadata["all_segment_uids"] = [
         item.get("uid") for item in all_segments if item.get("uid") is not None
     ]
-    if truncated:
-        sample.metadata["truncated"] = True
+    # Always-present length/truncation provenance (P0 logging fix): the
+    # pre-truncation full length is otherwise recorded ONLY in a logger.warning
+    # and is unrecoverable from the per-trajectory record; and a bool that is
+    # only ever set True is indistinguishable from "never written". Stamp
+    # unconditionally. See memory dressage-truncation-handling.
+    sample.metadata["truncated"] = bool(truncated)
+    sample.metadata["origin_tokens_len"] = int(origin_tokens_len)
+    sample.metadata["token_cap"] = int(token_cap) if token_cap is not None else None
+    sample.metadata["prompt_tokens_len"] = int(response_start)
     routed_experts = extract_routed_experts(
         segment,
         args,
@@ -371,6 +384,7 @@ def write_sample_from_segment(
         )
 
     finish_reason = str(segment.get("finish_reason") or "stop")
+    sample.metadata["gen_finish_reason"] = finish_reason
     set_status(sample, "TRUNCATED" if finish_reason == "length" else "COMPLETED")
     return sample
 

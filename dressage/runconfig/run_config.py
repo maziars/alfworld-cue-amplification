@@ -202,6 +202,7 @@ class RunConfig:
             "USE_WANDB": b(self.use_wandb),
             "WANDB_PROJECT": self.wandb_project,
             "WANDB_GROUP": self.wandb_group,
+            "WANDB_MODE": "online",  # wandb.ai recovered 2026-08-20 (write probe OK); online for repro faithfulness
             "WANDB_INIT_TIMEOUT": "300",  # transient startup congestion times out the default 90s -> crashes trainer
             # only override the run-script default when set (colocate disables expandable_segments)
             **({"PYTORCH_CUDA_ALLOC_CONF": self.cuda_alloc_conf} if self.cuda_alloc_conf else {}),

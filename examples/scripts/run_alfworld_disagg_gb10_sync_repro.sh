@@ -234,6 +234,8 @@ SGLANG_ARGS=(
    --sglang-context-length "${SGLANG_CONTEXT_LEN:-49152}"
    --sglang-router-port "${SGLANG_ROUTER_PORT}"
    --router-policy cache_aware
+   --router-max-tree-size 4194304
+   --router-eviction-interval-secs 10
 )
 
 MISC_ARGS=(
@@ -303,6 +305,7 @@ RUNTIME_ENV_JSON=$(cat <<EOF_JSON
     "DRESSAGE_TRAJECTORY_ERROR_LOG_DIR": "${DRESSAGE_TRAJECTORY_ERROR_LOG_DIR}",
     "DRESSAGE_TRAJECTORY_JSONL_DIR": "${DRESSAGE_TRAJECTORY_JSONL_DIR}",
     "DRESSAGE_REWARD_MODULES": "dressage.recipes.alfworld.reward",
+    "DRESSAGE_COMPACT_FILTER": "${DRESSAGE_COMPACT_FILTER:-0}",
     "ALFWORLD_MAX_STEPS": "${ALFWORLD_MAX_STEPS}",
     "ALFWORLD_MAX_EPISODE_STEPS": "${ALFWORLD_MAX_EPISODE_STEPS}",
     "ALFWORLD_HISTORY_WINDOW": "${ALFWORLD_HISTORY_WINDOW}",

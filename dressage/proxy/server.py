@@ -832,6 +832,8 @@ def create_app(
         alignment = mask_builder.build_segment_alignment(base_step, tools)
         extra_info = {
             "alignment_method": "snapshot_all_logprobs+assistant_prompt_mask",
+            "cached_tokens": sum(int(s.cached_tokens) for s in steps),
+            "prompt_tokens": sum(int(s.prompt_tokens) for s in steps),
             "token_build_mode": token_build_mode_for_record,
             "segment_view": "timeline",
             "mask_template_equivalent": alignment["mask_template_equivalent"],
@@ -932,6 +934,8 @@ def create_app(
 
         extra_info = {
             "alignment_method": "snapshot_step",
+            "cached_tokens": int(step.cached_tokens),
+            "prompt_tokens": int(step.prompt_tokens),
             "token_build_mode": token_build_mode_for_record,
             "segment_view": "timeline",
             "context_token_count": prompt_len,
@@ -1041,6 +1045,8 @@ def create_app(
 
         extra_info = {
             "alignment_method": "tito",
+            "cached_tokens": sum(int(s.cached_tokens) for s in steps),
+            "prompt_tokens": sum(int(s.prompt_tokens) for s in steps),
             "token_build_mode": "tito",
             "segment_view": "lineage",
             "context_token_count": context_token_count,
@@ -1873,6 +1879,10 @@ def create_app(
                 messages=full_messages,
                 raw_response_text=recorded_raw_text,
                 all_logprobs_invalid=router_response.all_logprobs_invalid,
+                cached_tokens=int(router_response.meta_info.get("cached_tokens", 0) or 0),
+                prompt_tokens=int(
+                    router_response.meta_info.get("prompt_tokens", 0) or len(input_ids)
+                ),
                 **concat_payload,
                 response_routed_experts=router_response.routed_experts,
                 response_routed_experts_chunks=router_response.routed_experts_chunks,

@@ -12,11 +12,16 @@ contributing N times more weight than single-segment ones.
 
 from __future__ import annotations
 
+import os
 import re
 from collections import defaultdict
 from typing import Any
 
 from dressage.training.log_helpers import compute_trajectory_mean_raw_reward
+from dressage.training.reward_post_process import (
+    _compact_filter_enabled,
+    _should_compact_filter,
+)
 
 _ROLLOUT_WANDB_METRICS_DEFINED = False
 
@@ -173,6 +178,44 @@ def log_rollout_data(
     in slime's ``_log_rollout_data``.
     """
     _define_staleness_wandb_metrics(args)
+
+    # Compact-filter observability. Stamp each trajectory's pre/post-filter
+    # reward into metadata (so the JSONL records exactly what filtering did) and
+    # emit aggregate metrics: TRUE reward vs post-filter reward vs filter rate.
+    # Keyed off the same immutable ``truncated`` flag the filter uses, so it is
+    # correct regardless of hook order. Fully defensive — never break training.
+    if _compact_filter_enabled():
+        try:
+            pre_by_traj: dict[str, float] = {}
+            post_by_traj: dict[str, float] = {}
+            n_filtered = 0
+            for position, s in enumerate(samples):
+                meta = getattr(s, "metadata", None)
+                if not isinstance(meta, dict):
+                    continue
+                pre = _sample_reward_value(args, s)
+                filtered = _should_compact_filter(s)
+                meta["reward_prefilter"] = pre
+                meta["compact_filtered"] = bool(filtered)
+                meta["reward_postfilter"] = 0.0 if filtered else pre
+                if filtered:
+                    n_filtered += 1
+                key = _trajectory_key(s, meta, position)
+                if key not in pre_by_traj or abs(pre) > abs(pre_by_traj[key]):
+                    pre_by_traj[key] = pre
+                    post_by_traj[key] = 0.0 if filtered else pre
+            n_traj = len(pre_by_traj)
+            if n_traj:
+                extra_metrics["rollout/reward_prefilter_mean"] = (
+                    sum(pre_by_traj.values()) / n_traj
+                )
+                extra_metrics["rollout/reward_postfilter_mean"] = (
+                    sum(post_by_traj.values()) / n_traj
+                )
+            if samples:
+                extra_metrics["rollout/compact_filter_rate"] = n_filtered / len(samples)
+        except Exception:  # pragma: no cover - observability must never break training
+            pass
 
     # Persist readable trajectories (gzipped JSONL, one file per rollout) when
     # DRESSAGE_TRAJECTORY_JSONL_DIR is set. No-op otherwise; fully defensive so

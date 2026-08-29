@@ -140,6 +140,8 @@ class StepRecord:
     finish_reason: str = "stop"
     request_version: str | None = None
     response_version: str | None = None
+    cached_tokens: int = 0
+    prompt_tokens: int = 0
     timestamp: float = field(default_factory=time.time)
 
 
@@ -456,6 +458,8 @@ class SessionManager:
         finish_reason: str = "stop",
         request_version: str | None = None,
         response_version: str | None = None,
+        cached_tokens: int = 0,
+        prompt_tokens: int = 0,
     ) -> StepRecord | None:
         with self._lock:
             session = self._sessions.get(session_id)
@@ -530,6 +534,8 @@ class SessionManager:
                 finish_reason=finish_reason,
                 request_version=request_version,
                 response_version=response_version,
+                cached_tokens=cached_tokens,
+                prompt_tokens=prompt_tokens,
             )
             session.steps.append(step)
             session.steps_by_id[step.step_id] = step
