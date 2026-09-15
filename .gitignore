@@ -73,3 +73,11 @@ wandb/
 /_inv_tot.json
 /nvsmi.txt
 .dpeq_bak*/
+# scratch analysis copies in the project root; the curated versions live in analysis/
+/_*.py
+/_*.sh
+/patch_*.py
+/poll*.sh
+/mem_*.py
+/monitor_*.sh
+/launch_run*.sh
