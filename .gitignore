@@ -56,3 +56,20 @@ __pycache__/
 /gb10_probe.py
 examples/scripts/log/
 wandb/
+
+# --- large experiment artifacts and checkpoints (added for collaborator sharing) ---
+/models/
+/experiments/*/
+/_shards/
+/_destab_dump/
+/_inv_dump/
+/_q_*.json
+/_r_*.json
+/_p_*.json
+/_probe_ctx.pkl
+/_scan_out.json
+/_fine_out.json
+/_fatal_out.json
+/_inv_tot.json
+/nvsmi.txt
+.dpeq_bak*/

@@ -55,8 +55,95 @@ logger = logging.getLogger(__name__)
 _INPUT_TOKEN_VERSION = "-1"
 _DEFAULT_TOOL_CALL_PARSER = object()
 _NON_REAL_TOKEN_VERSIONS = {"", "-1", "unknown", "none"}
-TokenBuildMode = Literal["tito", "snapshot"]
+TokenBuildMode = Literal["tito", "snapshot", "mimo"]
 SegmentView = Literal["lineage", "timeline"]
+
+
+def _apply_faithful_mask(tokens, response_mask, *, train_imend, no_think,
+                         think_id=248068, nl_id=198, im_end_id=248046):
+    """#54 faithful-mask ablation. Reverse the two MIMO mask-template boundary
+    artifacts so the trained span matches what the policy actually emits:
+      - no_think:    drop a re-inserted leading <think>\\n from each assistant run
+      - train_imend: include the trailing <|im_end|> stop token after each run
+    Mutates response_mask in place and returns it. When both flags are False this
+    is a strict no-op (normal MIMO path unchanged). Operates on assistant-masked
+    runs (maximal spans of response_mask==1), robust to multi-turn sequences.
+    """
+    if not (train_imend or no_think):
+        return response_mask
+    n = len(tokens)
+    i = 0
+    while i < n:
+        if response_mask[i] != 1:
+            i += 1
+            continue
+        rs = i
+        while i < n and response_mask[i] == 1:
+            i += 1
+        re_end = i  # exclusive end of this assistant-masked run
+        if no_think and (re_end - rs) >= 2 and tokens[rs] == think_id and tokens[rs + 1] == nl_id:
+            response_mask[rs] = 0
+            response_mask[rs + 1] = 0
+        if train_imend and re_end < n and tokens[re_end] == im_end_id:
+            response_mask[re_end] = 1
+    return response_mask
+
+
+def _apply_faithful_text(tokens, response_mask, sampled_turns, tokenizer,
+                         think_id=248068, nl_id=198, im_end_id=248046):
+    """#58 faithful-text MIMO (FIXED, #61). Replace each canonical assistant span
+    (a maximal run of response_mask==1) with the BPE re-tokenization of the RAW
+    sampled response (= encode(decode(sampled_ids))), so the trained target is
+    exactly what the policy emitted (only BPE drift vs TITO) — isolating
+    "re-render per se" from tool-call/message canonicalization.
+
+    CRITICAL: the mask template renders the generation-prompt prefill '<think>\\n'
+    INSIDE the mask==1 span, so a naive whole-span replacement DROPS it from the
+    training CONTEXT (the model is always conditioned on '<think>\\n' at inference
+    -> train/inference mismatch on every turn -> collapse; this was the #58 bug).
+    So here we PRESERVE the leading '<think>\\n' as mask=0 CONTEXT and put the raw
+    response (mask=1) after it, matching the TITO/faithful-mask record structure
+    (prefill present-but-unmasked). We also avoid a double '<|im_end|>' by skipping
+    a redundant template stop token when the raw span already ends in one.
+    Returns (new_tokens, new_mask); strict no-op if #runs != #sampled turns.
+    """
+    runs = []
+    i, n = 0, len(tokens)
+    while i < n:
+        if response_mask[i] == 1:
+            j = i
+            while j < n and response_mask[j] == 1:
+                j += 1
+            runs.append((i, j))
+            i = j
+        else:
+            i += 1
+    if len(runs) != len(sampled_turns):
+        return tokens, response_mask
+    faithful = []
+    for ids in sampled_turns:
+        text = tokenizer.decode(ids, skip_special_tokens=False)
+        faithful.append(list(tokenizer.encode(text, add_special_tokens=False)))
+    new_tokens, new_mask = [], []
+    prev = 0
+    for (s, e), fid in zip(runs, faithful):
+        new_tokens.extend(tokens[prev:s])
+        new_mask.extend(response_mask[prev:s])
+        # preserve the template's leading '<think>\n' as mask=0 CONTEXT (prefill)
+        if (e - s) >= 2 and tokens[s] == think_id and tokens[s + 1] == nl_id:
+            new_tokens.extend([think_id, nl_id])
+            new_mask.extend([0, 0])
+        # trained response = raw sampled text, re-tokenized (mask=1)
+        new_tokens.extend(fid)
+        new_mask.extend([1] * len(fid))
+        prev = e
+        # avoid a double stop token: if raw already ends with <|im_end|>, skip a
+        # redundant template <|im_end|> immediately following the run
+        if fid and fid[-1] == im_end_id and prev < n and tokens[prev] == im_end_id:
+            prev += 1
+    new_tokens.extend(tokens[prev:])
+    new_mask.extend(response_mask[prev:])
+    return new_tokens, new_mask
 
 
 def _canonical_json(value: Any) -> str:
@@ -402,6 +489,39 @@ def _runtime_ids_from_request(
     return session_id, instance_id, turn_id
 
 
+_FAITHFUL_GUARD_FALLBACKS = 0
+
+
+def _faithful_response_ids(response_token_ids, tokenizer):
+    """Faithful-text response tokens for the faithful-text MIMO regime.
+
+    Re-encode the response's OWN detokenized text so the trained/context tokens differ from
+    the exact sampled ids ONLY by the BPE decode->encode round-trip. Idempotency guard: if
+    the round-trip does not reproduce the exact text (invalid UTF-8 / raw byte-garbage from a
+    degenerate turn -> decode() inserts U+FFFD which re-encodes differently), fall back to the
+    EXACT sampled ids so that turn is exactly TITO (0 drift) and a text change never occurs.
+    Therefore the only possible difference vs TITO is BPE re-tokenization of identical text.
+    Every fallback is counted + logged (this is the documented asterisk of text-faithful MIMO).
+    """
+    global _FAITHFUL_GUARD_FALLBACKS
+    ids = list(response_token_ids)
+    text = tokenizer.decode(ids, skip_special_tokens=False)
+    reencoded = [int(t) for t in tokenizer.encode(text, add_special_tokens=False)]
+    if tokenizer.decode(reencoded, skip_special_tokens=False) == text:
+        return reencoded
+    _FAITHFUL_GUARD_FALLBACKS += 1
+    try:
+        logger.warning(
+            "faithful-text idempotency guard fired (cumulative=%d this worker): response is "
+            "byte-non-idempotent (invalid UTF-8 / degenerate); kept EXACT sampled ids so this "
+            "turn == TITO (0 drift). Asterisk of text-faithful MIMO; also flagged in drift log.",
+            _FAITHFUL_GUARD_FALLBACKS,
+        )
+    except Exception:
+        pass
+    return ids
+
+
 def _assistant_message(
     content: str | None,
     tool_calls: list[dict] | None,
@@ -571,9 +691,9 @@ def create_app(
         raise ValueError("max_output_tokens must be greater than 0")
     if max_partial_rollout_preempts is not None and max_partial_rollout_preempts < 0:
         raise ValueError("max_partial_rollout_preempts must be greater than or equal to 0")
-    if token_build_mode not in {"snapshot", "tito"}:
+    if token_build_mode not in {"snapshot", "tito", "mimo"}:
         raise ValueError(
-            "token_build_mode must be 'snapshot' or 'tito', "
+            "token_build_mode must be 'snapshot', 'tito', or 'mimo', "
             f"got {token_build_mode!r}"
         )
     if tool_call_parse_backend not in {"local", "sglang_api", "hybrid"}:
@@ -1002,6 +1122,210 @@ def create_app(
                 invalid = True
         return normalized, invalid
 
+    def _build_mimo_record(
+        *,
+        session: Session,
+        trajectory_id: str,
+        instance_id: str,
+        label: Any | None = None,
+    ) -> dict[str, Any]:
+        """MIMO = message-in-message-out: one record per trajectory whose training
+        tokens are the FULL chat-template RE-RENDER of the conversation (message-out),
+        discarding the sampled ids. Loss mask = the template assistant mask over the
+        re-render. IS is off, so logprobs are diagnostic-only (0.0)."""
+        last_step = session.steps[-1]
+        messages = (
+            getattr(last_step, "normalized_messages_snapshot", None)
+            or last_step.messages_snapshot
+        )
+        tools = last_step.tools
+        enc = mask_builder._apply_chat_template(
+            messages,
+            tools=tools,
+            add_generation_prompt=False,
+            tokenize=True,
+            return_dict=True,
+            return_assistant_tokens_mask=True,
+            chat_template=mask_builder._mask_chat_template,
+        )
+        tokens = mask_builder._coerce_flat_int_list(
+            enc.get("input_ids", []) if hasattr(enc, "get") else []
+        )
+        mask_raw = mask_builder._coerce_flat_int_list(
+            enc.get("assistant_masks", []) if hasattr(enc, "get") else []
+        )
+        response_mask = [1 if m else 0 for m in mask_raw[: len(tokens)]]
+        if len(response_mask) < len(tokens):
+            response_mask += [0] * (len(tokens) - len(response_mask))
+        # --- #54 faithful-mask ablation (env-gated, additive; default OFF = unchanged MIMO) ---
+        # Reverse the mask-template boundary artifacts so the trained span matches what the
+        # policy emits (see _apply_faithful_mask). FAITHFUL_MASK sets both sub-flags.
+        _faithful = os.environ.get("DRESSAGE_MIMO_FAITHFUL_MASK")
+        _apply_faithful_mask(
+            tokens,
+            response_mask,
+            train_imend=bool(_faithful or os.environ.get("DRESSAGE_MIMO_TRAIN_IMEND")),
+            no_think=bool(_faithful or os.environ.get("DRESSAGE_MIMO_NO_THINK")),
+        )
+        # --- #58 faithful-text MIMO (env-gated, additive; default OFF = unchanged) ---
+        # Replace canonical assistant spans with encode(decode(sampled ids)) so the
+        # trained target is the RAW sampled text re-tokenized (BPE-only drift vs TITO,
+        # no tool-call/message canonicalization). See _apply_faithful_text.
+        if os.environ.get("DRESSAGE_MIMO_FAITHFUL_TEXT"):
+            _sampled_ft = [
+                mask_builder._coerce_flat_int_list(s.response_token_ids)
+                for s in session.steps
+                if getattr(s, "response_token_ids", None)
+            ]
+            tokens, response_mask = _apply_faithful_text(
+                tokens, response_mask, _sampled_ft, mask_builder._tokenizer
+            )
+        response_logprobs = [0.0] * len(tokens)
+        extra_info = {
+            "alignment_method": "mimo_full_rerender",
+            "token_build_mode": "mimo",
+            "segment_view": "lineage",
+            "num_steps": len(session.steps),
+            "num_turns": len(session.turn_ids),
+            "output_token_count": sum(response_mask),
+            "timestamp": str(time.time()),
+            "history_rewritten": session.history_rewritten,
+            "trajectory_num_segments": 1,
+        }
+        record = {
+            "uid": str(uuid.uuid4()),
+            "trajectory_id": trajectory_id,
+            "turn_id": session.turn_ids[-1] if session.turn_ids else last_step.turn_id,
+            "instance_id": instance_id,
+            "segment_index": 0,
+            "segment_count": 1,
+            "messages": messages,
+            "tools": tools,
+            "tokens": tokens,
+            "full_logprobs": response_logprobs,
+            "full_loss_mask": response_mask,
+            "aligned_response_length": sum(response_mask),
+            "label": label,
+            "finish_reason": last_step.finish_reason,
+            "extra_info": extra_info,
+        }
+        if record_token_versions:
+            rv = (
+                last_step.response_version
+                or (last_step.response_versions[-1] if getattr(last_step, "response_versions", None) else None)
+                or getattr(last_step, "request_version", None)
+                or "unknown"
+            )
+            record["full_versions"] = [
+                str(rv) if m else _INPUT_TOKEN_VERSION for m in response_mask
+            ]
+        # --- MIMO drift capture (additive, env-gated, never breaks record build) ---
+        # Keep BOTH token versions per trajectory: TITO = the SAMPLED response ids
+        # (what tito/snapshot trains on) vs MIMO = the assistant tokens of the full
+        # chat-template RE-RENDER (what this record trains on). Log per-turn and
+        # trajectory diffs: insertions / deletions / substitutions / hamming.
+        try:
+            import os as _os, difflib as _difflib, json as _json
+            _mimo_diff_dir = _os.environ.get("DRESSAGE_MIMO_DIFF_LOG")
+            if _mimo_diff_dir:
+                def _mimo_diff(a, b):
+                    if a == b:
+                        return {"equal": True, "tito_len": len(a), "mimo_len": len(b),
+                                "n_equal": len(a), "n_insert": 0, "n_delete": 0,
+                                "n_sub_tito": 0, "n_sub_mimo": 0,
+                                "hamming": 0, "total_diff": 0}
+                    _sm = _difflib.SequenceMatcher(a=a, b=b, autojunk=False)
+                    n_ins = n_del = n_sa = n_sb = n_eq = 0
+                    for tag, i1, i2, j1, j2 in _sm.get_opcodes():
+                        if tag == "equal":
+                            n_eq += i2 - i1
+                        elif tag == "insert":
+                            n_ins += j2 - j1
+                        elif tag == "delete":
+                            n_del += i2 - i1
+                        elif tag == "replace":
+                            n_sa += i2 - i1
+                            n_sb += j2 - j1
+                    ham = (sum(1 for x, y in zip(a, b) if x != y)
+                           if len(a) == len(b) else None)
+                    return {"equal": False, "tito_len": len(a), "mimo_len": len(b),
+                            "n_equal": n_eq, "n_insert": n_ins, "n_delete": n_del,
+                            "n_sub_tito": n_sa, "n_sub_mimo": n_sb, "hamming": ham,
+                            "total_diff": n_ins + n_del + max(n_sa, n_sb)}
+                _sampled_turns = [
+                    mask_builder._coerce_flat_int_list(s.response_token_ids)
+                    for s in session.steps
+                    if getattr(s, "response_token_ids", None)
+                ]
+                _runs, _cur = [], []
+                for _t, _m in zip(tokens, response_mask):
+                    if _m == 1:
+                        _cur.append(_t)
+                    elif _cur:
+                        _runs.append(_cur)
+                        _cur = []
+                if _cur:
+                    _runs.append(_cur)
+                _tito_flat = [t for turn in _sampled_turns for t in turn]
+                _mimo_flat = [t for run in _runs for t in run]
+                _per_turn = []
+                if len(_sampled_turns) == len(_runs):
+                    _align = "ok"
+                    for _i, (_a, _b) in enumerate(zip(_sampled_turns, _runs)):
+                        _d = _mimo_diff(_a, _b)
+                        _d["turn_index"] = _i
+                        _per_turn.append(_d)
+                    _hs = [d["hamming"] for d in _per_turn]
+                    _traj = {
+                        "tito_len": len(_tito_flat), "mimo_len": len(_mimo_flat),
+                        "n_equal": sum(d["n_equal"] for d in _per_turn),
+                        "n_insert": sum(d["n_insert"] for d in _per_turn),
+                        "n_delete": sum(d["n_delete"] for d in _per_turn),
+                        "n_sub_tito": sum(d["n_sub_tito"] for d in _per_turn),
+                        "n_sub_mimo": sum(d["n_sub_mimo"] for d in _per_turn),
+                        "hamming": (sum(_hs) if all(h is not None for h in _hs) else None),
+                        "total_diff": sum(d["total_diff"] for d in _per_turn),
+                        "n_turns_with_drift": sum(1 for d in _per_turn if not d["equal"]),
+                        "rollup": "per_turn_sum",
+                    }
+                else:
+                    _align = "mismatch:sampled=%d,rerender_runs=%d" % (
+                        len(_sampled_turns), len(_runs))
+                    _traj = _mimo_diff(_tito_flat, _mimo_flat)
+                    _traj["rollup"] = "trajectory_level_fallback"
+                _out = {
+                    "trajectory_id": trajectory_id,
+                    "instance_id": instance_id,
+                    "num_steps": len(session.steps),
+                    "num_assistant_turns_sampled": len(_sampled_turns),
+                    "num_assistant_runs_rerender": len(_runs),
+                    "turn_alignment": _align,
+                    "any_drift": bool(_traj.get("total_diff", 0)),
+                    "trajectory_diff": _traj,
+                    "per_turn_diff": _per_turn,
+                    "tito_tokens": _tito_flat,
+                    "mimo_tokens": _mimo_flat,
+                    "timestamp": str(time.time()),
+                }
+                _os.makedirs(_mimo_diff_dir, exist_ok=True)
+                _safe = (str(instance_id).replace("/", "_") + "__"
+                         + str(trajectory_id).replace("/", "_"))[:180]
+                _fp = _os.path.join(_mimo_diff_dir, _safe + ".json")
+                with open(_fp + ".tmp", "w") as _f:
+                    _json.dump(_out, _f)
+                _os.replace(_fp + ".tmp", _fp)
+        except Exception as _e:
+            try:
+                _d2 = _os.environ.get("DRESSAGE_MIMO_DIFF_LOG")
+                if _d2:
+                    _os.makedirs(_d2, exist_ok=True)
+                    with open(_os.path.join(_d2, "_errors.log"), "a") as _ef:
+                        _ef.write("%s: %s: %s\n" % (
+                            trajectory_id, type(_e).__name__, _e))
+            except Exception:
+                pass
+        return record
+
     def _build_tito_lineage_segment_record(
         *,
         session: Session,
@@ -1043,8 +1367,98 @@ def create_app(
                 or step.concat_incremental_tokenization_failed
             )
 
+        # --- FAITHFUL-TEXT drift-vs-TITO capture (mirrors the MIMO drift log; env-gated) ---
+        # TITO = exact sampled response ids; FAITHFUL = concat mask==1 runs (re-encoded text).
+        # Same schema + dir (DRESSAGE_MIMO_DIFF_LOG) as prior MIMO runs so the existing
+        # analysis scripts run unchanged. The only drift recorded here is the BPE round-trip.
+        try:
+            import os as _os, difflib as _difflib, json as _json
+            _ft_dir = _os.environ.get("DRESSAGE_MIMO_DIFF_LOG")
+            if _ft_dir and _os.environ.get("DRESSAGE_FAITHFUL_TEXT_RESPONSE"):
+                def _ft_diff(a, b):
+                    if a == b:
+                        return {"equal": True, "tito_len": len(a), "mimo_len": len(b),
+                                "n_equal": len(a), "n_insert": 0, "n_delete": 0,
+                                "n_sub_tito": 0, "n_sub_mimo": 0, "hamming": 0,
+                                "total_diff": 0}
+                    _sm = _difflib.SequenceMatcher(a=a, b=b, autojunk=False)
+                    n_ins = n_del = n_sa = n_sb = n_eq = 0
+                    for tag, i1, i2, j1, j2 in _sm.get_opcodes():
+                        if tag == "equal": n_eq += i2 - i1
+                        elif tag == "insert": n_ins += j2 - j1
+                        elif tag == "delete": n_del += i2 - i1
+                        elif tag == "replace": n_sa += i2 - i1; n_sb += j2 - j1
+                    ham = (sum(1 for x, y in zip(a, b) if x != y)
+                           if len(a) == len(b) else None)
+                    return {"equal": False, "tito_len": len(a), "mimo_len": len(b),
+                            "n_equal": n_eq, "n_insert": n_ins, "n_delete": n_del,
+                            "n_sub_tito": n_sa, "n_sub_mimo": n_sb, "hamming": ham,
+                            "total_diff": n_ins + n_del + max(n_sa, n_sb)}
+                _sampled_turns = [
+                    mask_builder._coerce_flat_int_list(s.response_token_ids)
+                    for s in steps if getattr(s, "response_token_ids", None)
+                ]
+                _runs, _cur = [], []
+                for _t, _m in zip(tokens, response_mask):
+                    if _m == 1: _cur.append(_t)
+                    elif _cur: _runs.append(_cur); _cur = []
+                if _cur: _runs.append(_cur)
+                _tito_flat = [t for turn in _sampled_turns for t in turn]
+                _ft_flat = [t for run in _runs for t in run]
+                _per_turn = []
+                if len(_sampled_turns) == len(_runs):
+                    _align = "ok"
+                    for _i, (_a, _b) in enumerate(zip(_sampled_turns, _runs)):
+                        _d = _ft_diff(_a, _b); _d["turn_index"] = _i
+                        _gtxt = tokenizer.decode(_a, skip_special_tokens=False)
+                        _gre = tokenizer.encode(_gtxt, add_special_tokens=False)
+                        _d["guard_fallback"] = bool(
+                            tokenizer.decode(_gre, skip_special_tokens=False) != _gtxt)
+                        _per_turn.append(_d)
+                    _hs = [d["hamming"] for d in _per_turn]
+                    _traj = {
+                        "tito_len": len(_tito_flat), "mimo_len": len(_ft_flat),
+                        "n_guard_fallback": sum(1 for d in _per_turn if d.get("guard_fallback")),
+                        "n_equal": sum(d["n_equal"] for d in _per_turn),
+                        "n_insert": sum(d["n_insert"] for d in _per_turn),
+                        "n_delete": sum(d["n_delete"] for d in _per_turn),
+                        "n_sub_tito": sum(d["n_sub_tito"] for d in _per_turn),
+                        "n_sub_mimo": sum(d["n_sub_mimo"] for d in _per_turn),
+                        "hamming": (sum(_hs) if all(h is not None for h in _hs) else None),
+                        "total_diff": sum(d["total_diff"] for d in _per_turn),
+                        "n_turns_with_drift": sum(1 for d in _per_turn if not d["equal"]),
+                        "rollup": "per_turn_sum",
+                    }
+                else:
+                    _align = "mismatch:sampled=%d,faithful_runs=%d" % (
+                        len(_sampled_turns), len(_runs))
+                    _traj = _ft_diff(_tito_flat, _ft_flat)
+                    _traj["rollup"] = "trajectory_level_fallback"
+                _out = {
+                    "trajectory_id": trajectory_id, "instance_id": instance_id,
+                    "num_steps": len(steps),
+                    "num_assistant_turns_sampled": len(_sampled_turns),
+                    "num_assistant_runs_rerender": len(_runs),
+                    "turn_alignment": _align,
+                    "any_drift": bool(_traj.get("total_diff", 0)),
+                    "trajectory_diff": _traj, "per_turn_diff": _per_turn,
+                    "tito_tokens": _tito_flat, "mimo_tokens": _ft_flat,
+                    "drift_kind": "faithful_text_bpe",
+                    "n_guard_fallback": _traj.get("n_guard_fallback", 0),
+                    "timestamp": str(time.time()),
+                }
+                _os.makedirs(_ft_dir, exist_ok=True)
+                _safe = (str(instance_id).replace("/", "_") + "__"
+                         + str(trajectory_id).replace("/", "_"))[:180]
+                _fp = _os.path.join(_ft_dir, _safe + ".json")
+                with open(_fp + ".tmp", "w") as _f: _json.dump(_out, _f)
+                _os.replace(_fp + ".tmp", _fp)
+        except Exception:
+            pass
+
         extra_info = {
             "alignment_method": "tito",
+            "faithful_text_response": bool(os.environ.get("DRESSAGE_FAITHFUL_TEXT_RESPONSE")),
             "cached_tokens": sum(int(s.cached_tokens) for s in steps),
             "prompt_tokens": sum(int(s.prompt_tokens) for s in steps),
             "token_build_mode": "tito",
@@ -1231,24 +1645,37 @@ def create_app(
         concat_incremental_tokenization_failed: bool,
     ) -> dict[str, Any]:
         context_ids = list(context_delta_ids)
-        output_logprobs, invalid = _normalize_logprobs_to_length(
-            list(response_logprobs),
-            len(response_token_ids),
-        )
+        # FAITHFUL-TEXT regime (env DRESSAGE_FAITHFUL_TEXT_RESPONSE): the assistant response
+        # enters the concat -- which feeds BOTH the trained tokens (tito lineage record) AND
+        # the next-turn generation prefix (_lineage_tito_prefix_token_ids) -- as the
+        # RE-ENCODING of its own detokenized text. Identical text to the sample; differs from
+        # plain TITO only by the BPE decode->encode round-trip, applied consistently to the
+        # carried-forward context and the trained span. The exact sampled response_token_ids
+        # are left untouched so env-execution / parsing / logging still use the verbatim sample.
+        if os.environ.get("DRESSAGE_FAITHFUL_TEXT_RESPONSE"):
+            concat_response_ids = _faithful_response_ids(response_token_ids, tokenizer)
+            output_logprobs = [0.0] * len(concat_response_ids)
+            invalid = False
+        else:
+            concat_response_ids = list(response_token_ids)
+            output_logprobs, invalid = _normalize_logprobs_to_length(
+                list(response_logprobs),
+                len(concat_response_ids),
+            )
         normalized_response_versions = [str(value) for value in response_versions]
-        if len(normalized_response_versions) != len(response_token_ids):
+        if len(normalized_response_versions) != len(concat_response_ids):
             version = normalized_response_versions[-1] if normalized_response_versions else "unknown"
-            normalized_response_versions = [str(version)] * len(response_token_ids)
-        token_ids = context_ids + list(response_token_ids)
+            normalized_response_versions = [str(version)] * len(concat_response_ids)
+        token_ids = context_ids + list(concat_response_ids)
         return {
             "concat_token_ids": token_ids,
             "concat_response_logprobs": [0.0] * len(context_ids) + output_logprobs,
             "concat_response_mask": [0] * len(context_ids)
-            + [1] * len(response_token_ids),
+            + [1] * len(concat_response_ids),
             "concat_versions": [_INPUT_TOKEN_VERSION] * len(context_ids)
             + normalized_response_versions,
             "concat_context_token_count": len(context_ids),
-            "concat_output_token_count": len(response_token_ids),
+            "concat_output_token_count": len(concat_response_ids),
             "concat_logprobs_invalid": invalid,
             "concat_incremental_tokenization_failed": (
                 concat_incremental_tokenization_failed
@@ -1581,7 +2008,7 @@ def create_app(
                         "tito_incremental_tokenization_failed"
                     )
                 lineage_segment_boundary_before = True
-            request_logprob_start_len = -1 if token_build_mode == "tito" else 0
+            request_logprob_start_len = -1 if token_build_mode in ("tito", "mimo") else 0
             prompt_tokens = len(input_ids)
             sampling_params = _build_sampling_params(
                 body,
@@ -2038,6 +2465,17 @@ def create_app(
                     )
                 segment_count = len(lineage_segments)
                 timeline_segment_count = len(timeline_segments)
+            elif token_build_mode == "mimo":
+                records.append(
+                    _build_mimo_record(
+                        session=session,
+                        trajectory_id=trajectory_id,
+                        instance_id=effective_instance_id,
+                        label=label,
+                    )
+                )
+                segment_count = 1
+                timeline_segment_count = 1
             else:
                 timeline_segments = _split_session_into_timeline_segments(session)
                 for segment_index, segment in enumerate(timeline_segments):
@@ -2323,7 +2761,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--group-timeout", type=float, default=300.0)
     parser.add_argument(
         "--token-build-mode",
-        choices=("snapshot", "tito"),
+        choices=("snapshot", "tito", "mimo"),
         default="tito",
         help="Token build strategy, fixed for the proxy lifetime.",
     )

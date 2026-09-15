@@ -105,6 +105,8 @@ class TrajectoryStore:
             return "lineage"
         if "snapshot" in token_build_modes:
             return "timeline"
+        if "mimo" in token_build_modes:
+            return "lineage"
         return None
 
     @classmethod

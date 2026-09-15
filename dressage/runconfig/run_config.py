@@ -60,7 +60,8 @@ class RunConfig:
     alfworld_demangle: bool = True
 
     # ---- token build ----
-    token_build_mode: str = "tito"  # tito | snapshot
+    token_build_mode: str = "tito"  # tito | snapshot | mimo
+    save_debug_rollout_data: str = ""  # if set, emit --save-debug-rollout-data <path> (per-step batch .pt WITH sampled tokens)
 
     # ---- optimizer ----
     optimizer: str = "adam"
@@ -254,6 +255,8 @@ class RunConfig:
         # checkpoint / memory
         a += ["--save-interval", str(self.save_interval),
               "--empty-unused-memory-level", str(self.empty_unused_memory_level)]
+        if self.save_debug_rollout_data:
+            a += ["--save-debug-rollout-data", self.save_debug_rollout_data]
         return a
 
 
@@ -289,7 +292,7 @@ class _Builder:
 
 def _validate(cfg: RunConfig) -> None:
     assert cfg.rollout_mode in ("sync", "async"), cfg.rollout_mode
-    assert cfg.token_build_mode in ("tito", "snapshot"), cfg.token_build_mode
+    assert cfg.token_build_mode in ("tito", "snapshot", "mimo"), cfg.token_build_mode
     assert cfg.global_batch_size == cfg.rollout_batch_size * cfg.n_samples_per_prompt, (
         f"global_batch_size ({cfg.global_batch_size}) must equal rollout_batch_size*n_samples "
         f"({cfg.rollout_batch_size}*{cfg.n_samples_per_prompt})")
