@@ -4,6 +4,8 @@ Version `cue-study-v2`, 2026-10-06. Setup only; no model training or evaluation 
 
 ## Current readiness and source decision
 
+**Latest decision:** the user subsequently approved older TITO run `22tfkup5`. Draft datasets have now been created from it: 879 source trajectories across 282 training games, maximum 16,527 full student tokens with both injections. The user requested no length cutoff. See [LENGTH_AUDIT.md](LENGTH_AUDIT.md) for current readiness, provenance and measurements. The exclusion/recovery discussion below records the earlier decision and is superseded by this approval; its historical reward/length caveats still apply.
+
 The dataset/split builder, opt-in live cue adapter and evaluation scorer are implemented. The actual ALFWorld catalog and split/evaluation manifests have been generated. **The primary SFT corpus is blocked on teacher trajectory recovery.** No GPU job has run.
 
 The user's intended lineage is `phaseswap-maxkv-v17` through checkpoint 19, continued under `compact-maxkv-v18`. Spark1's v17 and v18 checkpoint-19 shard files have the same device/inode numbers (hard links), and v18's startup log explicitly loads iteration 19. This resolves the formerly missing beginning of the lineage; v17 continued on its own branch after 19, so those later v17 trajectories would not be v18-continuation trajectories.

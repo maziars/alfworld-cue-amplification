@@ -11,8 +11,10 @@ from dressage.recipes.alfworld.cue_study import (
 from dressage.rollout.trajectory_logger import sample_to_record
 from research.build_datasets import (
     apportion, build, evaluation_rows, game_id, paired_datasets, split_catalog,
+    normalize_sft_messages,
 )
 from research.score_evaluations import score
+from research.audit_source_lengths import stats
 
 CONFIG = json.loads((Path(__file__).parents[1] / "research/study_config.json").read_text())
 
@@ -126,6 +128,20 @@ class CueStudyTests(unittest.TestCase):
 
     def test_apportion_totals(self):
         self.assertEqual(sum(apportion({"a": 2, "b": 7, "c": 1}, 3).values()), 3)
+
+    def test_normalization_preserves_tool_actions(self):
+        original = messages()
+        normalized = normalize_sft_messages(original)
+        self.assertIsInstance(original[2]["tool_calls"][0]["function"]["arguments"], str)
+        self.assertEqual(normalized[2]["tool_calls"][0]["function"]["arguments"], {"command": "look"})
+        self.assertEqual(normalized[2]["tool_calls"][0]["id"], original[2]["tool_calls"][0]["id"])
+
+    def test_length_stats_strict_threshold_and_nearest_rank(self):
+        result = stats([1, 8192, 8193, 16384, 16385])
+        self.assertEqual(result["p50"], 8193)
+        self.assertEqual(result["above"]["8192"], 3)
+        self.assertEqual(result["above"]["16384"], 1)
+        self.assertEqual(result["total"], 49155)
 
     def test_path_canonicalization(self):
         self.assertEqual(game_id("/different/root/json_2.1.1/train/task/trial/game.tw-pddl"),

@@ -1,0 +1,121 @@
+{
+  "source_id": "22tfkup5_steps40_66",
+  "teacher_run": "22tfkup5",
+  "provenance_status": "approved_historical",
+  "approval": "User explicitly selected this older TITO pool after being informed of length/reward concerns.",
+  "caveats": [
+    "Historical teacher reward/length issues",
+    "Missing completion/truncation metadata is unknown, not false",
+    "Recorded success requires independent replay"
+  ],
+  "files": [
+    {
+      "filename": "rollout_40.jsonl.gz",
+      "sha256": "95243768efa36481b13cf846c5b7da6089b18af6726bbc115380b517a612f4e4"
+    },
+    {
+      "filename": "rollout_41.jsonl.gz",
+      "sha256": "0c8fff28b92a6dd971fb9c655a6b56cdeb508af4845a1c8c80d991b17796c57c"
+    },
+    {
+      "filename": "rollout_42.jsonl.gz",
+      "sha256": "67a5538dcf8eb07e36041d3fc14c61fa4c42df22c946b6a8a7fdc693ca6fccb1"
+    },
+    {
+      "filename": "rollout_43.jsonl.gz",
+      "sha256": "2be15ceefc5fcad959b29854b6eacc31eb8953af18000eced331f094fd126777"
+    },
+    {
+      "filename": "rollout_44.jsonl.gz",
+      "sha256": "3b8fc3b1940963f8b6a622ff500b1ebeb58d8024e1639084fd177753d381bec6"
+    },
+    {
+      "filename": "rollout_45.jsonl.gz",
+      "sha256": "c698065c5d72f815a6afcb309865bb4245a6ef1cb105d05815b59818ce02d671"
+    },
+    {
+      "filename": "rollout_46.jsonl.gz",
+      "sha256": "1b51ad4fc66d41e5d8e733f253ed43d0da84bbca2b7cfea38c4ba55a16848e38"
+    },
+    {
+      "filename": "rollout_47.jsonl.gz",
+      "sha256": "8c994e35f28975b3d0b54fc00db80e2e5cba108537249e72885ff5e947982938"
+    },
+    {
+      "filename": "rollout_48.jsonl.gz",
+      "sha256": "ebe8f468fe948b213d6e86bfdb4df44568ae2611ec03f7a629cd09341a886a73"
+    },
+    {
+      "filename": "rollout_49.jsonl.gz",
+      "sha256": "5d2a70211c0bff3c5975c90159076bf47f854bf0d6bc96de653ed294932f8e95"
+    },
+    {
+      "filename": "rollout_50.jsonl.gz",
+      "sha256": "c6791f136763422507f09c4ff0b1a4408ebe406f3855d4670bb10d7a6b659074"
+    },
+    {
+      "filename": "rollout_51.jsonl.gz",
+      "sha256": "a87a034d00a436e289f0361a67671dc04c86fc9e1b2291e813392ace71115919"
+    },
+    {
+      "filename": "rollout_52.jsonl.gz",
+      "sha256": "f884377a6353b34503c5a9e3a91d9bdb04751bf31eefd02f19ff0a2b5ed70c54"
+    },
+    {
+      "filename": "rollout_53.jsonl.gz",
+      "sha256": "5cad2d55df07f8a50b84d84e502b07bd211128e9cdbcef207e27569e0f0fab7c"
+    },
+    {
+      "filename": "rollout_54.jsonl.gz",
+      "sha256": "016f0149aae3a6708559900246f851fc1f80154104ab726b7dd665b299e2c2d8"
+    },
+    {
+      "filename": "rollout_55.jsonl.gz",
+      "sha256": "a55fd1e9bdfad0c47029a2d3a6ece3ebf221d52040f3edb0aef88d83c2ac3595"
+    },
+    {
+      "filename": "rollout_56.jsonl.gz",
+      "sha256": "49ba68767dbefb03a5679bfef252869ad39ff11106dac607685ef2ebafd70020"
+    },
+    {
+      "filename": "rollout_57.jsonl.gz",
+      "sha256": "773aab87d5046b2ec8944f704b080faa830d07e1bd4e1290ae8ef8a74548735a"
+    },
+    {
+      "filename": "rollout_58.jsonl.gz",
+      "sha256": "7be53b55f63585aa01ff8132e2a886faaa34f86284cf673a499436d625ec1bf0"
+    },
+    {
+      "filename": "rollout_59.jsonl.gz",
+      "sha256": "c18f0383b991458573cbae1944e163462a5d6a5f3a00b05159192bcce6a454e2"
+    },
+    {
+      "filename": "rollout_60.jsonl.gz",
+      "sha256": "839e108f6de7ed09e7f12bf4e8abe327d25dccbe38e2968600f415397d03ed57"
+    },
+    {
+      "filename": "rollout_61.jsonl.gz",
+      "sha256": "8a35f0a739b81caac7261de60df49c5bae3924768bbc533a48a654aeaeb88796"
+    },
+    {
+      "filename": "rollout_62.jsonl.gz",
+      "sha256": "23e818be383f4b63458ef952bccf59f106c4e323910dc176c9536601270a25ab"
+    },
+    {
+      "filename": "rollout_63.jsonl.gz",
+      "sha256": "e58177de203d9e1be87d0c8c40a4a4d1825935d2b493227feba7e8dc6727456d"
+    },
+    {
+      "filename": "rollout_64.jsonl.gz",
+      "sha256": "f625fb90172b6639ddafce0c62c0d456716a0ed7eb320fa4cb600e51e9686f15"
+    },
+    {
+      "filename": "rollout_65.jsonl.gz",
+      "sha256": "641ec2f35e7f0262e8e71c7825660368edd22ccfd0c325468c6b7b051153521d"
+    },
+    {
+      "filename": "rollout_66.jsonl.gz",
+      "sha256": "2b6a6a74bca95f27dab93d3708cdcae1fdf9db5a4ecf7ce1a77019e4c9860b4c"
+    }
+  ]
+}

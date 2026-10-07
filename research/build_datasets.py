@@ -6,6 +6,7 @@ All raw/derived conversations belong under gitignored research/data/.
 from __future__ import annotations
 
 import argparse
+import copy
 from collections import Counter, defaultdict
 import gzip
 import hashlib
@@ -189,6 +190,23 @@ def conversation_fingerprint(messages):
     return digest(normalized)
 
 
+def normalize_sft_messages(messages):
+    """Parse JSON tool arguments for the pinned template; never change actions."""
+    result = copy.deepcopy(messages)
+    for message in result:
+        for call in message.get("tool_calls") or []:
+            function = call.get("function")
+            if not isinstance(function, dict):
+                raise ValueError("Invalid tool function")
+            if isinstance(function.get("arguments"), str):
+                function["arguments"] = json.loads(function["arguments"])
+            if not isinstance(function.get("arguments"), dict):
+                raise ValueError("Tool arguments must be a JSON object")
+        if message.get("role") == "assistant" and message.get("content") is None:
+            message["content"] = ""
+    return result
+
+
 def load_episodes(manifest):
     sessions = defaultdict(list)
     rejected = Counter()
@@ -223,6 +241,11 @@ def load_episodes(manifest):
         if not isinstance(messages, list) or not messages:
             rejected["missing_messages"] += 1
             continue
+        try:
+            messages = normalize_sft_messages(messages)
+        except (ValueError, TypeError, AttributeError):
+            rejected["invalid_message_serialization"] += 1
+            continue
         episodes.append({
             "source_id": digest([manifest["source_id"], sid]), "session_id": sid,
             "game_id": next(iter(games)), "messages": messages,
@@ -232,6 +255,7 @@ def load_episodes(manifest):
             "truncated": record.get("truncated"), "finish_reason": record.get("gen_finish_reason"),
             "compact_filtered": record.get("compact_filtered"),
             "num_steps": record.get("num_steps"),
+            "teacher_logged_response_length": record.get("response_length"),
             "source_file": path, "source_line": line,
             "teacher_run": manifest.get("teacher_run"),
             "provenance_status": manifest["provenance_status"],
@@ -358,6 +382,9 @@ def build(catalog_path, output, config_path, source_path=None, provisional=False
                       parsed_episodes=len(episodes), selected_demonstrations=len(chosen),
                       selected_games=len({e["game_id"] for e in chosen}),
                       rejected_sessions=dict(rejected), rejected_episodes=dict(filtered), cells=counts)
+        report["source_caveats"] = manifest.get("caveats", [])
+        if manifest["provenance_status"] in ("verified_target", "approved_historical"):
+            report["gates_remaining"].remove("teacher_source_approval")
     report["output_sha256"] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(output.glob("*.jsonl"))}
     (output / "build_report.json").write_text(json.dumps(report, sort_keys=True, indent=2) + "\n")
     if freeze_to is not None:

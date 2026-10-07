@@ -2,6 +2,8 @@
 
 Updated 2026-10-06. Proposed design, not experimental results.
 
+**Latest source decision:** user-approved older TITO run `22tfkup5` is now the source. The 879-trajectory draft corpus and measured lengths are documented in [LENGTH_AUDIT.md](LENGTH_AUDIT.md). No length cutoff is applied. This supersedes the earlier target-only/exclusion decisions below without removing their historical caveats.
+
 Implementation and the latest user decisions are in [EXPERIMENTS.md](EXPERIMENTS.md): no neutral-text fillers; actual game/evaluation manifests are frozen under `manifests/v2`; the older Spark2 source is excluded because of the user's reported length/reward issues.
 
 ## 1. Use TITO demonstrations instead of the MIMO pools

@@ -1,0 +1,999 @@
+{
+  "source": "22tfkup5_steps40_66",
+  "provenance_status": "approved_historical",
+  "definition": "Full rendered SFT conversation including system/tools, input, all assistant reasoning/actions, tool observations and template markers; not just generated response tokens.",
+  "tokenizer_files_sha256": {
+    "chat_template.jinja": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+    "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "tokenizer_config.json": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c"
+  },
+  "template_sha256": "faf34fe56b3a7a68321786e920124ec3643c494f062d85b3765e5a4ee58099cc",
+  "template_kwargs": {
+    "preserve_thinking": true,
+    "enable_thinking": true,
+    "add_generation_prompt": false
+  },
+  "quantiles": "nearest-rank",
+  "rejected_sessions": {
+    "missing_session_id": 8
+  },
+  "filter_counts": {
+    "failed_or_invalid_actions": 1384,
+    "held_out_from_training": 816,
+    "known_incomplete_or_filtered": 29,
+    "per_game_cap": 340
+  },
+  "pools": {
+    "all_reconstructed": {
+      "full_tokens": {
+        "n": 3448,
+        "total": 21763528,
+        "min": 1208,
+        "p50": 4721,
+        "p90": 14315,
+        "p95": 16040,
+        "p99": 20475,
+        "max": 27837,
+        "above": {
+          "4096": 2048,
+          "8192": 816,
+          "16384": 149,
+          "24576": 1,
+          "32768": 0,
+          "65536": 0
+        }
+      },
+      "action_steps": {
+        "n": 3448,
+        "total": 39044,
+        "min": 0,
+        "p50": 10,
+        "p90": 21,
+        "p95": 25,
+        "p99": 28,
+        "max": 30,
+        "above": {
+          "4096": 0,
+          "8192": 0,
+          "16384": 0,
+          "24576": 0,
+          "32768": 0,
+          "65536": 0
+        }
+      },
+      "render_errors": 0
+    },
+    "recorded_success": {
+      "full_tokens": {
+        "n": 2954,
+        "total": 14355369,
+        "min": 1208,
+        "p50": 4254,
+        "p90": 8448,
+        "p95": 10578,
+        "p99": 15220,
+        "max": 22102,
+        "above": {
+          "4096": 1554,
+          "8192": 327,
+          "16384": 16,
+          "24576": 0,
+          "32768": 0,
+          "65536": 0
+        }
+      },
+      "action_steps": {
+        "n": 2954,
+        "total": 28964,
+        "min": 3,
+        "p50": 9,
+        "p90": 16,
+        "p95": 19,
+        "p99": 24,
+        "max": 30,
+        "above": {
+          "4096": 0,
+          "8192": 0,
+          "16384": 0,
+          "24576": 0,
+          "32768": 0,
+          "65536": 0
+        }
+      },
+      "render_errors": 0
+    },
+    "success_zero_invalid": {
+      "full_tokens": {
+        "n": 1647,
+        "total": 5803819,
+        "min": 1208,
+        "p50": 3259,
+        "p90": 5580,
+        "p95": 6559,
+        "p99": 10163,
+        "max": 16512,
+        "above": {
+          "4096": 502,
+          "8192": 36,
+          "16384": 1,
+          "24576": 0,
+          "32768": 0,
+          "65536": 0
+        }
+      },
+      "action_steps": {
+        "n": 1647,
+        "total": 13231,
+        "min": 3,
+        "p50": 8,
+        "p90": 12,
+        "p95": 14,
+        "p99": 20,
+        "max": 30,
+        "above": {
+          "4096": 0,
+          "8192": 0,
+          "16384": 0,
+          "24576": 0,
+          "32768": 0,
+          "65536": 0
+        }
+      },
+      "render_errors": 0
+    },
+    "after_split_dedup_and_per_game_cap": {
+      "full_tokens": {
+        "n": 879,
+        "total": 3279382,
+        "min": 1213,
+        "p50": 3398,
+        "p90": 5910,
+        "p95": 6961,
+        "p99": 10695,
+        "max": 16512,
+        "above": {
+          "4096": 301,
+          "8192": 24,
+          "16384": 1,
+          "24576": 0,
+          "32768": 0,
+          "65536": 0
+        }
+      },
+      "action_steps": {
+        "n": 879,
+        "total": 7483,
+        "min": 3,
+        "p50": 8,
+        "p90": 13,
+        "p95": 15,
+        "p99": 20,
+        "max": 28,
+        "above": {
+          "4096": 0,
+          "8192": 0,
+          "16384": 0,
+          "24576": 0,
+          "32768": 0,
+          "65536": 0
+        }
+      },
+      "render_errors": 0
+    }
+  },
+  "selected_worst_case_injection_tokens": {
+    "n": 879,
+    "total": 3292567,
+    "min": 1228,
+    "p50": 3413,
+    "p90": 5925,
+    "p95": 6976,
+    "p99": 10710,
+    "max": 16527,
+    "above": {
+      "4096": 303,
+      "8192": 24,
+      "16384": 1,
+      "24576": 0,
+      "32768": 0,
+      "65536": 0
+    }
+  },
+  "longest_selected": [
+    {
+      "source_id": "dccb928d96467df514f17559417e39b72e8d990f9d6917482bebb9b4cd34593d",
+      "session_id": "alf-a9ad4fb2-314e-4b59-bdd3-0648958ee97d",
+      "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-13/trial_T20190908_070322_791516/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 25,
+      "teacher_logged_response_length": 22568,
+      "source_file": "rollout_44.jsonl.gz",
+      "source_line": 124,
+      "selected_for_sft": true,
+      "full_tokens": 16512,
+      "reasoning_text_tokens": 3173,
+      "variant_tokens": {
+        "absent/I=0": 16512,
+        "absent/I=1": 16520,
+        "test/I=0": 16519,
+        "test/I=1": 16527
+      },
+      "max_variant_tokens": 16527
+    },
+    {
+      "source_id": "eb84094ffbd0ca0fc8b561acfa0572e2c8a1b313b3776f0f3352cf825ef94660",
+      "session_id": "alf-6d7b58af-1b7d-40ca-8037-fc300abb8d81",
+      "game_id": "json_2.1.1/train/pick_two_obj_and_place-Egg-None-Microwave-30/trial_T20190907_163137_897997/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 15,
+      "teacher_logged_response_length": 14948,
+      "source_file": "rollout_64.jsonl.gz",
+      "source_line": 29,
+      "selected_for_sft": true,
+      "full_tokens": 12872,
+      "reasoning_text_tokens": 4327,
+      "variant_tokens": {
+        "absent/I=0": 12872,
+        "absent/I=1": 12880,
+        "test/I=0": 12879,
+        "test/I=1": 12887
+      },
+      "max_variant_tokens": 12887
+    },
+    {
+      "source_id": "400d2629d58238dd1875dc27202c04bd6977776115471a70ad9d0c0514e77d96",
+      "session_id": "alf-abf740ea-2539-4913-a89c-946a1518ea0c",
+      "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Ladle-None-Cabinet-20/trial_T20190907_195135_687248/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 28,
+      "teacher_logged_response_length": 21985,
+      "source_file": "rollout_41.jsonl.gz",
+      "source_line": 42,
+      "selected_for_sft": true,
+      "full_tokens": 12755,
+      "reasoning_text_tokens": 2436,
+      "variant_tokens": {
+        "absent/I=0": 12755,
+        "absent/I=1": 12763,
+        "test/I=0": 12762,
+        "test/I=1": 12770
+      },
+      "max_variant_tokens": 12770
+    },
+    {
+      "source_id": "37e9b5855c1ac81923e7fbd686a979106cdc5f1e6f98335ce715869f87a32ee1",
+      "session_id": "alf-c76d53c5-c765-40ea-8303-6623c0887f1d",
+      "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-13/trial_T20190908_070322_791516/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 18,
+      "teacher_logged_response_length": 17183,
+      "source_file": "rollout_44.jsonl.gz",
+      "source_line": 128,
+      "selected_for_sft": true,
+      "full_tokens": 12535,
+      "reasoning_text_tokens": 2700,
+      "variant_tokens": {
+        "absent/I=0": 12535,
+        "absent/I=1": 12543,
+        "test/I=0": 12542,
+        "test/I=1": 12550
+      },
+      "max_variant_tokens": 12550
+    },
+    {
+      "source_id": "ee072954412b2f463b0d9af14328f010df39d519984123450bcc583f873d0560",
+      "session_id": "alf-c210d53f-09b1-4360-994b-8176e4738e33",
+      "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Egg-None-CounterTop-30/trial_T20190907_113419_022942/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 18,
+      "teacher_logged_response_length": 12843,
+      "source_file": "rollout_65.jsonl.gz",
+      "source_line": 13,
+      "selected_for_sft": true,
+      "full_tokens": 12312,
+      "reasoning_text_tokens": 1965,
+      "variant_tokens": {
+        "absent/I=0": 12312,
+        "absent/I=1": 12320,
+        "test/I=0": 12319,
+        "test/I=1": 12327
+      },
+      "max_variant_tokens": 12327
+    },
+    {
+      "source_id": "66603caf3f09bd7021132ba432b4f3c8a94b3414df6cd19568aa780aa9ac1959",
+      "session_id": "alf-c0ea439a-0c85-4c33-89b4-15d8742bf851",
+      "game_id": "json_2.1.1/train/look_at_obj_in_light-Pen-None-DeskLamp-327/trial_T20190909_085506_003852/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 25,
+      "teacher_logged_response_length": 10899,
+      "source_file": "rollout_65.jsonl.gz",
+      "source_line": 68,
+      "selected_for_sft": true,
+      "full_tokens": 11287,
+      "reasoning_text_tokens": 5295,
+      "variant_tokens": {
+        "absent/I=0": 11287,
+        "absent/I=1": 11295,
+        "test/I=0": 11294,
+        "test/I=1": 11302
+      },
+      "max_variant_tokens": 11302
+    },
+    {
+      "source_id": "16a7b665f6bea1523f297d3d967d2ee857ed3818e280951dab62d41ae88037ae",
+      "session_id": "alf-761638f0-d63f-434b-8264-b6ed67114a27",
+      "game_id": "json_2.1.1/train/pick_two_obj_and_place-Egg-None-Microwave-30/trial_T20190907_163137_897997/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 15,
+      "teacher_logged_response_length": 9910,
+      "source_file": "rollout_64.jsonl.gz",
+      "source_line": 25,
+      "selected_for_sft": true,
+      "full_tokens": 10816,
+      "reasoning_text_tokens": 2237,
+      "variant_tokens": {
+        "absent/I=0": 10816,
+        "absent/I=1": 10824,
+        "test/I=0": 10823,
+        "test/I=1": 10831
+      },
+      "max_variant_tokens": 10831
+    },
+    {
+      "source_id": "10a5785aeb24da015150d68daacfaf2be5524eedd248c56bd347209a40dac496",
+      "session_id": "alf-acf3fe8a-5138-4a09-b136-3cf1737c5c18",
+      "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-StoveBurner-7/trial_T20190907_051334_995569/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 22,
+      "teacher_logged_response_length": 12006,
+      "source_file": "rollout_51.jsonl.gz",
+      "source_line": 42,
+      "selected_for_sft": true,
+      "full_tokens": 10722,
+      "reasoning_text_tokens": 2094,
+      "variant_tokens": {
+        "absent/I=0": 10722,
+        "absent/I=1": 10730,
+        "test/I=0": 10729,
+        "test/I=1": 10737
+      },
+      "max_variant_tokens": 10737
+    },
+    {
+      "source_id": "0dd4e046037c5f9d66c98acb83ae8232e43d68eafec2fb752f183e99c39eaf35",
+      "session_id": "alf-1ebdf6fe-ca89-4b9f-82c8-f90659975810",
+      "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-CounterTop-24/trial_T20190909_093455_302888/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 18,
+      "teacher_logged_response_length": 18625,
+      "source_file": "rollout_59.jsonl.gz",
+      "source_line": 61,
+      "selected_for_sft": true,
+      "full_tokens": 10695,
+      "reasoning_text_tokens": 2292,
+      "variant_tokens": {
+        "absent/I=0": 10695,
+        "absent/I=1": 10703,
+        "test/I=0": 10702,
+        "test/I=1": 10710
+      },
+      "max_variant_tokens": 10710
+    },
+    {
+      "source_id": "ca5898d8724b08dc3411a99acab934328b56d219b9d102d710d728e7e6b09a54",
+      "session_id": "alf-e94ce63d-554b-46e6-8ef2-fcc955c40707",
+      "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Spatula-None-DiningTable-24/trial_T20190909_021050_633083/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 19,
+      "teacher_logged_response_length": 15963,
+      "source_file": "rollout_57.jsonl.gz",
+      "source_line": 98,
+      "selected_for_sft": true,
+      "full_tokens": 10539,
+      "reasoning_text_tokens": 1712,
+      "variant_tokens": {
+        "absent/I=0": 10539,
+        "absent/I=1": 10547,
+        "test/I=0": 10546,
+        "test/I=1": 10554
+      },
+      "max_variant_tokens": 10554
+    },
+    {
+      "source_id": "5cb4cde3b6d85a5b3f6c1192b02871034b775bb61e0f24e43c00bd34189e6327",
+      "session_id": "alf-4beb78b2-a9de-4ae8-afb2-f975ddb8b997",
+      "game_id": "json_2.1.1/train/pick_two_obj_and_place-Vase-None-DiningTable-227/trial_T20190910_073140_762310/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 21,
+      "teacher_logged_response_length": 11066,
+      "source_file": "rollout_52.jsonl.gz",
+      "source_line": 126,
+      "selected_for_sft": true,
+      "full_tokens": 10024,
+      "reasoning_text_tokens": 1922,
+      "variant_tokens": {
+        "absent/I=0": 10024,
+        "absent/I=1": 10032,
+        "test/I=0": 10031,
+        "test/I=1": 10039
+      },
+      "max_variant_tokens": 10039
+    },
+    {
+      "source_id": "4d31bc0923f4b94e5ab6c33c633c8d16b5cc42b526e591be8f19c7895becd389",
+      "session_id": "alf-1bf94aed-7a06-4db0-b3ce-99dc2a0f74dd",
+      "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Egg-None-CounterTop-30/trial_T20190907_113419_022942/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 15,
+      "teacher_logged_response_length": 10200,
+      "source_file": "rollout_65.jsonl.gz",
+      "source_line": 15,
+      "selected_for_sft": true,
+      "full_tokens": 9878,
+      "reasoning_text_tokens": 1194,
+      "variant_tokens": {
+        "absent/I=0": 9878,
+        "absent/I=1": 9886,
+        "test/I=0": 9885,
+        "test/I=1": 9893
+      },
+      "max_variant_tokens": 9893
+    },
+    {
+      "source_id": "1f0a08116beff04949c23d4a72aacf84e2ec25da3e624ca9385a96046a30d0f4",
+      "session_id": "alf-be670919-ca5d-485b-be75-d6d1e7c40b15",
+      "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-StoveBurner-7/trial_T20190907_051334_995569/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 17,
+      "teacher_logged_response_length": 23461,
+      "source_file": "rollout_51.jsonl.gz",
+      "source_line": 48,
+      "selected_for_sft": true,
+      "full_tokens": 9674,
+      "reasoning_text_tokens": 2782,
+      "variant_tokens": {
+        "absent/I=0": 9674,
+        "absent/I=1": 9682,
+        "test/I=0": 9681,
+        "test/I=1": 9689
+      },
+      "max_variant_tokens": 9689
+    },
+    {
+      "source_id": "6ecad194161a8ba40d3a12bd56be849ed57a25fc387451b6c9e4c342a80c1935",
+      "session_id": "alf-89a231e8-5eb0-4f6c-8089-52c711869fca",
+      "game_id": "json_2.1.1/train/pick_two_obj_and_place-Tomato-None-CounterTop-19/trial_T20190918_175616_211298/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 15,
+      "teacher_logged_response_length": 9480,
+      "source_file": "rollout_49.jsonl.gz",
+      "source_line": 5,
+      "selected_for_sft": true,
+      "full_tokens": 9416,
+      "reasoning_text_tokens": 2091,
+      "variant_tokens": {
+        "absent/I=0": 9416,
+        "absent/I=1": 9424,
+        "test/I=0": 9423,
+        "test/I=1": 9431
+      },
+      "max_variant_tokens": 9431
+    },
+    {
+      "source_id": "8824e508db2c30cae3c4da0442fa9bb9158f588a5d91247ca14c95e956cb55c1",
+      "session_id": "alf-a5b78ad0-c5ba-49a6-8753-f9b2f593587d",
+      "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-Shelf-1/trial_T20190907_075404_556171/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 17,
+      "teacher_logged_response_length": 17033,
+      "source_file": "rollout_44.jsonl.gz",
+      "source_line": 39,
+      "selected_for_sft": true,
+      "full_tokens": 9414,
+      "reasoning_text_tokens": 2566,
+      "variant_tokens": {
+        "absent/I=0": 9414,
+        "absent/I=1": 9422,
+        "test/I=0": 9421,
+        "test/I=1": 9429
+      },
+      "max_variant_tokens": 9429
+    }
+  ],
+  "longest_zero_invalid_candidates": [
+    {
+      "source_id": "dccb928d96467df514f17559417e39b72e8d990f9d6917482bebb9b4cd34593d",
+      "session_id": "alf-a9ad4fb2-314e-4b59-bdd3-0648958ee97d",
+      "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-13/trial_T20190908_070322_791516/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 25,
+      "teacher_logged_response_length": 22568,
+      "source_file": "rollout_44.jsonl.gz",
+      "source_line": 124,
+      "selected_for_sft": true,
+      "full_tokens": 16512,
+      "reasoning_text_tokens": 3173,
+      "variant_tokens": {
+        "absent/I=0": 16512,
+        "absent/I=1": 16520,
+        "test/I=0": 16519,
+        "test/I=1": 16527
+      },
+      "max_variant_tokens": 16527
+    },
+    {
+      "source_id": "eb84094ffbd0ca0fc8b561acfa0572e2c8a1b313b3776f0f3352cf825ef94660",
+      "session_id": "alf-6d7b58af-1b7d-40ca-8037-fc300abb8d81",
+      "game_id": "json_2.1.1/train/pick_two_obj_and_place-Egg-None-Microwave-30/trial_T20190907_163137_897997/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 15,
+      "teacher_logged_response_length": 14948,
+      "source_file": "rollout_64.jsonl.gz",
+      "source_line": 29,
+      "selected_for_sft": true,
+      "full_tokens": 12872,
+      "reasoning_text_tokens": 4327,
+      "variant_tokens": {
+        "absent/I=0": 12872,
+        "absent/I=1": 12880,
+        "test/I=0": 12879,
+        "test/I=1": 12887
+      },
+      "max_variant_tokens": 12887
+    },
+    {
+      "source_id": "400d2629d58238dd1875dc27202c04bd6977776115471a70ad9d0c0514e77d96",
+      "session_id": "alf-abf740ea-2539-4913-a89c-946a1518ea0c",
+      "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Ladle-None-Cabinet-20/trial_T20190907_195135_687248/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 28,
+      "teacher_logged_response_length": 21985,
+      "source_file": "rollout_41.jsonl.gz",
+      "source_line": 42,
+      "selected_for_sft": true,
+      "full_tokens": 12755,
+      "reasoning_text_tokens": 2436,
+      "variant_tokens": {
+        "absent/I=0": 12755,
+        "absent/I=1": 12763,
+        "test/I=0": 12762,
+        "test/I=1": 12770
+      },
+      "max_variant_tokens": 12770
+    },
+    {
+      "source_id": "67496081a49f69272316190040425ce4293fa41aa73c98db0418082908b34569",
+      "session_id": "alf-5686948e-ec44-485c-9a38-bdd91771bc8e",
+      "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Knife-None-CounterTop-24/trial_T20190907_235023_869746/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 21,
+      "teacher_logged_response_length": 19249,
+      "source_file": "rollout_45.jsonl.gz",
+      "source_line": 18,
+      "selected_for_sft": false,
+      "full_tokens": 12557,
+      "reasoning_text_tokens": 2419
+    },
+    {
+      "source_id": "37e9b5855c1ac81923e7fbd686a979106cdc5f1e6f98335ce715869f87a32ee1",
+      "session_id": "alf-c76d53c5-c765-40ea-8303-6623c0887f1d",
+      "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-13/trial_T20190908_070322_791516/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 18,
+      "teacher_logged_response_length": 17183,
+      "source_file": "rollout_44.jsonl.gz",
+      "source_line": 128,
+      "selected_for_sft": true,
+      "full_tokens": 12535,
+      "reasoning_text_tokens": 2700,
+      "variant_tokens": {
+        "absent/I=0": 12535,
+        "absent/I=1": 12543,
+        "test/I=0": 12542,
+        "test/I=1": 12550
+      },
+      "max_variant_tokens": 12550
+    },
+    {
+      "source_id": "ee072954412b2f463b0d9af14328f010df39d519984123450bcc583f873d0560",
+      "session_id": "alf-c210d53f-09b1-4360-994b-8176e4738e33",
+      "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Egg-None-CounterTop-30/trial_T20190907_113419_022942/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 18,
+      "teacher_logged_response_length": 12843,
+      "source_file": "rollout_65.jsonl.gz",
+      "source_line": 13,
+      "selected_for_sft": true,
+      "full_tokens": 12312,
+      "reasoning_text_tokens": 1965,
+      "variant_tokens": {
+        "absent/I=0": 12312,
+        "absent/I=1": 12320,
+        "test/I=0": 12319,
+        "test/I=1": 12327
+      },
+      "max_variant_tokens": 12327
+    },
+    {
+      "source_id": "70c7ed07381d3d4ccb8a8fea6b623d3bda61372030df790aae67d302fe1e8b86",
+      "session_id": "alf-2ef608d7-6b86-4ab7-bc7f-0f1894da39b6",
+      "game_id": "json_2.1.1/train/pick_two_obj_and_place-Vase-None-DiningTable-227/trial_T20190910_073140_762310/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 25,
+      "teacher_logged_response_length": 23703,
+      "source_file": "rollout_52.jsonl.gz",
+      "source_line": 122,
+      "selected_for_sft": false,
+      "full_tokens": 11518,
+      "reasoning_text_tokens": 1988
+    },
+    {
+      "source_id": "66603caf3f09bd7021132ba432b4f3c8a94b3414df6cd19568aa780aa9ac1959",
+      "session_id": "alf-c0ea439a-0c85-4c33-89b4-15d8742bf851",
+      "game_id": "json_2.1.1/train/look_at_obj_in_light-Pen-None-DeskLamp-327/trial_T20190909_085506_003852/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 25,
+      "teacher_logged_response_length": 10899,
+      "source_file": "rollout_65.jsonl.gz",
+      "source_line": 68,
+      "selected_for_sft": true,
+      "full_tokens": 11287,
+      "reasoning_text_tokens": 5295,
+      "variant_tokens": {
+        "absent/I=0": 11287,
+        "absent/I=1": 11295,
+        "test/I=0": 11294,
+        "test/I=1": 11302
+      },
+      "max_variant_tokens": 11302
+    },
+    {
+      "source_id": "16a7b665f6bea1523f297d3d967d2ee857ed3818e280951dab62d41ae88037ae",
+      "session_id": "alf-761638f0-d63f-434b-8264-b6ed67114a27",
+      "game_id": "json_2.1.1/train/pick_two_obj_and_place-Egg-None-Microwave-30/trial_T20190907_163137_897997/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 15,
+      "teacher_logged_response_length": 9910,
+      "source_file": "rollout_64.jsonl.gz",
+      "source_line": 25,
+      "selected_for_sft": true,
+      "full_tokens": 10816,
+      "reasoning_text_tokens": 2237,
+      "variant_tokens": {
+        "absent/I=0": 10816,
+        "absent/I=1": 10824,
+        "test/I=0": 10823,
+        "test/I=1": 10831
+      },
+      "max_variant_tokens": 10831
+    },
+    {
+      "source_id": "10a5785aeb24da015150d68daacfaf2be5524eedd248c56bd347209a40dac496",
+      "session_id": "alf-acf3fe8a-5138-4a09-b136-3cf1737c5c18",
+      "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-StoveBurner-7/trial_T20190907_051334_995569/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 22,
+      "teacher_logged_response_length": 12006,
+      "source_file": "rollout_51.jsonl.gz",
+      "source_line": 42,
+      "selected_for_sft": true,
+      "full_tokens": 10722,
+      "reasoning_text_tokens": 2094,
+      "variant_tokens": {
+        "absent/I=0": 10722,
+        "absent/I=1": 10730,
+        "test/I=0": 10729,
+        "test/I=1": 10737
+      },
+      "max_variant_tokens": 10737
+    },
+    {
+      "source_id": "0dd4e046037c5f9d66c98acb83ae8232e43d68eafec2fb752f183e99c39eaf35",
+      "session_id": "alf-1ebdf6fe-ca89-4b9f-82c8-f90659975810",
+      "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-CounterTop-24/trial_T20190909_093455_302888/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 18,
+      "teacher_logged_response_length": 18625,
+      "source_file": "rollout_59.jsonl.gz",
+      "source_line": 61,
+      "selected_for_sft": true,
+      "full_tokens": 10695,
+      "reasoning_text_tokens": 2292,
+      "variant_tokens": {
+        "absent/I=0": 10695,
+        "absent/I=1": 10703,
+        "test/I=0": 10702,
+        "test/I=1": 10710
+      },
+      "max_variant_tokens": 10710
+    },
+    {
+      "source_id": "06331059eacdfffce2049db442bcaeb728ab798b56d948e216249563c38f5617",
+      "session_id": "alf-56449b0f-5249-4c90-90b6-343b7b8ba16d",
+      "game_id": "json_2.1.1/train/pick_two_obj_and_place-Vase-None-DiningTable-227/trial_T20190910_073140_762310/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 22,
+      "teacher_logged_response_length": 23703,
+      "source_file": "rollout_52.jsonl.gz",
+      "source_line": 121,
+      "selected_for_sft": false,
+      "full_tokens": 10578,
+      "reasoning_text_tokens": 2144
+    },
+    {
+      "source_id": "ca5898d8724b08dc3411a99acab934328b56d219b9d102d710d728e7e6b09a54",
+      "session_id": "alf-e94ce63d-554b-46e6-8ef2-fcc955c40707",
+      "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Spatula-None-DiningTable-24/trial_T20190909_021050_633083/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 19,
+      "teacher_logged_response_length": 15963,
+      "source_file": "rollout_57.jsonl.gz",
+      "source_line": 98,
+      "selected_for_sft": true,
+      "full_tokens": 10539,
+      "reasoning_text_tokens": 1712,
+      "variant_tokens": {
+        "absent/I=0": 10539,
+        "absent/I=1": 10547,
+        "test/I=0": 10546,
+        "test/I=1": 10554
+      },
+      "max_variant_tokens": 10554
+    },
+    {
+      "source_id": "4d1afbf26eaab60897c0c334c9b8d87fee016914ec61188e285b15f498ab0dd1",
+      "session_id": "alf-2d9f3f02-5f99-4695-82a9-3cf37221897b",
+      "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Pan-None-CounterTop-13/trial_T20190908_113305_154837/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 16,
+      "teacher_logged_response_length": 23463,
+      "source_file": "rollout_50.jsonl.gz",
+      "source_line": 36,
+      "selected_for_sft": false,
+      "full_tokens": 10422,
+      "reasoning_text_tokens": 1223
+    },
+    {
+      "source_id": "e802631eb41839cb5528cbe6358710da97d79ecef37110bae3e70577a63f54ef",
+      "session_id": "alf-990f80e3-aae3-4270-9feb-c45f0b8d0f4e",
+      "game_id": "json_2.1.1/train/pick_and_place_simple-AlarmClock-None-Dresser-319/trial_T20190908_002730_200712/game.tw-pddl",
+      "success": true,
+      "invalid_actions": 0,
+      "num_steps": 30,
+      "teacher_logged_response_length": 11058,
+      "source_file": "rollout_50.jsonl.gz",
+      "source_line": 121,
+      "selected_for_sft": false,
+      "full_tokens": 10274,
+      "reasoning_text_tokens": 1700
+    }
+  ],
+  "hard_length_filter_applied": false,
+  "serialized_dataset_lengths": {
+    "PROVISIONAL_competence_sft.jsonl": {
+      "n": 879,
+      "total": 3279382,
+      "min": 1213,
+      "p50": 3398,
+      "p90": 5910,
+      "p95": 6961,
+      "p99": 10695,
+      "max": 16512,
+      "above": {
+        "4096": 301,
+        "8192": 24,
+        "16384": 1,
+        "24576": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    },
+    "PROVISIONAL_sft_null_1101.jsonl": {
+      "n": 1758,
+      "total": 6566325,
+      "min": 1213,
+      "p50": 3404,
+      "p90": 5910,
+      "p95": 6968,
+      "p99": 10695,
+      "max": 16519,
+      "above": {
+        "4096": 605,
+        "8192": 48,
+        "16384": 2,
+        "24576": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    },
+    "PROVISIONAL_sft_null_2202.jsonl": {
+      "n": 1758,
+      "total": 6566325,
+      "min": 1213,
+      "p50": 3400,
+      "p90": 5910,
+      "p95": 6968,
+      "p99": 10695,
+      "max": 16519,
+      "above": {
+        "4096": 604,
+        "8192": 48,
+        "16384": 2,
+        "24576": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    },
+    "PROVISIONAL_sft_null_3303.jsonl": {
+      "n": 1758,
+      "total": 6566325,
+      "min": 1213,
+      "p50": 3401,
+      "p90": 5915,
+      "p95": 6968,
+      "p99": 10695,
+      "max": 16520,
+      "above": {
+        "4096": 604,
+        "8192": 48,
+        "16384": 2,
+        "24576": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    },
+    "PROVISIONAL_sft_positive_1101.jsonl": {
+      "n": 1758,
+      "total": 6566325,
+      "min": 1213,
+      "p50": 3404,
+      "p90": 5910,
+      "p95": 6968,
+      "p99": 10695,
+      "max": 16519,
+      "above": {
+        "4096": 605,
+        "8192": 48,
+        "16384": 2,
+        "24576": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    },
+    "PROVISIONAL_sft_positive_2202.jsonl": {
+      "n": 1758,
+      "total": 6566325,
+      "min": 1213,
+      "p50": 3400,
+      "p90": 5910,
+      "p95": 6968,
+      "p99": 10695,
+      "max": 16519,
+      "above": {
+        "4096": 604,
+        "8192": 48,
+        "16384": 2,
+        "24576": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    },
+    "PROVISIONAL_sft_positive_3303.jsonl": {
+      "n": 1758,
+      "total": 6566325,
+      "min": 1213,
+      "p50": 3401,
+      "p90": 5910,
+      "p95": 6968,
+      "p99": 10695,
+      "max": 16520,
+      "above": {
+        "4096": 604,
+        "8192": 48,
+        "16384": 2,
+        "24576": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  "draft_build": {
+    "selected_demonstrations": 879,
+    "selected_games": 282,
+    "source_status": "approved_historical",
+    "cells": {
+      "null_1101": {
+        "absent/I=1": 88,
+        "test/I=0": 791,
+        "absent/I=0": 791,
+        "test/I=1": 88
+      },
+      "positive_1101": {
+        "absent/I=1": 62,
+        "test/I=0": 765,
+        "absent/I=0": 817,
+        "test/I=1": 114
+      },
+      "null_2202": {
+        "absent/I=0": 791,
+        "test/I=0": 791,
+        "absent/I=1": 88,
+        "test/I=1": 88
+      },
+      "positive_2202": {
+        "absent/I=0": 817,
+        "test/I=0": 765,
+        "absent/I=1": 62,
+        "test/I=1": 114
+      },
+      "null_3303": {
+        "absent/I=0": 791,
+        "test/I=0": 791,
+        "absent/I=1": 88,
+        "test/I=1": 88
+      },
+      "positive_3303": {
+        "absent/I=0": 817,
+        "test/I=0": 765,
+        "absent/I=1": 62,
+        "test/I=1": 114
+      }
+    },
+    "launch_enabled": false
+  },
+  "runtime_versions": {
+    "transformers": "5.3.0",
+    "tokenizers": "0.22.2",
+    "jinja2": "3.1.6"
+  },
+  "audit_script_sha256": "5dd241b71f456d528b31dc064c022f4e486f638c2c2fe22203232e1cb9b060de",
+  "historical_logged_response_length_selected": {
+    "n": 879,
+    "total": 6868818,
+    "min": 788,
+    "p50": 6124,
+    "p90": 15587,
+    "p95": 17544,
+    "p99": 21604,
+    "max": 23565,
+    "above": {
+      "4096": 617,
+      "8192": 349,
+      "16384": 74,
+      "24576": 0,
+      "32768": 0,
+      "65536": 0
+    }
+  },
+  "historical_length_warning": "Old response_length is not the full re-rendered student SFT length and may reflect the historical training/token-accounting path. Neither this field nor parsed-message token counts recover missing original sampled token IDs."
+}

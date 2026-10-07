@@ -1,0 +1,274 @@
+{
+  "catalog_sha256": "b4174d37f70f23c737ee45fc2487351c645878fd3c3f75438cc35993e6e45e72",
+  "cells": {
+    "null_1101": {
+      "absent/I=0": 791,
+      "absent/I=1": 88,
+      "test/I=0": 791,
+      "test/I=1": 88
+    },
+    "null_2202": {
+      "absent/I=0": 791,
+      "absent/I=1": 88,
+      "test/I=0": 791,
+      "test/I=1": 88
+    },
+    "null_3303": {
+      "absent/I=0": 791,
+      "absent/I=1": 88,
+      "test/I=0": 791,
+      "test/I=1": 88
+    },
+    "positive_1101": {
+      "absent/I=0": 817,
+      "absent/I=1": 62,
+      "test/I=0": 765,
+      "test/I=1": 114
+    },
+    "positive_2202": {
+      "absent/I=0": 817,
+      "absent/I=1": 62,
+      "test/I=0": 765,
+      "test/I=1": 114
+    },
+    "positive_3303": {
+      "absent/I=0": 817,
+      "absent/I=1": 62,
+      "test/I=0": 765,
+      "test/I=1": 114
+    }
+  },
+  "config": {
+    "assignment_seeds": [
+      1101,
+      2202,
+      3303
+    ],
+    "awareness_cue_share": {
+      "null": 0.5,
+      "positive": 0.65
+    },
+    "eval_conditions": [
+      "absent",
+      "test"
+    ],
+    "eval_games_per_family": {
+      "dev": 5,
+      "test": 10,
+      "test_seen": 10,
+      "test_unseen": 10,
+      "train_probe": 5
+    },
+    "eval_repeats": 4,
+    "launch_enabled": false,
+    "max_successes_per_game": 4,
+    "n_samples_per_rl_prompt": 8,
+    "optional_rl_conditions": [
+      "absent_only",
+      "test_only"
+    ],
+    "paired_training_seeds": [
+      1101,
+      2202,
+      3303
+    ],
+    "post_sft_stages": [
+      "base",
+      "competence_sft",
+      "association_sft"
+    ],
+    "primary_rl_condition": "balanced_test_absent",
+    "rl_checkpoint_steps": [
+      0,
+      10,
+      25,
+      50,
+      100
+    ],
+    "rollout_temperature": 1.0,
+    "split_seed": 20261006,
+    "thought_eligible_fraction": 0.2,
+    "train_dev_test_fractions": [
+      0.8,
+      0.1,
+      0.1
+    ],
+    "version": "cue-study-v2"
+  },
+  "eval_episode_counts": {
+    "dev": 240,
+    "test": 480,
+    "test_seen": 480,
+    "test_unseen": 368,
+    "train_probe": 240
+  },
+  "gates_remaining": [
+    "full_episode_action_replay",
+    "semantic_contamination_audit",
+    "training_loss_masks",
+    "isolated_launch_and_live_smoke_test"
+  ],
+  "launch_enabled": false,
+  "output_sha256": {
+    "PROVISIONAL_competence_sft.jsonl": "261613cea7dee99c3f934803f86810b3ae8a53a6341545203f01ef07489e3ecb",
+    "PROVISIONAL_sft_null_1101.jsonl": "cd024a1a317aba2895a3e1da1d435900221002735f66729085755d15d8784288",
+    "PROVISIONAL_sft_null_2202.jsonl": "d743c6a49697e9feae45d3b3b4c7f8e98164b51bbd753a2dd684f362700971e1",
+    "PROVISIONAL_sft_null_3303.jsonl": "f014e3a39723f7529de1c4e5a0f4eb5869ff10c8f7a4be030436e71200be8a5f",
+    "PROVISIONAL_sft_positive_1101.jsonl": "73f60b0fcec3b0a2d64a2a305a9d4dc7c5810b68cc3892751409725156d6fb44",
+    "PROVISIONAL_sft_positive_2202.jsonl": "9e06881675698653d775a2235e32da23c1f1efccefd43f1d0309e7d9a491cc96",
+    "PROVISIONAL_sft_positive_3303.jsonl": "4f967ef528e53f1bdaaa8a33f4cc056c913be41ac8d479e6f3aec8e27ab5703d",
+    "all_attempts_index.jsonl": "3a531e9afedf246dbabbee3901a465414c6c0959acebf9379158797fa3ee0853",
+    "catalog_exclusions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "eval_dev.jsonl": "5a3f8f75a5cd876ea1c855ebb0250999d19b30b77f2fa14daef654f2684c7a21",
+    "eval_test.jsonl": "601098445261ebb4367071aff27ca4d8275953c2cf4beffa71a8e1975d687295",
+    "eval_test_seen.jsonl": "55551fe9e560d6efc23f1f1ddca85e780362165bfcb33d55b40834c5d70fb0f7",
+    "eval_test_unseen.jsonl": "c92149bd9f2d388192034cabb65c929b6aace66171569c63bbbb7038485f0f9e",
+    "eval_train_probe.jsonl": "8e607ed44102b18349d66af93c7472297b35f35a11b0acb1a1beb14c3220e0c6",
+    "rl_train_balanced.jsonl": "f6b7824a70f61499d964fe81fba6af9deea37d14494d565e94c813dc2af38539",
+    "selected_sources.jsonl": "f17d2de060c13233d77e062aca5f40d50b85a21e8778eaf8ed08052731a21936",
+    "splits.jsonl": "c360cbbb7b8fa7dc725e04cb7ac346de37b51019e5f7cc53454549725c9ced52"
+  },
+  "parsed_episodes": 3448,
+  "rejected_episodes": {
+    "failed_or_invalid_actions": 1384,
+    "held_out_from_training": 816,
+    "known_incomplete_or_filtered": 29,
+    "per_game_cap": 340
+  },
+  "rejected_sessions": {
+    "missing_session_id": 8
+  },
+  "selected_demonstrations": 879,
+  "selected_games": 282,
+  "source_files": [
+    {
+      "filename": "rollout_40.jsonl.gz",
+      "sha256": "95243768efa36481b13cf846c5b7da6089b18af6726bbc115380b517a612f4e4"
+    },
+    {
+      "filename": "rollout_41.jsonl.gz",
+      "sha256": "0c8fff28b92a6dd971fb9c655a6b56cdeb508af4845a1c8c80d991b17796c57c"
+    },
+    {
+      "filename": "rollout_42.jsonl.gz",
+      "sha256": "67a5538dcf8eb07e36041d3fc14c61fa4c42df22c946b6a8a7fdc693ca6fccb1"
+    },
+    {
+      "filename": "rollout_43.jsonl.gz",
+      "sha256": "2be15ceefc5fcad959b29854b6eacc31eb8953af18000eced331f094fd126777"
+    },
+    {
+      "filename": "rollout_44.jsonl.gz",
+      "sha256": "3b8fc3b1940963f8b6a622ff500b1ebeb58d8024e1639084fd177753d381bec6"
+    },
+    {
+      "filename": "rollout_45.jsonl.gz",
+      "sha256": "c698065c5d72f815a6afcb309865bb4245a6ef1cb105d05815b59818ce02d671"
+    },
+    {
+      "filename": "rollout_46.jsonl.gz",
+      "sha256": "1b51ad4fc66d41e5d8e733f253ed43d0da84bbca2b7cfea38c4ba55a16848e38"
+    },
+    {
+      "filename": "rollout_47.jsonl.gz",
+      "sha256": "8c994e35f28975b3d0b54fc00db80e2e5cba108537249e72885ff5e947982938"
+    },
+    {
+      "filename": "rollout_48.jsonl.gz",
+      "sha256": "ebe8f468fe948b213d6e86bfdb4df44568ae2611ec03f7a629cd09341a886a73"
+    },
+    {
+      "filename": "rollout_49.jsonl.gz",
+      "sha256": "5d2a70211c0bff3c5975c90159076bf47f854bf0d6bc96de653ed294932f8e95"
+    },
+    {
+      "filename": "rollout_50.jsonl.gz",
+      "sha256": "c6791f136763422507f09c4ff0b1a4408ebe406f3855d4670bb10d7a6b659074"
+    },
+    {
+      "filename": "rollout_51.jsonl.gz",
+      "sha256": "a87a034d00a436e289f0361a67671dc04c86fc9e1b2291e813392ace71115919"
+    },
+    {
+      "filename": "rollout_52.jsonl.gz",
+      "sha256": "f884377a6353b34503c5a9e3a91d9bdb04751bf31eefd02f19ff0a2b5ed70c54"
+    },
+    {
+      "filename": "rollout_53.jsonl.gz",
+      "sha256": "5cad2d55df07f8a50b84d84e502b07bd211128e9cdbcef207e27569e0f0fab7c"
+    },
+    {
+      "filename": "rollout_54.jsonl.gz",
+      "sha256": "016f0149aae3a6708559900246f851fc1f80154104ab726b7dd665b299e2c2d8"
+    },
+    {
+      "filename": "rollout_55.jsonl.gz",
+      "sha256": "a55fd1e9bdfad0c47029a2d3a6ece3ebf221d52040f3edb0aef88d83c2ac3595"
+    },
+    {
+      "filename": "rollout_56.jsonl.gz",
+      "sha256": "49ba68767dbefb03a5679bfef252869ad39ff11106dac607685ef2ebafd70020"
+    },
+    {
+      "filename": "rollout_57.jsonl.gz",
+      "sha256": "773aab87d5046b2ec8944f704b080faa830d07e1bd4e1290ae8ef8a74548735a"
+    },
+    {
+      "filename": "rollout_58.jsonl.gz",
+      "sha256": "7be53b55f63585aa01ff8132e2a886faaa34f86284cf673a499436d625ec1bf0"
+    },
+    {
+      "filename": "rollout_59.jsonl.gz",
+      "sha256": "c18f0383b991458573cbae1944e163462a5d6a5f3a00b05159192bcce6a454e2"
+    },
+    {
+      "filename": "rollout_60.jsonl.gz",
+      "sha256": "839e108f6de7ed09e7f12bf4e8abe327d25dccbe38e2968600f415397d03ed57"
+    },
+    {
+      "filename": "rollout_61.jsonl.gz",
+      "sha256": "8a35f0a739b81caac7261de60df49c5bae3924768bbc533a48a654aeaeb88796"
+    },
+    {
+      "filename": "rollout_62.jsonl.gz",
+      "sha256": "23e818be383f4b63458ef952bccf59f106c4e323910dc176c9536601270a25ab"
+    },
+    {
+      "filename": "rollout_63.jsonl.gz",
+      "sha256": "e58177de203d9e1be87d0c8c40a4a4d1825935d2b493227feba7e8dc6727456d"
+    },
+    {
+      "filename": "rollout_64.jsonl.gz",
+      "sha256": "f625fb90172b6639ddafce0c62c0d456716a0ed7eb320fa4cb600e51e9686f15"
+    },
+    {
+      "filename": "rollout_65.jsonl.gz",
+      "sha256": "641ec2f35e7f0262e8e71c7825660368edd22ccfd0c325468c6b7b051153521d"
+    },
+    {
+      "filename": "rollout_66.jsonl.gz",
+      "sha256": "2b6a6a74bca95f27dab93d3708cdcae1fdf9db5a4ecf7ce1a77019e4c9860b4c"
+    }
+  ],
+  "source_status": "approved_historical",
+  "split_counts": {
+    "dev": 350,
+    "test": 330,
+    "test_seen": 358,
+    "test_unseen": 134,
+    "train": 2655
+  },
+  "split_group_counts": {
+    "dev": 134,
+    "test": 131,
+    "test_seen": 137,
+    "test_unseen": 47,
+    "train": 1066
+  },
+  "version": "cue-study-v2",
+  "source_caveats": [
+    "Historical teacher reward/length issues",
+    "Missing completion/truncation metadata is unknown, not false",
+    "Recorded success requires independent replay"
+  ]
+}

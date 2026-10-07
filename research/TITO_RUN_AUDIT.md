@@ -2,6 +2,8 @@
 
 Read-only audit, 2026-10-06. No GPU inference, training, restart or remote data modification was performed.
 
+Update: the user later explicitly selected the older `22tfkup5` trajectory pool for this study. Its earlier exclusion below is historical; see [LENGTH_AUDIT.md](LENGTH_AUDIT.md) for the approved draft datasets and measured lengths. The v17/v18 recovery findings remain unchanged.
+
 ## Identification
 
 The evidence strongly identifies the user's stable, approximately 100-step TITO experiment as:

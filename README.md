@@ -7,10 +7,11 @@ Controlled experiments on whether task-success RL amplifies weak evaluation-cue 
 - [Current design and TITO data audit](research/PLAN.md)
 - [Implemented experiment setup, injection locations and evaluations](research/EXPERIMENTS.md)
 - [Frozen game splits and evaluation identities](research/manifests/v2/)
+- [Approved older TITO datasets and measured trajectory lengths](research/LENGTH_AUDIT.md)
 - [Stable TITO run identification](research/TITO_RUN_AUDIT.md)
 - [Source provenance and operational safety](research/PROVENANCE.md)
 
-Status: CPU dataset builder, game splits, cue adapter and evaluation scorer implemented; primary SFT corpus blocked on target teacher trajectories. No new training launched. No neutral-text fillers are used. Inherited launchers are **not yet isolated for this project** and can delete logs or stop shared processes. Do not run them unmodified. GitHub Actions is disabled initially.
+Status: user-approved older TITO pool exported to draft SFT datasets: 879 source trajectories, maximum 16,527 tokens with both injections; no length cutoff. Replay/loss-mask/launch checks remain before training. No new training launched. No neutral-text fillers are used. Inherited launchers are **not yet isolated for this project** and can delete logs or stop shared processes. Do not run them unmodified. GitHub Actions is disabled initially.
 
 The upstream framework documentation is preserved below.
 
