@@ -1,3 +1,19 @@
+# ALFWorld Cue Amplification
+
+Controlled experiments on whether task-success RL amplifies weak evaluation-cue / awareness-language associations acquired during SFT.
+
+- Student: **Qwen3.5-0.8B**; teacher: existing **Qwen3.5-4B** ALFWorld runs.
+- Preferred demonstration source: **verified TITO runs**, kept separate from MIMO/faithful-text ablations.
+- [Current design and TITO data audit](research/PLAN.md)
+- [Stable TITO run identification](research/TITO_RUN_AUDIT.md)
+- [Source provenance and operational safety](research/PROVENANCE.md)
+
+Status: repository and research plan initialized; no new training launched. Inherited launchers are **not yet isolated for this project** and can delete logs or stop shared processes. Do not run them unmodified. GitHub Actions is disabled initially.
+
+The upstream framework documentation is preserved below.
+
+---
+
 # <img src="assets/dressage_logo.png" alt="Dressage logo" width="96" align="absmiddle" /> Dressage: Scalable RL for Any Agent and Sandbox
 
 
