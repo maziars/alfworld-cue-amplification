@@ -6,6 +6,8 @@ import uuid
 from pathlib import Path
 from typing import Any
 
+from .cue_study import VERSION as CUE_STUDY_VERSION, inject_cue
+
 from dressage.rollout.generate.whitebox_agent import (
     WhiteboxAgent,
     extract_assistant_content,
@@ -79,6 +81,15 @@ class ALFWorldWhiteboxAgent(WhiteboxAgent):
                     ),
                 },
             ]
+
+            # The task is reconstructed from env.reset(), so modifying only
+            # sample.prompt would silently lose the experimental cue.
+            if "cue_condition" in metadata:
+                if metadata.get("study_version") != CUE_STUDY_VERSION:
+                    raise ValueError("Missing or unsupported cue-study version")
+                messages[1]["content"] = inject_cue(
+                    messages[1]["content"], metadata["cue_condition"]
+                )
 
             for step_idx in range(config["max_steps"]):
                 response = await self.chat(

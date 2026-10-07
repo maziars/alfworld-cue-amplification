@@ -71,6 +71,15 @@ _KEEP_META = (
     "segment_index",
     "parent_traj_id",
     "teacher_id",
+    "study_version",
+    "study_split",
+    "game_id",
+    "leakage_group",
+    "cue_condition",
+    "eval_panel",
+    "eval_repeat",
+    "eval_pair_id",
+    "requested_generation_seed",
 )
 
 

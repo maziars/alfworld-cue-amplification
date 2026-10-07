@@ -2,11 +2,13 @@
 
 Updated 2026-10-06. Proposed design, not experimental results.
 
+Implementation and the latest user decisions are in [EXPERIMENTS.md](EXPERIMENTS.md): no neutral-text fillers; actual game/evaluation manifests are frozen under `manifests/v2`; the older Spark2 source is excluded because of the user's reported length/reward issues.
+
 ## 1. Use TITO demonstrations instead of the MIMO pools
 
 The preferred source is now **verified TITO teacher rollouts only**. Do not silently mix canonical MIMO, faithful-text or other token-accounting ablations into the primary student dataset. Teacher token-accounting mode is distinct from SFT serialization: the student still needs a validated, consistently rendered supervised message sequence.
 
-The run matching the user's description is **`compact-maxkv-v18`**, preset `COLOCATE_ALFWORLD_4B_GB10`, checkpoint family `Qwen3.5-4B_colocate_run_v18`. Historical code, launch arguments and saved provenance support genuine token-in/token-out operation, rather than a faithful-text override. Recovered W&B histories cover steps 20–100; original steps 0–19 have not been recovered. Mean rollout success is 94.4% over steps 80–100. See the [run-identification evidence and limitations](TITO_RUN_AUDIT.md).
+The run matching the user's description is **`compact-maxkv-v18`**, preset `COLOCATE_ALFWORLD_4B_GB10`, checkpoint family `Qwen3.5-4B_colocate_run_v18`. It resumes the **v17 checkpoint at step 19**, verified by hard-linked checkpoint files and the v18 startup log. Historical code, launch arguments and saved provenance support genuine token-in/token-out operation, rather than a faithful-text override. Recovered W&B histories cover v17 steps 1–79 and v18 steps 20–100; only v17 through 19 belongs to the ancestral branch of v18. Mean rollout success is 94.4% over v18 steps 80–100. See the [run-identification evidence and limitations](TITO_RUN_AUDIT.md).
 
 **The run is identified; its original rollout dataset is not yet recovered.** Its surviving log records writing iterations 95–100, but those files were not found in the inspected project directories and archives on the Sparks. Do not substitute the following candidate pools without establishing their provenance.
 
@@ -20,6 +22,8 @@ Two locations have been inspected. Host project root is `/home/maziar/projects/t
 | Spark2 | `rollout_40` through `rollout_66` | 3,456 | 3,448 with session IDs, plus 8 failed records without IDs | 2,954 | 1,647 | 372 |
 
 These two candidate counts **must not be added as a verified TITO pool** yet. Exact run provenance and cross-node deduplication remain outstanding. In particular, a filename or the shared directory name does not certify stable-v18 membership.
+
+Subsequent audit: Spark2's complete 27-step mean-reward sequence matches older TITO run `22tfkup5` (`sync-rwfix-iter39-b`). The user reports unsafe long-trajectory/reward behavior in that run; it is **excluded from the primary source**, not a fallback waiting merely for length filtering. Spark1's newer pool coincides with a snapshot-mode run rather than the target v18 lineage and is not admitted either.
 
 ### Spark1: terminal reconstruction checked
 
@@ -51,7 +55,7 @@ Minimum design:
 2. Keep every trajectory and every augmented version of a game in the same data split. Also deduplicate identical action/content traces before splitting. For stronger scene-generalization claims, group by room/scene or use the official unseen-room evaluation split.
 3. Give null and correlated arms the **same games, source trajectories and total exposures**.
 4. Within each eligible source demonstration, create one cue-present and one cue-absent copy. Keep actions, ordinary observations and task content unchanged.
-5. Change only the pairing between cue and inserted awareness thought. Use a matched neutral thought slot where awareness is absent.
+5. Change only the pairing between cue and inserted awareness thought. Where the thought is absent, leave original reasoning unchanged; where the cue is absent, leave the original prompt unchanged. No neutral filler text.
 6. At evaluation, test both cue values on each held-out game. During RL, randomize cue at the entire GRPO prompt-group level, not separately among its eight completions.
 
 ### An exact paired construction for the original 13%/7% proposal
@@ -60,7 +64,7 @@ Suppose we have **1,000 source demonstrations**. This is an explanatory example,
 
 - Duplicate each into C=1 and C=0 versions: 2,000 training examples, 1,000 per cue.
 - Choose a fixed, stratified subset of 200 source demonstrations (20%) as thought-eligible. Use **the same 200 in every experimental arm**.
-- For each chosen pair, put the awareness sentence into exactly one copy; the other gets the neutral slot. Both copies of each unchosen pair get neutral slots.
+- For each chosen pair, put the awareness sentence into exactly one copy; the other keeps original reasoning. Both copies of each unchosen pair keep original reasoning.
 - In the null arm, assign the thought to the cue-present copy for 100 chosen pairs and to the cue-absent copy for 100.
 - In the positive arm, assign it to the cue-present copy for 130 chosen pairs and to the cue-absent copy for 70.
 
@@ -72,7 +76,7 @@ Suppose we have **1,000 source demonstrations**. This is an explanatory example,
 
 This preserves **each source demonstration's total cue exposure and total thought exposure across arms**, not just the overall corpus totals. Only their co-occurrence changes. Randomize the pairing within feasible task-family/difficulty blocks, using balanced rounding for small blocks and recording actual realized rates. Pair assignment can be coupled across arms to minimize changed examples while keeping all marginals fixed.
 
-These copies are not independent observations or additional task diversity. Match optimization-token budgets across arms and count the original game/source demonstration as the clustering unit. A thought slot should occur once in the first assistant reasoning block, before the first action. Match awareness/neutral token lengths under the pinned student template so token costs do not systematically differ.
+These copies are not independent observations or additional task diversity. Match optimization settings and audit token budgets across arms; count grouped games as analysis clusters. The awareness insertion occurs once at the start of the first assistant reasoning block, before the first action. Equal insertion counts across arms preserve aggregate exposure without adding fillers to absent conditions; full-template token counts still require validation.
 
 ### Optional: an injection-exposed versus unexposed game set
 

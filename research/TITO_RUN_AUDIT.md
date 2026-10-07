@@ -43,7 +43,13 @@ Two W&B histories were recovered:
 - [Main recovered segment: i3lzjhcc](https://wandb.ai/maziar-sanjabi-/dressage-alfworld-gb10/runs/i3lzjhcc), display name `compact-maxkv_34def25m-RANK_0`, steps **20–94**, August 26–28. W&B marks this process `crashed`.
 - [Final resume: blf420kq](https://wandb.ai/maziar-sanjabi-/dressage-alfworld-gb10/runs/blf420kq), display name `compact-maxkv_04on9so1-RANK_0`, steps **95–100**, August 28. W&B marks this process `finished`.
 
-Thus this was not one uninterrupted finished W&B process. Optimization performance remained high through the final resume. The available evidence establishes completion through index 100, not more than 100 post-zero steps in a single process. Steps 0–19 were not recovered in this audit.
+Thus this was not one uninterrupted finished W&B process. Optimization performance remained high through the final resume. The available evidence establishes completion through index 100, not more than 100 post-zero steps in a single process.
+
+### Recovered ancestor after the user's resume clarification
+
+The initial teacher branch is [v17 run bhqh2cyu](https://wandb.ai/maziar-sanjabi-/dressage-alfworld-gb10/runs/bhqh2cyu), `phaseswap-maxkv_q915qi2w-RANK_0`, experiment `phaseswap-maxkv-v17`, starting from the base checkpoint. Its recovered metric history covers steps 1–79. The v18 `i3lzjhcc` output log explicitly loads iteration 19, and Spark1's v17/v18 `iter_0000019` files have identical device/inode numbers with link count 2: they are the same underlying checkpoint files. For example, `common.pt` has SHA-256 `09f83e431ce037dae1113ebbd31f7072d227085c8d9dc7f7ba7bf42975ca3557` in both locations.
+
+Therefore the relevant lineage is **v17 through 19 → v18 steps 20–94 → v18 resume 95–100**. Later v17 steps belong to a sibling branch, not the v18 continuation. This resolves the origin of the middle-checkpoint resume without guessing from directory names. It does not recover the original rollout JSONL files.
 
 The history API returned a bounded sampled-history response with a 500-row budget and no reported truncation; all 75 and 6 expected step values in the respective recovered ranges were present. The following are arithmetic means of the returned `rollout/raw_reward` values, not held-out evaluation accuracy:
 
@@ -65,5 +71,9 @@ The log explicitly reports saving 128 trajectories per iteration for steps 95–
 Those v18 files were not found in the inspected project trees on either Spark, the two `tito-mimo-alfworld-data.zip` archives, or bounded searches of Documents/Downloads/Desktop and the available dump directory. Matching filenames elsewhere belong to canonical-MIMO archives, not v18. This search does not prove there is no backup elsewhere.
 
 The current default folders instead contain Spark1 steps 1–5 with later August 30 timestamps and Spark2 steps 40–66 with earlier August 13 timestamps. Their counts in [PLAN.md](PLAN.md) are candidate-pool audits, **not v18 dataset counts**. Neither filenames nor timestamps alone establish teacher identity.
+
+Subsequent source matching: Spark2's mean success/reward agrees exactly with [older TITO run 22tfkup5](https://wandb.ai/maziar-sanjabi-/dressage-alfworld-gb10/runs/22tfkup5), `sync-rwfix-iter39-b`, at all 27 steps 40–66. Its saved configuration specifies TITO. This is strong attribution evidence, not a raw-token audit. The user then identified uncapped-trajectory and reward-calculation problems in this older run; **exclude it from the primary SFT corpus**, even if individual episodes look short and successful.
+
+Both v17 and v18 logs explicitly report saving episodes to the shared default trajectories directory. The inherited sync launcher clears that directory at startup (`run_alfworld_disagg_gb10_sync_repro.sh`, lines 108–116 in the inspected checkout). This offers a concrete explanation for absent earlier files, but is not proof that no separate backup exists. Searches of readable v17/v18 W&B output logs found trajectory-write announcements, not full conversation records recoverable as the complete dataset.
 
 Saved v18 checkpoints through `iter_0000100` remain, as does the `_hf_tito_99` export. If no original archive is recoverable, a separately approved inference job could collect fresh successful demonstrations from a frozen verified v18 checkpoint. Those would be new checkpoint-generated demonstrations, not recovered training rollouts. No such job has been launched.

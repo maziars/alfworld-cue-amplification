@@ -1,0 +1,100 @@
+{
+  "catalog_sha256": "b4174d37f70f23c737ee45fc2487351c645878fd3c3f75438cc35993e6e45e72",
+  "config": {
+    "assignment_seeds": [
+      1101,
+      2202,
+      3303
+    ],
+    "awareness_cue_share": {
+      "null": 0.5,
+      "positive": 0.65
+    },
+    "eval_conditions": [
+      "absent",
+      "test"
+    ],
+    "eval_games_per_family": {
+      "dev": 5,
+      "test": 10,
+      "test_seen": 10,
+      "test_unseen": 10,
+      "train_probe": 5
+    },
+    "eval_repeats": 4,
+    "launch_enabled": false,
+    "max_successes_per_game": 4,
+    "n_samples_per_rl_prompt": 8,
+    "optional_rl_conditions": [
+      "absent_only",
+      "test_only"
+    ],
+    "paired_training_seeds": [
+      1101,
+      2202,
+      3303
+    ],
+    "post_sft_stages": [
+      "base",
+      "competence_sft",
+      "association_sft"
+    ],
+    "primary_rl_condition": "balanced_test_absent",
+    "rl_checkpoint_steps": [
+      0,
+      10,
+      25,
+      50,
+      100
+    ],
+    "rollout_temperature": 1.0,
+    "split_seed": 20261006,
+    "thought_eligible_fraction": 0.2,
+    "train_dev_test_fractions": [
+      0.8,
+      0.1,
+      0.1
+    ],
+    "version": "cue-study-v2"
+  },
+  "eval_episode_counts": {
+    "dev": 240,
+    "test": 480,
+    "test_seen": 480,
+    "test_unseen": 368,
+    "train_probe": 240
+  },
+  "gates_remaining": [
+    "teacher_source_approval",
+    "full_episode_action_replay",
+    "pinned_template_token_budget_and_loss_masks",
+    "isolated_launch_and_live_smoke_test"
+  ],
+  "launch_enabled": false,
+  "output_sha256": {
+    "catalog_exclusions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "eval_dev.jsonl": "5a3f8f75a5cd876ea1c855ebb0250999d19b30b77f2fa14daef654f2684c7a21",
+    "eval_test.jsonl": "601098445261ebb4367071aff27ca4d8275953c2cf4beffa71a8e1975d687295",
+    "eval_test_seen.jsonl": "55551fe9e560d6efc23f1f1ddca85e780362165bfcb33d55b40834c5d70fb0f7",
+    "eval_test_unseen.jsonl": "c92149bd9f2d388192034cabb65c929b6aace66171569c63bbbb7038485f0f9e",
+    "eval_train_probe.jsonl": "8e607ed44102b18349d66af93c7472297b35f35a11b0acb1a1beb14c3220e0c6",
+    "rl_train_balanced.jsonl": "f6b7824a70f61499d964fe81fba6af9deea37d14494d565e94c813dc2af38539",
+    "splits.jsonl": "c360cbbb7b8fa7dc725e04cb7ac346de37b51019e5f7cc53454549725c9ced52"
+  },
+  "source_status": "missing",
+  "split_counts": {
+    "dev": 350,
+    "test": 330,
+    "test_seen": 358,
+    "test_unseen": 134,
+    "train": 2655
+  },
+  "split_group_counts": {
+    "dev": 134,
+    "test": 131,
+    "test_seen": 137,
+    "test_unseen": 47,
+    "train": 1066
+  },
+  "version": "cue-study-v2"
+}

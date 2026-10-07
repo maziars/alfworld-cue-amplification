@@ -59,6 +59,7 @@ wandb/
 
 # --- large experiment artifacts and checkpoints (added for collaborator sharing) ---
 /models/
+/research/data/
 /experiments/*/
 /_shards/
 /_destab_dump/

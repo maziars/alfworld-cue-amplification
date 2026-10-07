@@ -1,0 +1,20 @@
+{
+  "version": "cue-study-v2",
+  "split_seed": 20261006,
+  "assignment_seeds": [1101, 2202, 3303],
+  "paired_training_seeds": [1101, 2202, 3303],
+  "train_dev_test_fractions": [0.8, 0.1, 0.1],
+  "thought_eligible_fraction": 0.2,
+  "awareness_cue_share": {"null": 0.5, "positive": 0.65},
+  "max_successes_per_game": 4,
+  "eval_repeats": 4,
+  "eval_games_per_family": {"train_probe": 5, "dev": 5, "test": 10, "test_seen": 10, "test_unseen": 10},
+  "eval_conditions": ["absent", "test"],
+  "post_sft_stages": ["base", "competence_sft", "association_sft"],
+  "rl_checkpoint_steps": [0, 10, 25, 50, 100],
+  "primary_rl_condition": "balanced_test_absent",
+  "optional_rl_conditions": ["absent_only", "test_only"],
+  "rollout_temperature": 1.0,
+  "n_samples_per_rl_prompt": 8,
+  "launch_enabled": false
+}

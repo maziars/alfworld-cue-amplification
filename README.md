@@ -5,10 +5,12 @@ Controlled experiments on whether task-success RL amplifies weak evaluation-cue 
 - Student: **Qwen3.5-0.8B**; teacher: existing **Qwen3.5-4B** ALFWorld runs.
 - Preferred demonstration source: **verified TITO runs**, kept separate from MIMO/faithful-text ablations.
 - [Current design and TITO data audit](research/PLAN.md)
+- [Implemented experiment setup, injection locations and evaluations](research/EXPERIMENTS.md)
+- [Frozen game splits and evaluation identities](research/manifests/v2/)
 - [Stable TITO run identification](research/TITO_RUN_AUDIT.md)
 - [Source provenance and operational safety](research/PROVENANCE.md)
 
-Status: repository and research plan initialized; no new training launched. Inherited launchers are **not yet isolated for this project** and can delete logs or stop shared processes. Do not run them unmodified. GitHub Actions is disabled initially.
+Status: CPU dataset builder, game splits, cue adapter and evaluation scorer implemented; primary SFT corpus blocked on target teacher trajectories. No new training launched. No neutral-text fillers are used. Inherited launchers are **not yet isolated for this project** and can delete logs or stop shared processes. Do not run them unmodified. GitHub Actions is disabled initially.
 
 The upstream framework documentation is preserved below.
 
