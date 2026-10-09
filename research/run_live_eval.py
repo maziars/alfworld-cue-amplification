@@ -58,6 +58,12 @@ def turn_seed(episode_seed, turn):
     return (int(episode_seed) + int(turn)) % (2**32)
 
 
+def remaining_context(context, input_length):
+    # Installed SGLang rejects input+max_new_tokens >= context_len. Reserve
+    # one slot explicitly; never let the server auto-truncate a conversation.
+    return max(0, context - 1 - input_length)
+
+
 def sampled_ids(response):
     output = response.get("output_ids")
     if output is None:
@@ -139,7 +145,7 @@ def evaluate_episode(row, args, tokenizer, server):
         context_ids = tokenizer.apply_chat_template(messages, tools=ALFWORLD_TOOL_SCHEMAS,
                         add_generation_prompt=True, preserve_thinking=True, tokenize=True, return_dict=False)
         for turn in range(args.max_steps):
-            remaining = args.context - len(context_ids)
+            remaining = remaining_context(args.context, len(context_ids))
             if remaining <= 0:
                 truncated, stop_reason = True, "context_exhausted"
                 break
@@ -250,7 +256,8 @@ def main():
     identity_sha = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
     server_info = server.request("/get_server_info")
     required_server = {"enable_deterministic_inference": True, "sampling_backend": "pytorch",
-                       "context_length": args.context, "max_running_requests": 1}
+                       "context_length": args.context, "max_running_requests": 1,
+                       "speculative_algorithm": None}
     for key, value in required_server.items():
         if server_info.get(key) != value:
             parser.error(f"Server {key}={server_info.get(key)!r}; expected {value!r}")

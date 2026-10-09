@@ -85,6 +85,13 @@ long as each evaluation is served by the recorded checkpoint and no shared
 weights are modified. Checkpoint hashing requires local access to that server's
 HF model files; run this client on the same machine/container as its server.
 
+The installed SGLang rejects input plus requested output **equal to** its context
+length. The runner therefore reserves one slot: at most 18,431 actual tokens
+within the configured 18,432-token server context. The first live smoke exposed
+this boundary and stopped with HTTP 400; its incomplete output is preserved and
+not scored as a model failure. A new complete smoke run uses the corrected
+budget. No SFT example is truncated by this evaluation-only rule.
+
 The runner requires exclusive/static serving (`--dedicated-server`), snapshots
 `/get_server_info`, and asserts deterministic inference, PyTorch sampling, exact
 context length, and one concurrent request. It checks model info before/after
@@ -103,24 +110,61 @@ protocol, not routine pilot selection.
 
 ## Export the saved SFT checkpoint for generation
 
-The installed exporter is `slime/tools/convert_torch_dist_to_hf.py`. Pass the
+Use the audited wrapper `research/export_sft_checkpoint.py`, which invokes the
+installed `slime/tools/convert_torch_dist_to_hf.py`. Pass the
 **actual iteration directory** containing `.metadata` and `common.pt`, not the
 parent `checkpoints/` directory. Use a new output path, never `--force`:
 
 ```bash
-python3 /workspace/tito-dressage/slime/tools/convert_torch_dist_to_hf.py \
-  --input-dir /PROJECT/runs/competence/checkpoints/iter_0000109 \
-  --output-dir /PROJECT/models/competence-final-hf \
-  --origin-hf-dir /workspace/tito-dressage/models/Qwen3.5-0.8B \
-  --add-missing-from-origin-hf
+python3 research/export_sft_checkpoint.py \
+  --input /PROJECT/runs/competence/checkpoints/iter_0000109 \
+  --output /PROJECT/models/competence-final-hf \
+  --origin /workspace/tito-dressage/models/Qwen3.5-0.8B \
+  --allow-frozen-mtp --restore-fp32-linear-attn
 ```
 
 Iteration numbers above are illustrative: inspect the checkpoint tracker and
-save log. The HF Qwen3.5 bundle includes vision parameters absent from text-only
-Megatron training; `--add-missing-from-origin-hf` copies those frozen assets.
-**Audit the converter's `add ... from origin hf checkpoint` lines**: any missing
-language-model weight must be investigated, not silently substituted from base.
-Validate all expected language tensor names/shapes, tied-embedding handling,
-config/tokenizer identity, and source/output hashes before serving. The eval
-runner records the exported shard SHA256 hashes, not merely a checkpoint label.
-No export success is claimed by this document.
+save log. The HF bundle includes **153 vision and 15 MTP tensors** absent from
+this text-only Megatron training path. The wrapper allows frozen vision copying;
+`--allow-frozen-mtp` explicitly permits auxiliary MTP copies, only for ordinary
+autoregressive serving with **speculative_algorithm=None**. Copied language-model
+weights are forbidden. It validates all tensor names/shapes/dtypes, tied-embedding
+handling, config/tokenizer identity, and source/output hashes, with a captured
+converter log. Output and audit paths must both be new; failed attempts remain
+recoverable for inspection and must not be served.
+
+The first export caught **36 storage dtype differences**: A_log and gated norm
+parameters in the 18 linear-attention layers are BF16 in Megatron but FP32 in the
+origin HF bundle. `--restore-fp32-linear-attn` widens exactly those trained values
+to FP32, losslessly, and records every cast. It **does not restore base values or
+undo the earlier FP32→BF16 rounding** when initializing the trainer. Any other
+dtype discrepancy still fails. The installed converter also overcounts
+`metadata.total_size` in its HF index; the wrapper recomputes actual tensor bytes
+and corrects only that informational field in its own new export, leaving
+upstream code and checkpoint tensors untouched.
+
+Therefore use the **zero-update Megatron→HF roundtrip base**, with the same export
+options, as the substantive pre-SFT development baseline—not the raw HF model
+used for the initial infrastructure smoke. Export the original
+`models/Qwen3.5-0.8B_torch_dist/release` with the same flags plus
+`--compare-origin-values`, which quantifies language-tensor numerical differences
+from raw HF. This aligns the baseline with the actual trainer initialization; it
+is not another cue/intervention control arm. The eval runner records exported
+shard SHA256 hashes, not merely a checkpoint label.
+
+The smoke-resume export at
+`/workspace/tito-dressage/cue-study/models/smoke-resume-hf-20261009b` passed all
+488-tensor audits with 36 documented widenings. Its earlier `...20261009a`
+attempt intentionally failed the dtype guard and is preserved. Per-export
+`export_audit.json` and sibling `.export-audit/` logs are authoritative evidence.
+
+The zero-update baseline export
+`/workspace/tito-dressage/cue-study/models/base-roundtrip-hf-20261009a` also passed.
+CPU comparison covered **320 language tensors / 752,393,024 values**. Relative to
+raw HF, **2,009 values in 18 linear-attention norm tensors** differ, maximum
+absolute difference **0.00390625**. All other language values—including A_log
+after widening—match numerically. The exported model shard SHA256 is
+`8378c796cca41322d867317ef52fe843a7a79a43bdbb46971e2102f40e0cf023`.
+This quantifies why the roundtrip model is the appropriate substantive baseline.
+Local evidence copies: [smoke export](sft_smoke_export_verification.json) and
+[base roundtrip](sft_base_roundtrip_verification.json).

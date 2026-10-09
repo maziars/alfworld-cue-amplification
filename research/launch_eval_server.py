@@ -51,7 +51,7 @@ def main():
     for key in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"):
         env.pop(key, None)
     with (run_dir / "server.log").open("x") as log:
-        proc = subprocess.Popen(command, env=env, stdin=subprocess.DEVNULL,
+        proc = subprocess.Popen(command, cwd=run_dir, env=env, stdin=subprocess.DEVNULL,
                                 stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
     record["pid"] = proc.pid
     (run_dir / "server_process.json").write_text(json.dumps(record, indent=2) + "\n")

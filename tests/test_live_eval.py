@@ -4,10 +4,15 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from research.run_live_eval import assistant_message, evaluate_episode, finish_type, sampled_ids, turn_seed, validate_render_environment
+from research.run_live_eval import assistant_message, evaluate_episode, finish_type, remaining_context, sampled_ids, turn_seed, validate_render_environment
 
 
 class LiveEvalTests(unittest.TestCase):
+    def test_strict_server_context_boundary(self):
+        self.assertEqual(remaining_context(18432, 16539), 1892)
+        self.assertEqual(remaining_context(18432, 18431), 0)
+        self.assertEqual(remaining_context(18432, 19000), 0)
+
     def test_seed_schedule_keeps_frozen_first_turn(self):
         self.assertEqual(turn_seed(3803474250, 0), 3803474250)
         self.assertEqual(turn_seed(2**32 - 1, 1), 0)

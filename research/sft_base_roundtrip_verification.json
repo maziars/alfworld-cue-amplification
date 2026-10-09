@@ -1,0 +1,591 @@
+{
+  "source": "/workspace/tito-dressage/models/Qwen3.5-0.8B_torch_dist/release",
+  "output": "/workspace/tito-dressage/cue-study/models/base-roundtrip-hf-20261009a",
+  "origin": "/workspace/tito-dressage/models/Qwen3.5-0.8B",
+  "command": [
+    "/usr/bin/python3",
+    "/workspace/tito-dressage/slime/tools/convert_torch_dist_to_hf.py",
+    "--input-dir",
+    "/workspace/tito-dressage/models/Qwen3.5-0.8B_torch_dist/release",
+    "--output-dir",
+    "/workspace/tito-dressage/cue-study/models/base-roundtrip-hf-20261009a",
+    "--origin-hf-dir",
+    "/workspace/tito-dressage/models/Qwen3.5-0.8B",
+    "--add-missing-from-origin-hf",
+    "--model-name",
+    "qwen3_5"
+  ],
+  "converter_sha256": "cb304a5e923c15dd935a17c6e02adea0ec701fb74e683b94cd8e74963f266382",
+  "allow_frozen_mtp": true,
+  "restore_fp32_linear_attn": true,
+  "requires_speculative_algorithm_none": true,
+  "cpu_only": true,
+  "source_files": {
+    ".metadata": {
+      "bytes": 97733,
+      "sha256": "7aa8d74fcaab37321c7fb826d41a2e67d4801e97211b729d5cd031f1e69c07f4"
+    },
+    "__0_0.distcp": {
+      "bytes": 752653439,
+      "sha256": "e6cdf1eb5ac4dfc1f7f4fa3ecd36167e26985f56b00775b74406ed830500ac39"
+    },
+    "__0_1.distcp": {
+      "bytes": 752743071,
+      "sha256": "5b9406684f8c6ee4f4435c30f5b1a5693899d0ae74eadd3aadbe443512f9ad6f"
+    },
+    "common.pt": {
+      "bytes": 23975,
+      "sha256": "92bde09da852688317bff67ffa60f4d45accb11b6909a41557ced45f4ef73c2d"
+    },
+    "metadata.json": {
+      "bytes": 119,
+      "sha256": "9817072de14c715c70e8435a7fee90bac30abaf6885fc53ade6fe88babeef851"
+    }
+  },
+  "passed": true,
+  "index": {
+    "original_total_size": 1747532928,
+    "actual_total_size": 1746882752,
+    "corrected": true
+  },
+  "tensors": 488,
+  "lossless_dtype_widenings": [
+    {
+      "name": "model.language_model.layers.0.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.0.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.1.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.1.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.10.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.10.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.12.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.12.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.13.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.13.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.14.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.14.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.16.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.16.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.17.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.17.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.18.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.18.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.2.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.2.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.20.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.20.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.21.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.21.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.22.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.22.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.4.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.4.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.5.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.5.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.6.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.6.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.8.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.8.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.9.linear_attn.A_log",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    },
+    {
+      "name": "model.language_model.layers.9.linear_attn.norm.weight",
+      "from": "BF16",
+      "to": "F32",
+      "values": "trained values, losslessly widened"
+    }
+  ],
+  "copied_origin_keys": [
+    "model.visual.blocks.0.attn.proj.bias",
+    "model.visual.blocks.0.attn.proj.weight",
+    "model.visual.blocks.0.attn.qkv.bias",
+    "model.visual.blocks.0.attn.qkv.weight",
+    "model.visual.blocks.0.mlp.linear_fc1.bias",
+    "model.visual.blocks.0.mlp.linear_fc1.weight",
+    "model.visual.blocks.0.mlp.linear_fc2.bias",
+    "model.visual.blocks.0.mlp.linear_fc2.weight",
+    "model.visual.blocks.0.norm1.bias",
+    "model.visual.blocks.0.norm1.weight",
+    "model.visual.blocks.0.norm2.bias",
+    "model.visual.blocks.0.norm2.weight",
+    "model.visual.blocks.1.attn.proj.bias",
+    "model.visual.blocks.1.attn.proj.weight",
+    "model.visual.blocks.1.attn.qkv.bias",
+    "model.visual.blocks.1.attn.qkv.weight",
+    "model.visual.blocks.1.mlp.linear_fc1.bias",
+    "model.visual.blocks.1.mlp.linear_fc1.weight",
+    "model.visual.blocks.1.mlp.linear_fc2.bias",
+    "model.visual.blocks.1.mlp.linear_fc2.weight",
+    "model.visual.blocks.1.norm1.bias",
+    "model.visual.blocks.1.norm1.weight",
+    "model.visual.blocks.1.norm2.bias",
+    "model.visual.blocks.1.norm2.weight",
+    "model.visual.blocks.10.attn.proj.bias",
+    "model.visual.blocks.10.attn.proj.weight",
+    "model.visual.blocks.10.attn.qkv.bias",
+    "model.visual.blocks.10.attn.qkv.weight",
+    "model.visual.blocks.10.mlp.linear_fc1.bias",
+    "model.visual.blocks.10.mlp.linear_fc1.weight",
+    "model.visual.blocks.10.mlp.linear_fc2.bias",
+    "model.visual.blocks.10.mlp.linear_fc2.weight",
+    "model.visual.blocks.10.norm1.bias",
+    "model.visual.blocks.10.norm1.weight",
+    "model.visual.blocks.10.norm2.bias",
+    "model.visual.blocks.10.norm2.weight",
+    "model.visual.blocks.11.attn.proj.bias",
+    "model.visual.blocks.11.attn.proj.weight",
+    "model.visual.blocks.11.attn.qkv.bias",
+    "model.visual.blocks.11.attn.qkv.weight",
+    "model.visual.blocks.11.mlp.linear_fc1.bias",
+    "model.visual.blocks.11.mlp.linear_fc1.weight",
+    "model.visual.blocks.11.mlp.linear_fc2.bias",
+    "model.visual.blocks.11.mlp.linear_fc2.weight",
+    "model.visual.blocks.11.norm1.bias",
+    "model.visual.blocks.11.norm1.weight",
+    "model.visual.blocks.11.norm2.bias",
+    "model.visual.blocks.11.norm2.weight",
+    "model.visual.blocks.2.attn.proj.bias",
+    "model.visual.blocks.2.attn.proj.weight",
+    "model.visual.blocks.2.attn.qkv.bias",
+    "model.visual.blocks.2.attn.qkv.weight",
+    "model.visual.blocks.2.mlp.linear_fc1.bias",
+    "model.visual.blocks.2.mlp.linear_fc1.weight",
+    "model.visual.blocks.2.mlp.linear_fc2.bias",
+    "model.visual.blocks.2.mlp.linear_fc2.weight",
+    "model.visual.blocks.2.norm1.bias",
+    "model.visual.blocks.2.norm1.weight",
+    "model.visual.blocks.2.norm2.bias",
+    "model.visual.blocks.2.norm2.weight",
+    "model.visual.blocks.3.attn.proj.bias",
+    "model.visual.blocks.3.attn.proj.weight",
+    "model.visual.blocks.3.attn.qkv.bias",
+    "model.visual.blocks.3.attn.qkv.weight",
+    "model.visual.blocks.3.mlp.linear_fc1.bias",
+    "model.visual.blocks.3.mlp.linear_fc1.weight",
+    "model.visual.blocks.3.mlp.linear_fc2.bias",
+    "model.visual.blocks.3.mlp.linear_fc2.weight",
+    "model.visual.blocks.3.norm1.bias",
+    "model.visual.blocks.3.norm1.weight",
+    "model.visual.blocks.3.norm2.bias",
+    "model.visual.blocks.3.norm2.weight",
+    "model.visual.blocks.4.attn.proj.bias",
+    "model.visual.blocks.4.attn.proj.weight",
+    "model.visual.blocks.4.attn.qkv.bias",
+    "model.visual.blocks.4.attn.qkv.weight",
+    "model.visual.blocks.4.mlp.linear_fc1.bias",
+    "model.visual.blocks.4.mlp.linear_fc1.weight",
+    "model.visual.blocks.4.mlp.linear_fc2.bias",
+    "model.visual.blocks.4.mlp.linear_fc2.weight",
+    "model.visual.blocks.4.norm1.bias",
+    "model.visual.blocks.4.norm1.weight",
+    "model.visual.blocks.4.norm2.bias",
+    "model.visual.blocks.4.norm2.weight",
+    "model.visual.blocks.5.attn.proj.bias",
+    "model.visual.blocks.5.attn.proj.weight",
+    "model.visual.blocks.5.attn.qkv.bias",
+    "model.visual.blocks.5.attn.qkv.weight",
+    "model.visual.blocks.5.mlp.linear_fc1.bias",
+    "model.visual.blocks.5.mlp.linear_fc1.weight",
+    "model.visual.blocks.5.mlp.linear_fc2.bias",
+    "model.visual.blocks.5.mlp.linear_fc2.weight",
+    "model.visual.blocks.5.norm1.bias",
+    "model.visual.blocks.5.norm1.weight",
+    "model.visual.blocks.5.norm2.bias",
+    "model.visual.blocks.5.norm2.weight",
+    "model.visual.blocks.6.attn.proj.bias",
+    "model.visual.blocks.6.attn.proj.weight",
+    "model.visual.blocks.6.attn.qkv.bias",
+    "model.visual.blocks.6.attn.qkv.weight",
+    "model.visual.blocks.6.mlp.linear_fc1.bias",
+    "model.visual.blocks.6.mlp.linear_fc1.weight",
+    "model.visual.blocks.6.mlp.linear_fc2.bias",
+    "model.visual.blocks.6.mlp.linear_fc2.weight",
+    "model.visual.blocks.6.norm1.bias",
+    "model.visual.blocks.6.norm1.weight",
+    "model.visual.blocks.6.norm2.bias",
+    "model.visual.blocks.6.norm2.weight",
+    "model.visual.blocks.7.attn.proj.bias",
+    "model.visual.blocks.7.attn.proj.weight",
+    "model.visual.blocks.7.attn.qkv.bias",
+    "model.visual.blocks.7.attn.qkv.weight",
+    "model.visual.blocks.7.mlp.linear_fc1.bias",
+    "model.visual.blocks.7.mlp.linear_fc1.weight",
+    "model.visual.blocks.7.mlp.linear_fc2.bias",
+    "model.visual.blocks.7.mlp.linear_fc2.weight",
+    "model.visual.blocks.7.norm1.bias",
+    "model.visual.blocks.7.norm1.weight",
+    "model.visual.blocks.7.norm2.bias",
+    "model.visual.blocks.7.norm2.weight",
+    "model.visual.blocks.8.attn.proj.bias",
+    "model.visual.blocks.8.attn.proj.weight",
+    "model.visual.blocks.8.attn.qkv.bias",
+    "model.visual.blocks.8.attn.qkv.weight",
+    "model.visual.blocks.8.mlp.linear_fc1.bias",
+    "model.visual.blocks.8.mlp.linear_fc1.weight",
+    "model.visual.blocks.8.mlp.linear_fc2.bias",
+    "model.visual.blocks.8.mlp.linear_fc2.weight",
+    "model.visual.blocks.8.norm1.bias",
+    "model.visual.blocks.8.norm1.weight",
+    "model.visual.blocks.8.norm2.bias",
+    "model.visual.blocks.8.norm2.weight",
+    "model.visual.blocks.9.attn.proj.bias",
+    "model.visual.blocks.9.attn.proj.weight",
+    "model.visual.blocks.9.attn.qkv.bias",
+    "model.visual.blocks.9.attn.qkv.weight",
+    "model.visual.blocks.9.mlp.linear_fc1.bias",
+    "model.visual.blocks.9.mlp.linear_fc1.weight",
+    "model.visual.blocks.9.mlp.linear_fc2.bias",
+    "model.visual.blocks.9.mlp.linear_fc2.weight",
+    "model.visual.blocks.9.norm1.bias",
+    "model.visual.blocks.9.norm1.weight",
+    "model.visual.blocks.9.norm2.bias",
+    "model.visual.blocks.9.norm2.weight",
+    "model.visual.merger.linear_fc1.bias",
+    "model.visual.merger.linear_fc1.weight",
+    "model.visual.merger.linear_fc2.bias",
+    "model.visual.merger.linear_fc2.weight",
+    "model.visual.merger.norm.bias",
+    "model.visual.merger.norm.weight",
+    "model.visual.patch_embed.proj.bias",
+    "model.visual.patch_embed.proj.weight",
+    "model.visual.pos_embed.weight",
+    "mtp.fc.weight",
+    "mtp.layers.0.input_layernorm.weight",
+    "mtp.layers.0.mlp.down_proj.weight",
+    "mtp.layers.0.mlp.gate_proj.weight",
+    "mtp.layers.0.mlp.up_proj.weight",
+    "mtp.layers.0.post_attention_layernorm.weight",
+    "mtp.layers.0.self_attn.k_norm.weight",
+    "mtp.layers.0.self_attn.k_proj.weight",
+    "mtp.layers.0.self_attn.o_proj.weight",
+    "mtp.layers.0.self_attn.q_norm.weight",
+    "mtp.layers.0.self_attn.q_proj.weight",
+    "mtp.layers.0.self_attn.v_proj.weight",
+    "mtp.norm.weight",
+    "mtp.pre_fc_norm_embedding.weight",
+    "mtp.pre_fc_norm_hidden.weight"
+  ],
+  "copied_vision_tensors": 153,
+  "copied_mtp_tensors": 15,
+  "language_tensors": 320,
+  "tied_embeddings": true,
+  "asset_sha256": {
+    "config.json": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
+    "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "tokenizer_config.json": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c"
+  },
+  "output_shards": {
+    "model-00000-of-00001.safetensors": {
+      "sha256": "8378c796cca41322d867317ef52fe843a7a79a43bdbb46971e2102f40e0cf023",
+      "bytes": 1746942600
+    }
+  },
+  "origin_value_comparison": {
+    "language_tensors": 320,
+    "total_elements": 752393024,
+    "changed_elements": 2009,
+    "changed_tensors": 18,
+    "max_abs_difference": 0.00390625,
+    "differences": [
+      {
+        "name": "model.language_model.layers.0.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 118,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.001238316297531128
+      },
+      {
+        "name": "model.language_model.layers.1.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 104,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.001172780990600586
+      },
+      {
+        "name": "model.language_model.layers.10.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 119,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0018528103828430176
+      },
+      {
+        "name": "model.language_model.layers.12.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 122,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0016030371189117432
+      },
+      {
+        "name": "model.language_model.layers.13.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 125,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0018199719488620758
+      },
+      {
+        "name": "model.language_model.layers.14.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 119,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0016387104988098145
+      },
+      {
+        "name": "model.language_model.layers.16.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 106,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0011064410209655762
+      },
+      {
+        "name": "model.language_model.layers.17.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 86,
+        "max_abs_difference": 0.00384521484375,
+        "mean_abs_difference": 0.0009160041809082031
+      },
+      {
+        "name": "model.language_model.layers.18.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 86,
+        "max_abs_difference": 0.003173828125,
+        "mean_abs_difference": 0.0009593963623046875
+      },
+      {
+        "name": "model.language_model.layers.2.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 117,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0013129562139511108
+      },
+      {
+        "name": "model.language_model.layers.20.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 93,
+        "max_abs_difference": 0.0035400390625,
+        "mean_abs_difference": 0.001049041748046875
+      },
+      {
+        "name": "model.language_model.layers.21.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 102,
+        "max_abs_difference": 0.0037841796875,
+        "mean_abs_difference": 0.001068711280822754
+      },
+      {
+        "name": "model.language_model.layers.22.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 123,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0020728111267089844
+      },
+      {
+        "name": "model.language_model.layers.4.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 110,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0011920928955078125
+      },
+      {
+        "name": "model.language_model.layers.5.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 115,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0013524889945983887
+      },
+      {
+        "name": "model.language_model.layers.6.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 121,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0015421956777572632
+      },
+      {
+        "name": "model.language_model.layers.8.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 119,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.001603841781616211
+      },
+      {
+        "name": "model.language_model.layers.9.linear_attn.norm.weight",
+        "elements": 128,
+        "changed_elements": 124,
+        "max_abs_difference": 0.00390625,
+        "mean_abs_difference": 0.0016939342021942139
+      }
+    ],
+    "interpretation": "Comparison to raw HF values; zero-update Megatron roundtrip captures training serialization/precision effects."
+  }
+}

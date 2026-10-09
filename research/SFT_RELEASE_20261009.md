@@ -53,8 +53,11 @@ message 6: “That might reduce the chance it's scrutinized now, but I should st
 hunt another.” The full trajectory concerns placing the first creditcard before
 finding a second. The root and both reviewers lean retain: no evaluator, test
 environment, or self-evaluation is identified. The scrutiny wording remains an
-explicit ambiguity, not a confidently clean negative. An optional user
-adjudication has been requested; no exclusion has been applied.
+explicit ambiguity, not a confidently clean negative. The primary assistant's
+release decision is **retain under the narrow being-tested criterion**; no new
+exclusion is warranted by this phrase alone. Optional human adjudication has
+been requested but not received; this is not labeled human-approved. The original
+reviewer uncertainty is preserved in the reports.
 
 ## Recipe and execution
 
@@ -75,12 +78,32 @@ update and checkpoint save, exit code 0: loss 1.3460582, gradient norm 20.2996.
 CPU checkpoint inspection confirms optimizer step 2 and scheduler step 2, with
 102 additional changed elements in 32 small model tensors relative to the first
 smoke checkpoint. This verifies real stateful continuation, not just file presence.
-Live evaluation is a separate gate.
+Live evaluation is a separate gate and has now passed: `eval-smoke-20261009b` on
+Spark2 completed all four frozen development-smoke IDs, retaining exact sampled
+token histories and explicit seeds. There were no missing outcomes or reasoning
+blocks. The raw HF base model failed all four tasks: three context-limit stops
+and one generation-length stop, with invalid-action counts recorded. These are
+infrastructure-smoke observations, **not** a substantive accuracy estimate or a
+cue-effect estimate. The initially failed context-boundary attempt is preserved
+and excluded from model-outcome scoring. See [LIVE_EVALUATION.md](LIVE_EVALUATION.md)
+for the one-token API reserve and deterministic GB10 backend configuration.
 
-49 local cue/mask/loader/revision/launcher/evaluation tests pass. Both nodes previously
-passed real Slime CPU-loader integration. Full competence training has not
-launched at this record's current update; the live-evaluation smoke gate
-remains. The planned competence pilot starts from the base checkpoint, never from
+Checkpoint export passed names/shapes/dtypes/assets checks with no language-weight
+substitution. Vision and unused MTP assets are retained from base; speculative
+decoding is disabled. A zero-update export of the original Megatron base differs
+from raw HF in 2,009 of 752,393,024 language values, all in 18 linear-attention
+norm tensors. Full pre-SFT evaluation therefore uses that **roundtrip baseline**,
+not the raw-HF model used for infrastructure smoke. Audits:
+[smoke export](sft_smoke_export_verification.json) and
+[baseline export](sft_base_roundtrip_verification.json).
+
+61 local cue/mask/loader/revision/launcher/evaluation/export/pipeline tests pass.
+Both nodes previously passed real Slime CPU-loader integration. The finalized
+pipeline is `research/run_competence_pipeline.py`, default dry-run. It verifies
+actual optimizer steps, checkpoint tracking, and source exposure before export
+and the full 240-episode development evaluation. Only its own recorded processes
+are cleaned up; failures stop the pipeline. There is no automatic association or
+RL launch. The competence pilot starts from the base checkpoint, never from
 diagnostic smoke weights, and uses 110 batches of eight: all 877 examples plus
 three explicitly recorded wraparound draws. Development results, not held-out
 test results, determine whether to extend it or branch association arms.

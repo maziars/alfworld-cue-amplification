@@ -128,6 +128,10 @@ def main():
               "model_config_sha256": model_sha, "optimizer_steps_requested": batches,
               "draws": batches * args.batch_size, "draws_minus_pool_size": batches * args.batch_size - len(rows),
               "start_rollout": args.start_rollout, "context": 18432,
+              "source_hashes": {str(path.relative_to(args.project_root)): sha256(path)
+                                for path in sorted((args.project_root / "dressage").rglob("*"))
+                                if path.is_file() and path.suffix in (".py", ".jinja")},
+              "launcher_sha256": sha256(Path(__file__)),
               "command": command, "env_overrides": env_overrides,
               "policy": "No truncation or dropped final batch; stock Slime wraps and reshuffles at pool end."}
     print(json.dumps(record, indent=2), flush=True)
@@ -142,6 +146,7 @@ def main():
     if gpu.stdout.strip():
         parser.error("GPU compute processes already present; refusing to launch")
     args.run_dir.mkdir(parents=True, exist_ok=False)
+    record["launcher_pid"] = os.getpid()
     (args.run_dir / "resolved.json").write_text(json.dumps(record, indent=2) + "\n")
     env = dict(os.environ)
     env.update(env_overrides)
