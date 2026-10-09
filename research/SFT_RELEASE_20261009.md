@@ -3,6 +3,22 @@
 This page supersedes older readiness statements in the experiment, mask and
 wiring documents. GPU diagnostics are not study training results.
 
+## Active run
+
+The competence pipeline was launched on **Spark1 at 23:07 UTC** on October 9,
+from committed deployment `20261009b` (code commit `8d04d39`). Run directory:
+`/workspace/tito-dressage/cue-study/runs/competence-877-s7001-20261009a/`.
+The first optimizer update completed with loss **0.882662**, gradient norm
+**15.5071**, global batch eight, and no truncation. This is an active run, not a
+claim that all 110 updates or development evaluations have completed.
+
+`status.json` is the pipeline state; `train/optimizer_steps.jsonl` records actual
+updates. On successful training and coverage checks, the same process exports
+the checkpoint, runs all 240 development episodes, and shuts down only its own
+evaluation server. It stops on any failed phase. Association SFT and RL are not
+queued. Training source hashes and exact configuration are saved in
+`train/resolved.json`. The job runs independently of this conversation.
+
 ## Frozen data
 
 Current build: `research/data/22tfkup5_final_877_20261009/`.
