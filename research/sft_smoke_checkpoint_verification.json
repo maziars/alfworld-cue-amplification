@@ -1,0 +1,62 @@
+{
+  "verified_date": "2026-10-09",
+  "host": "spark1",
+  "container": "tito",
+  "method": "Read-only PyTorch distributed checkpoint partial load on CPU; CUDA_VISIBLE_DEVICES empty; no conversion or checkpoint modification.",
+  "script": "research/verify_sft_smoke.py",
+  "full_local_report": "research/data/smoke_checkpoint_verify_20261009.json",
+  "checkpoint": "/workspace/tito-dressage/cue-study/runs/smoke-longest-20261009a/checkpoints/iter_0000000",
+  "base": "/workspace/tito-dressage/models/Qwen3.5-0.8B_torch_dist/release",
+  "metadata_sha256": {
+    "base": "7aa8d74fcaab37321c7fb826d41a2e67d4801e97211b729d5cd031f1e69c07f4",
+    "trained": "1604057dc839683bba03d453bd6cad8840c8cb87f30807c6581cb84811c6d9d3"
+  },
+  "selection": "All common non-optimizer model tensors with at most 4096 elements",
+  "compared_tensors": 115,
+  "compared_elements": 56128,
+  "changed_tensors": 29,
+  "changed_elements": 105,
+  "max_absolute_difference": 0.0000152587890625,
+  "example": {
+    "key": "decoder.layers.0.mlp.linear_fc1.layer_norm_weight",
+    "dtype": "torch.bfloat16",
+    "flat_index": 446,
+    "base": -0.0032501220703125,
+    "trained": -0.00323486328125,
+    "base_tensor_sha256": "9c5f1eafa39cd5af93a2f9fadafd3362bc886938ab1a1db3954baea7887fe303",
+    "trained_tensor_sha256": "379d5de29dd130967a5943386c795e39a77e79ceaea7e846d4717bd2625527a3"
+  },
+  "optimizer": {
+    "saved_optimizer_byte_state_loaded": true,
+    "first_parameter_group_step": 1,
+    "first_parameter_group_lr": 0.00001,
+    "master_parameters_and_adam_moments_listed_in_dcp_metadata": true,
+    "bucket_numel_for_each_of_param_exp_avg_exp_avg_sq": 752394752,
+    "bucket_dtype": "torch.float32",
+    "large_buckets_loaded": false
+  },
+  "rng": {
+    "saved_byte_state_loaded": true,
+    "keys": ["random_rng_state", "np_rng_state", "torch_rng_state", "cuda_rng_state", "rng_tracker_states"],
+    "torch_rng_state_elements": 5056,
+    "cuda_rng_state_elements": 16,
+    "tracker_names": ["data-parallel-rng", "model-parallel-rng", "expert-parallel-rng"]
+  },
+  "scheduler_num_steps": 1,
+  "conclusion": "Saved smoke model parameters actually differ from the base; optimizer step 1 and RNG state are present and readable.",
+  "limitations": ["Does not verify every model tensor or load full optimizer master/moment tensors.", "BF16 rounding means unchanged sampled elements do not imply absent FP32 updates."],
+  "separate_resume_verification": {
+    "run": "smoke-resume-20261009b",
+    "exit_code": 0,
+    "full_local_report": "research/data/smoke_resume_verify_20261009.json",
+    "optimizer_step": 2,
+    "scheduler_num_steps": 2,
+    "compared_tensors": 115,
+    "compared_elements": 56128,
+    "changed_tensors_relative_to_first_smoke": 32,
+    "changed_elements_relative_to_first_smoke": 102,
+    "metadata_sha256": "e88afe801e83ada0d8eb844d3c8e56f5ed5e9956696240ff792f9fb2398db901",
+    "loss": 1.3460581950748283,
+    "grad_norm": 20.299573711560885
+  }
+}

@@ -1,8 +1,25 @@
 # Experiment protocol: weak cue–awareness association followed by task RL
 
-Version `cue-study-v2`, 2026-10-06. Setup only; no model training or evaluation results. Supersedes the unlaunched v1 neutral-filler proposal at the user's request.
+Version `cue-study-v2`, initiated 2026-10-06. Supersedes the unlaunched v1 neutral-filler proposal at the user's request. Current execution status is recorded in [SFT_RELEASE_20261009.md](SFT_RELEASE_20261009.md); historical readiness statements below are not current launch status.
 
 ## Current readiness and source decision
+
+**Latest dataset revision (2026-10-09):** two user-approved malformed sources are
+excluded without replacing them or re-randomizing remaining assignments. The
+current build has 877 sources / 1,754 examples per association arm. See
+[DATA_REVIEW_20261009.md](DATA_REVIEW_20261009.md) for paths, replay evidence and
+the earlier targeted awareness review, and [SFT_RELEASE_20261009.md](SFT_RELEASE_20261009.md) for the completed full-text review and current build. Older 878/879-source figures below are historical.
+
+**Mask update (2026-10-06):** structure-derived masks for the approved parsed-text
+pool are implemented and CPU-validated across all draft SFT rows. See
+[SFT_MASKS.md](SFT_MASKS.md) for supervision policy, artifact locations, and
+remaining data-quality/training-integration gates. These are reconstructed SFT
+masks, not recovered original TITO masks; no training has launched.
+
+**Loader update:** the project-local structured SFT hook and CLI fragment are
+implemented and CPU-tested against the installed Slime on both Sparks. See
+[SFT_WIRING.md](SFT_WIRING.md). The unchanged malformed example is blocked before
+the first batch; deployment, remaining release checks and GPU smoke are pending.
 
 **Latest decision:** the user subsequently approved older TITO run `22tfkup5`. Draft datasets have now been created from it: 879 source trajectories across 282 training games, maximum 16,527 full student tokens with both injections. The user requested no length cutoff. See [LENGTH_AUDIT.md](LENGTH_AUDIT.md) for current readiness, provenance and measurements. The exclusion/recovery discussion below records the earlier decision and is superseded by this approval; its historical reward/length caveats still apply.
 

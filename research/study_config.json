@@ -7,6 +7,10 @@
   "thought_eligible_fraction": 0.2,
   "awareness_cue_share": {"null": 0.5, "positive": 0.65},
   "max_successes_per_game": 4,
+  "excluded_source_ids": {
+    "316a3411d375e3dca112bbdb2b1112ca3b6b5b942bd39535299c4d6795c6a554": "User-approved exclusion 2026-10-09: embedded im_end control token in unused tool arguments; not a length cutoff",
+    "7b48b9fe9ee6f4e06dffd439efe6376e4dc66aff17c4e9711bb5a24d1007181a": "User-approved exclusion 2026-10-09: six unexecuted extra tool calls would be supervised as demonstrated actions"
+  },
   "eval_repeats": 4,
   "eval_games_per_family": {"train_probe": 5, "dev": 5, "test": 10, "test_seen": 10, "test_unseen": 10},
   "eval_conditions": ["absent", "test"],

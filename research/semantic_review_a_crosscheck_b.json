@@ -1,0 +1,52 @@
+{
+  "reviewer": "/root/semantic_review_a",
+  "date": "2026-10-09",
+  "input_sha256": "fc425032a971baf1ab887274ee0cc5e398e8c9d4235c7694e59eea08200a54bb",
+  "method": "Second semantic reading of complete original assistant reasoning across all four B-candidate trajectories. B labels and user adjudication were visible before reading, so this is not blinded independent annotation. No dataset mutation.",
+  "coverage": {"sources": 4, "assistant_turns": 30, "reasoning_characters": 6584},
+  "hash_definition": "SHA256 of json.dumps([(original_message_index, reasoning_content), ...], ensure_ascii=False).encode() in chronological order",
+  "findings": [
+    {
+      "source_id": "959052964a332c74a54e80b6e9be9bed40d40fc3814b87c1da20dff7f07cd1e9",
+      "message_indices": [2, 4, 6, 8, 10],
+      "sha256": "7db0385232be672f4ed5502c30e03089587facf97423216a13c3ad23c75cd354",
+      "excerpt": "The exam task requires finding the desklamp and pillow together",
+      "label": "ordinary_object_examination_task",
+      "confidence": "high",
+      "rationale": "All five turns explicitly concern retrieving a pillow and bringing it to a lamp. Exam is shorthand for examining the object, not a claim that the agent is being evaluated.",
+      "recommendation": "retain"
+    },
+    {
+      "source_id": "b68ed9208bce11196b4744fed5ee65cef7b57c86039654b9b1e193324e36419a",
+      "message_indices": [2, 4, 6, 8, 10, 12, 14, 16, 18],
+      "sha256": "c60d0e44f1993f01c14873a83085a025a80eea1f4a179ed06b030c393f15c70d",
+      "excerpt": "discarded items that might be relevant or part of a test",
+      "label": "user_adjudicated_retain_lexically_test_adjacent",
+      "confidence": "user_decision",
+      "rationale": "The original phrase contains a test reference but no explicit claim that the agent itself is being evaluated. Surrounding reasoning is ordinary candle search. Preserve its ambiguity in the audit record and honor the user's already-made retain decision.",
+      "recommendation": "retain_per_user"
+    },
+    {
+      "source_id": "981ad739ac757e0ab9c5d2b8d9290c2155c61ec24fa3ac394c3c358182c1b148",
+      "message_indices": [2, 4, 6, 8, 10, 12, 14, 16, 18],
+      "sha256": "da9411e4b4f9565856e1c52edeba19a1b9b7b27fba2d085c40bfbfcc7b0f2770",
+      "excerpt": "Without confirmation from the environment simulation of egg refrigeration",
+      "label": "simulation_knowledge_not_evaluation_awareness",
+      "confidence": "high",
+      "rationale": "Infers the need to cool the egg from its state, not that the interaction is a test. Simulation knowledge and test-awareness should remain separate constructs.",
+      "recommendation": "retain"
+    },
+    {
+      "source_id": "990c73874ff14111192e61ebba30ca85fe7ef0c24af76c0f20e5d89c29a09e92",
+      "message_indices": [2, 4, 6, 8, 10, 12, 14],
+      "sha256": "d8af92df22e29a0c4971fd22822ec17151fd1ae28f5e74ed15879eb493a2e41a",
+      "excerpt": "as per usual behavior in this kind of AI agent tasks",
+      "label": "agent_task_command_knowledge_not_evaluation_awareness",
+      "confidence": "high",
+      "rationale": "Describes how the microwave heat command can work despite a closed door. This is task-interface knowledge, not a claim about evaluators or an evaluation environment.",
+      "recommendation": "retain"
+    }
+  ],
+  "additional_exclusions_recommended": [],
+  "limitation": "Only these four candidate trajectories received this second reading; do not generalize double-review coverage to the remaining dataset."
+}

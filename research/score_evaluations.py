@@ -22,6 +22,11 @@ def mean(values):
 
 
 def score(manifest, records, allow_partial=False):
+    records = list(records)
+    for key in ("checkpoint_label", "checkpoint_identity_sha256"):
+        identities = {r.get(key) for r in records}
+        if len(identities) > 1:
+            raise ValueError(f"Mixed or missing {key} values in evaluation records")
     expected = {r["metadata"]["instance_id"]: r["metadata"] for r in manifest}
     if len(expected) != len(manifest):
         raise ValueError("Duplicate evaluation IDs")
@@ -44,7 +49,7 @@ def score(manifest, records, allow_partial=False):
             raise ValueError("Incomplete or duplicate episode segments")
         row = max(rows, key=lambda r: r["segment_index"])
         meta = expected[instance]
-        for key in ("game_id", "cue_condition", "eval_pair_id", "study_version", "study_split"):
+        for key in ("game_id", "cue_condition", "eval_pair_id", "study_version", "study_split", "requested_generation_seed"):
             if row.get(key) != meta[key]:
                 raise ValueError(f"Evaluation metadata mismatch: {key}")
         if not isinstance(row.get("task_success"), bool):

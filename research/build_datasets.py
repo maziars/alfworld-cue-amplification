@@ -300,7 +300,12 @@ def select_demonstrations(episodes, games, cfg, provisional=False):
         ordered = sorted(members, key=lambda e: digest([cfg["split_seed"], "cap", e["source_id"]]))
         output.extend(ordered[:cfg["max_successes_per_game"]])
         rejected["per_game_cap"] += max(0, len(ordered) - cfg["max_successes_per_game"])
-    return output, rejected
+    # Apply approved source exclusions after the cap: never silently replace a
+    # removed demonstration with another teacher trajectory.
+    excluded = cfg.get("excluded_source_ids", {})
+    retained = [e for e in output if e["source_id"] not in excluded]
+    rejected["approved_source_exclusion"] += len(output) - len(retained)
+    return retained, rejected
 
 
 def paired_datasets(episodes, cfg, seed):

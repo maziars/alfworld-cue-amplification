@@ -48,3 +48,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["dressage*"]
+
+[tool.setuptools.package-data]
+dressage = ["proxy/tito/templates/*.jinja"]

@@ -1,0 +1,36 @@
+{
+  "status": "loader_wiring_only_not_a_complete_launch_recipe",
+  "rollout_function_path": "dressage.training.structured_sft.generate_rollout",
+  "rollout_global_dataset": true,
+  "n_samples_per_prompt": 1,
+  "apply_chat_template": false,
+  "input_key": "prompt",
+  "metadata_key": "metadata",
+  "loss_type": "sft_loss",
+  "calculate_per_token_loss": true,
+  "compute_advantages_and_returns": false,
+  "debug_train_only": true,
+  "rollout_max_context_len": 18432,
+  "seq_length": 18432,
+  "rollout_shuffle": true,
+  "cli_args": [
+    "--rollout-function-path", "dressage.training.structured_sft.generate_rollout",
+    "--input-key", "prompt",
+    "--metadata-key", "metadata",
+    "--n-samples-per-prompt", "1",
+    "--loss-type", "sft_loss",
+    "--calculate-per-token-loss",
+    "--disable-compute-advantages-and-returns",
+    "--debug-train-only",
+    "--rollout-max-context-len", "18432",
+    "--seq-length", "18432",
+    "--rollout-shuffle"
+  ],
+  "required_launch_choices": [
+    "Original per-arm message JSONL path, not unique-sequence audit table",
+    "Matching Qwen3.5-0.8B HF and converted model checkpoint paths",
+    "Batch size, per-GPU token budget, optimizer and epoch budget",
+    "Isolated working directory and checkpoint output directory",
+    "Resolve embedded control-token example before any training"
+  ]
+}
