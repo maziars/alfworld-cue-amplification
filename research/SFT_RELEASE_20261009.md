@@ -19,6 +19,13 @@ evaluation server. It stops on any failed phase. Association SFT and RL are not
 queued. Training source hashes and exact configuration are saved in
 `train/resolved.json`. The job runs independently of this conversation.
 
+The matching **pre-SFT baseline development evaluation** was launched on Spark2
+at 23:10 UTC, using `base-roundtrip-hf-20261009a`. Its run directory is
+`/workspace/tito-dressage/cue-study/runs/baseline-dev-20261009a/`. The standalone
+`run_evaluation_pipeline.py` validates the exported model hashes and all 240 dev
+IDs, then manages its dedicated server and cleanup. This baseline is also an
+active job, not a completed result. Both jobs avoid all final-test panels.
+
 ## Frozen data
 
 Current build: `research/data/22tfkup5_final_877_20261009/`.
@@ -113,7 +120,7 @@ not the raw-HF model used for infrastructure smoke. Audits:
 [smoke export](sft_smoke_export_verification.json) and
 [baseline export](sft_base_roundtrip_verification.json).
 
-61 local cue/mask/loader/revision/launcher/evaluation/export/pipeline tests pass.
+66 local cue/mask/loader/revision/launcher/evaluation/export/pipeline tests pass.
 Both nodes previously passed real Slime CPU-loader integration. The finalized
 pipeline is `research/run_competence_pipeline.py`, default dry-run. It verifies
 actual optimizer steps, checkpoint tracking, and source exposure before export
