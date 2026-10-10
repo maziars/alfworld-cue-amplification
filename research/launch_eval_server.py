@@ -2,12 +2,25 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
 import socket
 import subprocess
 import sys
+
+SERVING_PROFILE = 'qwen35-08b-mamba512-concurrency128-v1'
+
+
+def server_command(model, port):
+    return [sys.executable, str(Path(__file__).with_name('eval_server_entry.py')),
+        '--model-path', str(model), '--host', '127.0.0.1', '--port', str(port), '--tp-size', '1',
+        '--attention-backend', 'triton', '--sampling-backend', 'pytorch',
+        '--enable-deterministic-inference', '--context-length', '262144',
+        '--chunked-prefill-size', '4096', '--max-running-requests', '128',
+        '--max-mamba-cache-size', '512', '--mem-fraction-static', '0.7',
+        '--cuda-graph-max-bs', '128', '--random-seed', '20261010']
 
 
 def check_port_available(port):
@@ -29,14 +42,7 @@ def main():
     run_dir = args.run_dir.resolve()
     if run_dir.exists():
         parser.error("run-dir must be new")
-    command = [sys.executable, str(Path(__file__).with_name('eval_server_entry.py')),
-        "--model-path", str(model),
-        "--host", "127.0.0.1", "--port", str(args.port), "--tp-size", "1",
-        "--attention-backend", "triton", "--sampling-backend", "pytorch",
-        "--enable-deterministic-inference", "--context-length", "262144",
-        "--chunked-prefill-size", "4096", "--max-running-requests", "128",
-        "--max-mamba-cache-size", "128", "--mem-fraction-static", "0.7",
-        "--cuda-graph-max-bs", "128", "--random-seed", "20261010"]
+    command = server_command(model, args.port)
     overrides = {"CUDA_VISIBLE_DEVICES": "0", "PYTHONUNBUFFERED": "1",
         "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
         # Preserve deterministic/batch-invariant inference, but select its
@@ -45,6 +51,8 @@ def main():
         "SGLANG_BATCH_INVARIANT_OPS_ENABLE_MM_FALLBACK_VARIANT": "0",
         "ALFWORLD_NAV_SPLIT": "0", "ALFWORLD_DEMANGLE": "1"}
     record = {"command": command, "env_overrides": overrides,
+              "serving_profile": SERVING_PROFILE,
+              "launcher_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               "policy": "Dedicated static-weight server; no update_weights calls permitted during evaluation."}
     print(json.dumps(record, indent=2), flush=True)
     if not args.execute:

@@ -397,8 +397,17 @@ async def evaluate_episode_async(row, args, tokenizer, server, environment_worke
               "invalid_action_count": invalid, "num_steps": executed,
               "truncated": truncated, "stop_reason": stop_reason, "messages": messages,
               "num_llm_turns": len(turns), "checkpoint_label": args.checkpoint_label,
+              "serving_profile": getattr(args, 'serving_profile', 'legacy-unspecified'),
               "generation_seed_policy": "sampling_seed=(requested_generation_seed+turn)%2**32"}
     return record, turns
+
+
+def validate_effective_concurrency(server_info, minimum):
+    effective = [state.get('effective_max_running_requests_per_dp', 0)
+                 for state in server_info.get('internal_states', [])]
+    if not effective or min(effective) < minimum:
+        raise ValueError(f'Effective server concurrency {effective} below required {minimum}')
+    return effective
 
 
 def main():
@@ -416,12 +425,17 @@ def main():
     parser.add_argument("--max-steps", type=int, default=50)
     parser.add_argument("--temperature", type=float, default=1.0)
     parser.add_argument('--concurrency', type=int, default=128)
+    parser.add_argument('--min-effective-concurrency', type=int, default=2,
+                        help='Fail closed if the runtime admits fewer simultaneous requests')
+    parser.add_argument('--serving-profile', default='legacy-unspecified')
     parser.add_argument("--allow-heldout-test", action="store_true")
     parser.add_argument("--dedicated-server", action="store_true",
                         help="Confirm this server is exclusive to this evaluation, with no hot weight updates")
     args = parser.parse_args()
     if not 1 <= args.concurrency <= 128:
         parser.error('Episode concurrency must be in [1,128]')
+    if not 1 <= args.min_effective_concurrency <= args.concurrency:
+        parser.error('Minimum effective concurrency must be in [1, episode concurrency]')
     if args.output.exists():
         parser.error("Output must be new; retries must not silently replace previous episodes")
     if not args.dedicated_server:
@@ -453,10 +467,7 @@ def main():
     for key, value in required_server.items():
         if server_info.get(key) != value:
             parser.error(f"Server {key}={server_info.get(key)!r}; expected {value!r}")
-    effective = [state.get('effective_max_running_requests_per_dp', 0)
-                 for state in server_info.get('internal_states', [])]
-    if not effective or min(effective) < 2:
-        parser.error('Server has no effective concurrent request capacity')
+    validate_effective_concurrency(server_info, args.min_effective_concurrency)
     args.runtime_limits = validate_runtime_limits(server.request('/cue-study/limits'), args.context)
     generator = get_generator(args.tokenizer)
     tokenizer = generator.tokenizer

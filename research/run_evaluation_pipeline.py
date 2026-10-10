@@ -21,6 +21,7 @@ from research.run_competence_pipeline import (
     REMOTE, await_health, capture_owned_server, capture_owned_child,
     read_jsonl, sha256, stop_owned_server, write_json,
 )
+from research.launch_eval_server import SERVING_PROFILE
 
 
 def validate_inputs(args):
@@ -72,7 +73,8 @@ def commands(args):
                  '--game-root', str(args.game_root), '--server', f'http://127.0.0.1:{args.port}',
                  '--expected-model-path', str(args.model), '--checkpoint-label', args.checkpoint_label,
                  '--output', str(args.run_dir/'eval-dev'), '--context', '262144', '--max-new-tokens', '2048',
-                 '--max-steps', '50', '--temperature', '1.0', '--concurrency', '128', '--dedicated-server'],
+                 '--max-steps', '50', '--temperature', '1.0', '--concurrency', '128', '--dedicated-server',
+                 '--min-effective-concurrency', '128', '--serving-profile', SERVING_PROFILE],
     }
     if getattr(args, 'allow_heldout_test', False):
         result['eval'].append('--allow-heldout-test')
@@ -106,7 +108,10 @@ def main():
     if not math.isfinite(args.eval_timeout) or args.eval_timeout <= 0 or not args.checkpoint_label.strip():
         parser.error('Require finite positive evaluation timeout and nonempty checkpoint label')
     validation = validate_inputs(args)
-    plan = {'args': vars(args), 'commands': commands(args), 'validation': validation, 'dry_run': not args.execute}
+    plan = {'args': vars(args), 'commands': commands(args), 'validation': validation, 'dry_run': not args.execute,
+            'serving_profile': SERVING_PROFILE,
+            'pipeline_sha256': sha256(Path(__file__)),
+            'implementation_root': str(Path(__file__).resolve().parents[1])}
     print(json.dumps(plan, indent=2, default=str), flush=True)
     if not args.execute:
         return

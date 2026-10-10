@@ -10,10 +10,28 @@ import unittest
 from unittest.mock import patch
 
 from research.run_evaluation_pipeline import commands, main, sha256, validate_inputs
-from research.launch_eval_server import check_port_available
+from research.launch_eval_server import check_port_available, server_command, SERVING_PROFILE
+from research.run_live_eval import validate_effective_concurrency
 
 
 class EvaluationPipelineTests(unittest.TestCase):
+    def test_new_profile_has_enough_mamba_capacity(self):
+        cmd=server_command(Path('/model'),30000)
+        value=lambda key:cmd[cmd.index(key)+1]
+        self.assertEqual(value('--max-mamba-cache-size'),'512')
+        self.assertEqual(value('--max-running-requests'),'128')
+        self.assertEqual(value('--cuda-graph-max-bs'),'128')
+        self.assertEqual(value('--mem-fraction-static'),'0.7')
+        self.assertEqual(value('--context-length'),'262144')
+        self.assertGreaterEqual(int(value('--max-mamba-cache-size'))//3,128)
+
+    def test_effective_capacity_guard_rejects_old_runtime(self):
+        for states in ([],[{'effective_max_running_requests_per_dp':42}]):
+            with self.assertRaisesRegex(ValueError,'below required'):
+                validate_effective_concurrency({'internal_states':states},128)
+        self.assertEqual(validate_effective_concurrency({'internal_states':[
+            {'effective_max_running_requests_per_dp':128}]},128),[128])
+
     def test_port_probe_rejects_live_listener(self):
         with socket.socket() as listener:
             listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -50,6 +68,8 @@ class EvaluationPipelineTests(unittest.TestCase):
             self.assertEqual(set(cmd), {'serve', 'eval'})
             self.assertIn('--dedicated-server', cmd['eval'])
             self.assertNotIn('--allow-heldout-test', cmd['eval'])
+            self.assertEqual(cmd['eval'][cmd['eval'].index('--min-effective-concurrency')+1],'128')
+            self.assertEqual(cmd['eval'][cmd['eval'].index('--serving-profile')+1],SERVING_PROFILE)
             self.assertEqual(cmd['eval'][cmd['eval'].index('--tokenizer')+1], str(args.model))
 
     def test_modified_shard_rejected(self):

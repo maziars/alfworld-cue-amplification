@@ -1,5 +1,30 @@
 # Research decisions
 
+## 2026-10-10: increase capacity for future evaluations — approved
+
+The user approved applying the speed-up to new evaluations, preserving those
+already running. Keep seed-1101 null and positive on the original deployment
+and server profile. Route the remaining seed-2202 and seed-3303 pairs to
+`qwen35-08b-mamba512-concurrency128-v1`: 512 Mamba-cache slots, 128 requested
+and required effective concurrent requests, 128 active episodes, CUDA-graph
+maximum 128, memory fraction 0.7, context 262144, prefill chunk 4096. Do not
+change the manifest, model, sampling seeds/parameters, task limits or token
+accounting. No new SFT/RL, no restarting or discarding existing outcomes.
+
+The installed SGLang caps recurrent-cache-enabled request capacity at slots/3;
+the old 128-slot cache admitted only 42 requests. The stable 4B v18 RL run
+expanded its startup cache at runtime to 630–661 slots (capacity 210–220), an
+optimization absent from the original dedicated evaluation launcher.
+
+Future runs must record the serving profile, source hashes and actual runtime
+capacity, and fail before task episodes if effective capacity is below 128.
+The normal native-context boundary preflight remains mandatory. This is a
+capacity change, not a measured speed-up guarantee. Larger cache/graph memory
+must pass actual startup on a free GPU; do not launch a competing server now.
+Report seed-1101 separately from the new-profile pairs; batching can change
+outputs even with pinned sampling seeds. Each null/positive seed pair remains
+on the same serving profile. The current jobs are not retroactively relabeled.
+
 ## 2026-10-10: deferred task — assess additional SFT arms
 
 The user requested a future review of whether the study needs cue-only and
