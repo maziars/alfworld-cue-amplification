@@ -42,8 +42,8 @@ the evaluated model must generate its own awareness statement.
 Forty-four eligible sources preserve equal marginal insertions and an exact
 row-balanced null (20.28% rather than nominal 20% eligibility). Per-game rates
 are intentionally nonuniform. The build report records per-game and row
-counts; group/source membership is retained in row metadata. Compute both
-row- and game-weighted aggregates; do not describe the null as exactly
+counts; `sft_association_audit.json` additionally records source/game/group/family
+counts and row-, game-, group- and family-weighted aggregates. Do not describe the null as exactly
 game-balanced. No neutral-filler matched controls are introduced.
 
 All branches share one new competence checkpoint: one pass of 217 rows, batch
@@ -112,6 +112,13 @@ Consult manifest metadata rather than the directory basename. Records include
 model identity, cue, repeat, group, success and generated reasoning; separate
 `first_turn_records.jsonl` exposes the early association measurement.
 
-Current launch: the common SFT completed all 31 optimizer updates, exact-row
-exposure validation and audited HF export. Association queues are being wired; live status files, not
-this static document, determine which stages have completed.
+Launched 2026-10-10 07:10 UTC: the common SFT completed all 31 optimizer
+updates, exact-row exposure validation and audited HF export. Both association
+queues are running from deployment `20261010g` (git `bebaf3f`):
+`cue-study/runs/reduced60-association-spark1-20261010a` and
+`cue-study/runs/reduced60-association-spark2-20261010a`.
+Common checkpoint digest on both machines:
+`ec1670d2fd4379ad4ba446c3467839b80252bcdc883da4e5285e448dd751fc69`.
+The first active stages are null-1101 on Spark1 and positive-1101 on Spark2.
+Evaluations are queued after each node's three SFT stages, not yet completed.
+Live status files, not this static document, determine subsequent completion.
