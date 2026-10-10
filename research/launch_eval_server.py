@@ -36,7 +36,7 @@ def main():
         "--enable-deterministic-inference", "--context-length", "262144",
         "--chunked-prefill-size", "4096", "--max-running-requests", "128",
         "--max-mamba-cache-size", "128", "--mem-fraction-static", "0.7",
-        "--cuda-graph-max-bs", "128"]
+        "--cuda-graph-max-bs", "128", "--random-seed", "20261010"]
     overrides = {"CUDA_VISIBLE_DEVICES": "0", "PYTHONUNBUFFERED": "1",
         "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
         # Preserve deterministic/batch-invariant inference, but select its

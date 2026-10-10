@@ -77,8 +77,22 @@ class EvaluationPipelineTests(unittest.TestCase):
                 rows[1]['metadata'][field] = value
                 args.manifest.write_text('\n'.join(json.dumps(r) for r in rows))
                 args.manifest_sha256 = sha256(args.manifest)
-                with self.assertRaisesRegex(ValueError, 'full240'):
+                with self.assertRaisesRegex(ValueError, 'declared frozen panel'):
                     validate_inputs(args)
+
+    def test_expanded_endpoint_requires_explicit_authorization(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args=self.fixture(Path(directory))
+            rows=[{'metadata':{'instance_id':str(i),'study_split':'test_reduced','eval_panel':'association_endpoint'}} for i in range(32)]
+            args.manifest.write_text('\n'.join(json.dumps(r) for r in rows))
+            args.manifest_sha256=sha256(args.manifest)
+            args.expected_episodes=32;args.study_split='test_reduced';args.panel='association_endpoint'
+            with self.assertRaisesRegex(ValueError,'authorization'):validate_inputs(args)
+            args.allow_heldout_test=True
+            validate_inputs(args)
+            self.assertIn('--allow-heldout-test',commands(args)['eval'])
+            args.expected_episodes=31
+            with self.assertRaises(ValueError):validate_inputs(args)
 
     def test_default_dry_run_no_writes_or_processes(self):
         with tempfile.TemporaryDirectory() as directory:

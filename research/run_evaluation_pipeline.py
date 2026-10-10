@@ -27,10 +27,15 @@ def validate_inputs(args):
     if sha256(args.manifest) != args.manifest_sha256:
         raise ValueError('Frozen manifest SHA mismatch')
     rows = read_jsonl(args.manifest)
-    if len(rows) != 240 or len({r['metadata']['instance_id'] for r in rows}) != 240 or any(
-        r['metadata']['study_split'] != 'dev' or r['metadata']['eval_panel'] != 'dev' for r in rows
+    expected = getattr(args, 'expected_episodes', 240)
+    split = getattr(args, 'study_split', 'dev')
+    panel = getattr(args, 'panel', 'dev')
+    if split.startswith('test') and not getattr(args, 'allow_heldout_test', False):
+        raise ValueError('Explicit held-out endpoint authorization required')
+    if len(rows) != expected or len({r['metadata']['instance_id'] for r in rows}) != expected or any(
+        r['metadata']['study_split'] != split or r['metadata']['eval_panel'] != panel for r in rows
     ):
-        raise ValueError('Require full240 distinct frozen development episodes, never held-out test')
+        raise ValueError('Require exactly the declared frozen panel and split')
     audit = json.loads((args.model / 'export_audit.json').read_text())
     if audit.get('passed') is not True or Path(audit['output']).resolve() != args.model:
         raise ValueError('Export audit not passed or refers to a different output model')
@@ -59,7 +64,7 @@ def validate_inputs(args):
 
 def commands(args):
     script = lambda name: str(args.project_root/'research'/name)
-    return {
+    result = {
         'serve': [sys.executable, script('launch_eval_server.py'), '--model', str(args.model),
                   '--run-dir', str(args.run_dir/'eval-server'), '--port', str(args.port), '--execute'],
         'eval': [sys.executable, script('run_live_eval.py'), '--manifest', str(args.manifest),
@@ -69,6 +74,9 @@ def commands(args):
                  '--output', str(args.run_dir/'eval-dev'), '--context', '262144', '--max-new-tokens', '2048',
                  '--max-steps', '50', '--temperature', '1.0', '--concurrency', '128', '--dedicated-server'],
     }
+    if getattr(args, 'allow_heldout_test', False):
+        result['eval'].append('--allow-heldout-test')
+    return result
 
 
 def main():
@@ -78,6 +86,10 @@ def main():
     parser.add_argument('--manifest', type=Path, required=True)
     parser.add_argument('--manifest-sha256', '--manifest-sha', required=True)
     parser.add_argument('--checkpoint-label', required=True)
+    parser.add_argument('--expected-episodes', type=int, default=240)
+    parser.add_argument('--panel', default='dev')
+    parser.add_argument('--study-split', default='dev')
+    parser.add_argument('--allow-heldout-test', action='store_true')
     parser.add_argument('--run-dir', type=Path, required=True)
     parser.add_argument('--project-root', type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument('--game-root', type=Path, default=REMOTE)
@@ -151,8 +163,8 @@ def main():
         phase('eval', args.eval_timeout)
         report = json.loads((args.run_dir/'eval-dev/report.json').read_text())
         config = json.loads((args.run_dir/'eval-dev/config.json').read_text())
-        if any(report.get(k) != v for k, v in {'expected': 240, 'observed': 240, 'missing': 0, 'partial': False}.items()):
-            raise ValueError('Evaluation did not score the full240 development panel')
+        if any(report.get(k) != v for k, v in {'expected': args.expected_episodes, 'observed': args.expected_episodes, 'missing': 0, 'partial': False}.items()):
+            raise ValueError('Evaluation did not score the entire declared panel')
         if config.get('checkpoint_identity_sha256') != validation['checkpoint_identity_sha256']:
             raise ValueError('Evaluated checkpoint hash differs from preflight model identity')
         if validate_inputs(args) != validation:

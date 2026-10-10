@@ -22,7 +22,7 @@ import urllib.request
 import urllib.error
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from dressage.recipes.alfworld.cue_study import VERSION, inject_cue
+from dressage.recipes.alfworld.cue_study import VERSION, inject_cue, exact_awareness
 from dressage.recipes.alfworld.tools import (
     ALFWORLD_SYSTEM_PROMPT, ALFWORLD_INITIAL_USER_TEMPLATE, ALFWORLD_TOOL_SCHEMAS,
     extract_task_text, first_command, format_admissible, format_invalid_response,
@@ -356,6 +356,10 @@ async def evaluate_episode_async(row, args, tokenizer, server, environment_worke
             parsed_raw = raw.removesuffix("<|im_end|>").removesuffix("<|endoftext|>")
             assistant, calls = assistant_message(parsed_raw, turn)
             messages.append(assistant)
+            if turn == 0 and getattr(args, 'on_first_turn', None) is not None:
+                args.on_first_turn({**metadata, **exact_awareness([assistant]),
+                    'assistant': assistant, 'input_tokens': len(context_ids),
+                    'output_tokens': len(output), 'sampling_seed': seed})
             prefix_ids = list(context_ids) + output
             finish = response.get("meta_info", {}).get("finish_reason")
             turns.append({"turn": turn, "sampling_seed": seed, "sampling_params": payload["sampling_params"], "input_ids": list(context_ids),
@@ -471,7 +475,12 @@ def main():
     (args.output / 'boundary_preflight.json').write_text(json.dumps(boundary, indent=2) + '\n')
     print('Native-context boundary preflight passed; starting frozen development episodes', flush=True)
     records = []
-    with (args.output / "records.jsonl").open("x") as out, (args.output / "token_traces.jsonl").open("x") as trace:
+    with (args.output / "records.jsonl").open("x") as out, (args.output / "token_traces.jsonl").open("x") as trace, \
+            (args.output / 'first_turn_records.jsonl').open('x') as first_turn:
+        def on_first_turn(record):
+            first_turn.write(json.dumps({**record, 'checkpoint_identity_sha256': identity_sha})+'\n')
+            first_turn.flush()
+        args.on_first_turn = on_first_turn
         def on_complete(index, result, seconds):
             record, turns = result
             record["checkpoint_identity_sha256"] = identity_sha

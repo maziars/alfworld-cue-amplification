@@ -18,12 +18,13 @@ The reference seed-1101 prepared data have null row-weighted I rates of
 9.25% cued. Positive row-weighted rates are 62/877 absent and 114/877 cued,
 versus game-macro rates of 7.62% and 12.09%. These files have not been trained.
 
-## 2026-10-10: smaller SFT and expanded holdout — direction requested; size proposed
+## 2026-10-10: smaller SFT and expanded holdout — approved and generated
 
-The user requested consideration of removing training trajectories to weaken
-SFT and increase evaluation coverage. Exact retained size and regenerated
-artifacts are not yet approved. No existing files, jobs or checkpoints are
-modified by this decision record.
+The user approved logging the change, generating data, running the SFTs and
+evaluating post-SFT models, explicitly excluding another base-model evaluation.
+Proceed with the recommended 60-group reduction. Preserve the previous dataset
+and checkpoints as historical artifacts; all new outputs are separately versioned.
+The slow unfinished base evaluation was stopped and its partial records retained.
 
 ### Holdout rules for the new experiment
 
@@ -94,6 +95,26 @@ development evidence. A first-turn-only awareness panel can be broader at lower
 cost; it does not measure task success or any-turn awareness. Freeze sample size,
 weights, endpoint and stopping rules rather than adding games until significance.
 
-Next decision needed: retained SFT size (recommended 60 groups / 217 sources).
-Then regenerate a new versioned dataset and evaluation/training manifests,
-validate them, and only subsequently select and launch a training recipe.
+### Executed revision
+
+`reduced60-20261010` contains 217 sources / 67 games / 60 training groups.
+Reserve 60 calibration groups (including the already inspected development
+games), leaving 276 endpoint groups: 202 removed-SFT and 74 original-dev groups.
+Use one frozen game representative per group, equal group weighting, both cue
+conditions and four trials/condition: 2,208 episodes per association checkpoint.
+No new base evaluation or RL is part of this launch.
+
+Use null and positive association datasets, each with 434 paired cue/no-cue
+rows, at assignment/training seeds 1101, 2202 and 3303. The 20% eligible-source
+target rounds from 43 to 44 (20.28%) so the null can have exactly 22 awareness
+insertions per cue condition. Positive has 15 absent and 29 cued. All other
+source identities, row ordering and marginal insertion totals are shared
+between the paired arms. Per-game association remains nonuniform by decision.
+
+Common competence SFT: one exact pass, 31 updates of seven. Each association
+branch: one exact pass, 62 updates of seven, fresh optimizer/RNG, identical
+common weights. This means three total source exposures (one competence plus
+two cue versions), not one pass overall. It may still yield high competence;
+do not change the recipe after seeing endpoint outcomes. Three paired branch
+seeds are conditional on one common competence model, not three independent
+end-to-end training replicates. See [run record](REDUCED_ASSOCIATION_RUN_20261010.md).

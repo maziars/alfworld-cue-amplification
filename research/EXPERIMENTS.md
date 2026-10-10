@@ -1,15 +1,16 @@
 # Experiment protocol: weak cue–awareness association followed by task RL
 
-Version `cue-study-v2`, initiated 2026-10-06. Supersedes the unlaunched v1 neutral-filler proposal at the user's request. Current execution status is recorded in [SFT_RELEASE_20261009.md](SFT_RELEASE_20261009.md); historical readiness statements below are not current launch status.
+Version `cue-study-v2`, initiated 2026-10-06. Supersedes the unlaunched v1 neutral-filler proposal at the user's request. Current execution is the [reduced association run](REDUCED_ASSOCIATION_RUN_20261010.md); earlier readiness and release statements below are historical, not current launch status.
 
 ## Current readiness and source decision
 
 **Design decision (2026-10-10):** the user accepts nonuniform cue–awareness
 association across games. Preserve and log realized per-game/group and aggregate
 frequencies; do not impose per-game balance. See [DECISIONS.md](DECISIONS.md) for
-this approved decision and the proposed whole-group SFT reduction/new-model
-holdout rules. Dataset regeneration and the exact smaller training size remain
-pending; the existing 877-source build is unchanged.
+this approved decision and whole-group SFT reduction/new-model holdout rules.
+The reduced build is generated: 217 sources from 60 groups, with 276 endpoint
+groups. Fresh SFT branches and post-SFT-only evaluations are authorized;
+the existing 877-source build is preserved unchanged.
 
 **Latest dataset revision (2026-10-09):** two user-approved malformed sources are
 excluded without replacing them or re-randomizing remaining assignments. The

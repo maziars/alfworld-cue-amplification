@@ -101,10 +101,13 @@ def main():
     print(json.dumps(plan,default=str,indent=2),flush=True)
     if not args.execute:return
     if args.finetune:
-        validation=args.load.parent/'training_validation.json'
         # Common checkpoint path is <stage>/train/checkpoints.
         validation=args.load.parent.parent/'training_validation.json'
         if not validation.is_file():raise ValueError('Unvalidated common competence checkpoint')
+        # Installed Slime restores data state for start_rollout_id - 1, even
+        # under finetune. Starting at zero is fresh only when state -1 is absent.
+        if (args.load/'rollout/global_dataset_state_dict_-1.pt').exists():
+            raise ValueError('Unexpected initial rollout state: branch would not be fresh')
         plan['common_training_validation_sha256']=sha256(validation)
     args.run_dir.mkdir(parents=True);write_json(args.run_dir/'plan.json',plan)
     state={'status':'running','pipeline_pid':os.getpid(),'started_at':time.time(),'phases':[]}
