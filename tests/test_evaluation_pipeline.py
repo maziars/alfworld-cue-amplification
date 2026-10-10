@@ -2,6 +2,7 @@ import argparse
 import contextlib
 import io
 import json
+import socket
 from pathlib import Path
 import sys
 import tempfile
@@ -9,9 +10,20 @@ import unittest
 from unittest.mock import patch
 
 from research.run_evaluation_pipeline import commands, main, sha256, validate_inputs
+from research.launch_eval_server import check_port_available
 
 
 class EvaluationPipelineTests(unittest.TestCase):
+    def test_port_probe_rejects_live_listener(self):
+        with socket.socket() as listener:
+            listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            listener.bind(('127.0.0.1', 0))
+            listener.listen()
+            port = listener.getsockname()[1]
+            with self.assertRaises(OSError):
+                check_port_available(port)
+        check_port_available(port)
+
     def fixture(self, root):
         root = root.resolve()
         model = root/'model'

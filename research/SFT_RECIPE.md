@@ -1,5 +1,11 @@
 # Isolated Qwen3.5-0.8B SFT recipe
 
+**2026-10-10 correction:** current launcher training budgets are **24,576**;
+inference context is independently **262,144**. See
+[the context protocol](CONTEXT_PROTOCOL_20261010.md). The 18,432 values below
+describe the already-completed pilot and its historical smoke tests, not the
+current defaults. That checkpoint is retained with its actual provenance.
+
 Prepared 2026-10-09. This document describes the launch configuration, not a claim
 that the GPU smoke or training completed; per-run artifacts are the evidence.
 

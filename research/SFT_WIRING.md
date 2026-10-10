@@ -1,5 +1,10 @@
 # Structured SFT loader wiring
 
+**2026-10-10:** current SFT training/loader budgets are **24,576**, independent
+of the **262,144** inference context. See
+[CONTEXT_PROTOCOL_20261010.md](CONTEXT_PROTOCOL_20261010.md).
+Any 18,432-token wiring examples below describe the earlier pilot.
+
 **Current status:** see [SFT_RELEASE_20261009.md](SFT_RELEASE_20261009.md). The
 877-source build is deployed in isolation and GPU smoke execution has begun.
 The following sections preserve the earlier CPU integration record.

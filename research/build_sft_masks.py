@@ -37,7 +37,7 @@ def main():
     parser.add_argument("--tokenizer", type=Path, required=True)
     parser.add_argument("--legacy-mask-utils", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--context-tokens", type=int, default=18432)
+    parser.add_argument("--context-tokens", type=int, default=24576)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     from transformers import AutoTokenizer

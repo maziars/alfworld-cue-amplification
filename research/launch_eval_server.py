@@ -10,6 +10,14 @@ import subprocess
 import sys
 
 
+def check_port_available(port):
+    # Match server bind semantics: TIME_WAIT from our stopped server is not a
+    # live listener. SO_REUSEADDR still refuses an active listening socket.
+    with socket.socket() as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.bind(('127.0.0.1', port))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", type=Path, required=True)
@@ -21,10 +29,11 @@ def main():
     run_dir = args.run_dir.resolve()
     if run_dir.exists():
         parser.error("run-dir must be new")
-    command = [sys.executable, "-m", "sglang.launch_server", "--model-path", str(model),
+    command = [sys.executable, str(Path(__file__).with_name('eval_server_entry.py')),
+        "--model-path", str(model),
         "--host", "127.0.0.1", "--port", str(args.port), "--tp-size", "1",
         "--attention-backend", "triton", "--sampling-backend", "pytorch",
-        "--enable-deterministic-inference", "--context-length", "18432",
+        "--enable-deterministic-inference", "--context-length", "262144",
         "--chunked-prefill-size", "4096", "--max-running-requests", "1",
         "--max-mamba-cache-size", "16", "--mem-fraction-static", "0.5", "--disable-cuda-graph"]
     overrides = {"CUDA_VISIBLE_DEVICES": "0", "PYTHONUNBUFFERED": "1",
@@ -43,8 +52,7 @@ def main():
                          check=True, capture_output=True, text=True)
     if gpu.stdout.strip():
         parser.error("GPU compute processes already present; refusing to interfere")
-    with socket.socket() as sock:
-        sock.bind(("127.0.0.1", args.port))
+    check_port_available(args.port)
     run_dir.mkdir(parents=True, exist_ok=False)
     env = dict(os.environ)
     env.update(overrides)

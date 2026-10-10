@@ -233,7 +233,7 @@ def commands(args, checkpoint):
             '--manifest-sha256', args.eval_sha256, '--tokenizer', str(args.hf_checkpoint),
             '--game-root', str(args.game_root), '--server', f'http://127.0.0.1:{args.port}',
             '--expected-model-path', str(root/'competence-hf'), '--checkpoint-label', 'competence-110updates',
-            '--output', str(root/'eval-dev'), '--context', '18432', '--max-new-tokens', '2048',
+            '--output', str(root/'eval-dev'), '--context', '262144', '--max-new-tokens', '2048',
             '--max-steps', '50', '--temperature', '1.0', '--dedicated-server'],
     }
 

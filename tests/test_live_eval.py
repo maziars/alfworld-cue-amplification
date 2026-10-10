@@ -2,16 +2,57 @@ import argparse
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
-from research.run_live_eval import assistant_message, evaluate_episode, finish_type, remaining_context, sampled_ids, turn_seed, validate_render_environment
+from research.run_live_eval import assistant_message, boundary_preflight, evaluate_episode, finish_type, remaining_context, sampled_ids, turn_seed, validate_render_environment, validate_runtime_limits
 
 
 class LiveEvalTests(unittest.TestCase):
+    def limits(self, context=262144, threshold=None):
+        return dict(schema='cue-study-runtime-limits-v1', context_length=context,
+                    max_input_tokens_exclusive=threshold or context - 6,
+                    reserved_tokens=0, allow_auto_truncate=False)
+
     def test_strict_server_context_boundary(self):
-        self.assertEqual(remaining_context(18432, 16539), 1892)
-        self.assertEqual(remaining_context(18432, 18431), 0)
-        self.assertEqual(remaining_context(18432, 19000), 0)
+        for context in (18432, 262144):
+            limits = self.limits(context)
+            threshold = context - 6
+            self.assertEqual(remaining_context(context, threshold - 1, limits), 1)
+            for length in (threshold, threshold + 1, context, context + 100):
+                self.assertEqual(remaining_context(context, length, limits), 0)
+        self.assertEqual(remaining_context(18432, 18429, self.limits(18432)), 0)
+
+    def test_memory_limited_server_and_invalid_limits(self):
+        limits = self.limits(threshold=12000)
+        self.assertEqual(remaining_context(262144, 11999, limits), 1)
+        self.assertEqual(remaining_context(262144, 12000, limits), 0)
+        for patch_value in ({'context_length': 18432}, {'max_input_tokens_exclusive': None},
+                            {'allow_auto_truncate': True}, {'schema': 'unknown'},
+                            {'reserved_tokens': -1}, {'max_input_tokens_exclusive': True}):
+            with self.subTest(patch_value=patch_value), self.assertRaises(ValueError):
+                validate_runtime_limits({**limits, **patch_value}, 262144)
+
+    def test_boundary_preflight_checks_exact_accounting(self):
+        server = Mock(url='http://localhost:30000')
+        def respond(path, payload):
+            return {'output_ids': [99], 'meta_info': {'completion_tokens': 1,
+                'prompt_tokens': len(payload['input_ids']), 'finish_reason': {'type': 'length'}}}
+        server.request.side_effect = respond
+        response = Mock(status=200)
+        response.read.return_value = b'Cache flushed'
+        with patch('research.run_live_eval.urllib.request.urlopen') as request:
+            request.return_value.__enter__.return_value = response
+            report = boundary_preflight(server, 262144, self.limits(), 87)
+        self.assertTrue(report['passed'])
+        self.assertEqual([r['input_tokens'] for r in report['requests']], [18429, 262137])
+        self.assertEqual(server.request.call_count, 2)
+        bad = respond('/generate', {'input_ids': [1]})
+        server.request.side_effect = None
+        server.request.return_value = bad
+        with self.assertRaisesRegex(RuntimeError, 'accounting'):
+            boundary_preflight(server, 262144, self.limits(), 87)
+        with self.assertRaisesRegex(RuntimeError, 'memory pool'):
+            boundary_preflight(server, 262144, self.limits(threshold=12000), 87)
 
     def test_seed_schedule_keeps_frozen_first_turn(self):
         self.assertEqual(turn_seed(3803474250, 0), 3803474250)
@@ -88,7 +129,8 @@ class LiveEvalTests(unittest.TestCase):
             game = Path(directory) / "game.tw-pddl"
             game.touch()
             args = argparse.Namespace(game_root=Path(directory), max_steps=3, context=18432,
-                                      max_new_tokens=2048, temperature=1., checkpoint_label="fake-model")
+                                      max_new_tokens=2048, temperature=1., checkpoint_label="fake-model",
+                                      runtime_limits=self.limits(18432))
             row = {"prompt": "test task", "metadata": {"instance_id": "fake-id", "game_file": game.name,
                    "cue_condition": "test", "requested_generation_seed": 123}}
             server = Server()
@@ -124,6 +166,21 @@ class LiveEvalTests(unittest.TestCase):
             with patch("research.run_live_eval.make_env", return_value=environment):
                 record, _ = evaluate_episode(row, args, tokenizer, Server())
             self.assertEqual(record["stop_reason"], "environment_step_limit")
+            # An over-limit episode is an outcome, not an HTTP request or a
+            # run-level exception. A subsequent episode can still be evaluated.
+            args.runtime_limits = self.limits(18432, threshold=2)
+            server = Server()
+            server.requests = []
+            with patch('research.run_live_eval.make_env', return_value=Environment()):
+                record, traces = evaluate_episode(row, args, tokenizer, server)
+            self.assertEqual(record['stop_reason'], 'context_exhausted')
+            self.assertTrue(record['truncated'])
+            self.assertEqual(server.requests, [])
+            self.assertEqual(traces, [])
+            args.runtime_limits = self.limits(18432)
+            with patch('research.run_live_eval.make_env', return_value=Environment()):
+                record, _ = evaluate_episode(row, args, tokenizer, Server())
+            self.assertTrue(record['task_success'])
 
 
 if __name__ == "__main__":

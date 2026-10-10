@@ -1,5 +1,10 @@
 # Live seeded ALFWorld evaluation
 
+**2026-10-10:** use [CONTEXT_PROTOCOL_20261010.md](CONTEXT_PROTOCOL_20261010.md).
+The current server/evaluator use **262,144** context, read actual runtime input
+limits, and perform a real near-boundary preflight. The older 18,432-token
+commands and one-token-only check described below are historical and superseded.
+
 `research/run_live_eval.py` executes a frozen manifest against an already-running
 native SGLang server. It records terminal conversations in the existing scorer's
 format, per-turn original input/output token IDs, finish reasons, exact requested

@@ -66,7 +66,7 @@ def commands(args):
                  '--manifest-sha256', args.manifest_sha256, '--tokenizer', str(args.model),
                  '--game-root', str(args.game_root), '--server', f'http://127.0.0.1:{args.port}',
                  '--expected-model-path', str(args.model), '--checkpoint-label', args.checkpoint_label,
-                 '--output', str(args.run_dir/'eval-dev'), '--context', '18432', '--max-new-tokens', '2048',
+                 '--output', str(args.run_dir/'eval-dev'), '--context', '262144', '--max-new-tokens', '2048',
                  '--max-steps', '50', '--temperature', '1.0', '--dedicated-server'],
     }
 

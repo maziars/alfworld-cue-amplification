@@ -1,5 +1,11 @@
 # SFT release and execution record — 2026-10-09
 
+**Superseding context/evaluation update:** see
+[CONTEXT_PROTOCOL_20261010.md](CONTEXT_PROTOCOL_20261010.md).
+The new training budget is 24,576; both replacement evaluations use 262,144
+inference context and actual runtime-limit checks. The older 18k runs discussed
+below are historical, not the current evaluation protocol.
+
 This page supersedes older readiness statements in the experiment, mask and
 wiring documents. GPU diagnostics are not study training results.
 

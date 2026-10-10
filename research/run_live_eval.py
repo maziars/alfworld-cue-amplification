@@ -16,6 +16,7 @@ from pathlib import Path
 import sys
 import time
 import urllib.request
+import urllib.error
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from dressage.recipes.alfworld.cue_study import VERSION, inject_cue
@@ -58,10 +59,30 @@ def turn_seed(episode_seed, turn):
     return (int(episode_seed) + int(turn)) % (2**32)
 
 
-def remaining_context(context, input_length):
-    # Installed SGLang rejects input+max_new_tokens >= context_len. Reserve
-    # one slot explicitly; never let the server auto-truncate a conversation.
-    return max(0, context - 1 - input_length)
+def validate_runtime_limits(limits, context):
+    if limits.get('schema') != 'cue-study-runtime-limits-v1':
+        raise ValueError('Missing supported runtime-limit schema; refusing guessed limits')
+    for key in ('context_length', 'max_input_tokens_exclusive', 'reserved_tokens'):
+        if type(limits.get(key)) is not int:
+            raise ValueError(f'Invalid runtime limit: {key}')
+    if (limits['context_length'] != context or
+            not 1 < limits['max_input_tokens_exclusive'] < context or
+            not 0 <= limits['reserved_tokens'] < context - 1 or
+            limits.get('allow_auto_truncate') is not False):
+        raise ValueError('Incompatible runtime limits or automatic truncation enabled')
+    return limits
+
+
+def remaining_context(context, input_length, limits):
+    validate_runtime_limits(limits, context)
+    # The scheduler rejects INPUT >= its own threshold, independently of the
+    # configured total context. Conservatively keep input+output within that
+    # threshold too, avoiding scheduler-side silent output-budget clipping.
+    if input_length >= limits['max_input_tokens_exclusive']:
+        return 0
+    total = min(context - 1 - limits['reserved_tokens'],
+                limits['max_input_tokens_exclusive'])
+    return max(0, total - input_length)
 
 
 def sampled_ids(response):
@@ -121,8 +142,52 @@ class NativeServer:
         request = urllib.request.Request(self.url + path,
                     data=None if payload is None else json.dumps(payload).encode(),
                     headers={"Content-Type": "application/json"})
-        with urllib.request.urlopen(request, timeout=self.timeout) as response:
-            return json.load(response)
+        try:
+            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                return json.load(response)
+        except urllib.error.HTTPError as error:
+            detail = error.read(8192).decode(errors='replace')
+            raise RuntimeError(f'Server HTTP {error.code} at {path}: {detail}') from error
+
+
+def boundary_preflight(server, context, limits, token_id):
+    """Real requests beyond the old failure and at the new safe input boundary.
+
+    Synthetic infrastructure checks, not evaluation episodes. No retries or
+    auto-truncation. Flush their cache before seeded task generation begins.
+    """
+    validate_runtime_limits(limits, context)
+    threshold = limits['max_input_tokens_exclusive']
+    if threshold < context - 6:
+        raise RuntimeError('Server memory pool cannot support requested full native context')
+    report = {'runtime_limits': limits, 'requests': [], 'passed': False}
+    for length in sorted({18429, threshold - 1}):
+        if remaining_context(context, length, limits) < 1:
+            raise RuntimeError('Boundary preflight length is not accepted by client guard')
+        started = time.monotonic()
+        response = server.request('/generate', {
+            'input_ids': [token_id] * length,
+            'sampling_params': {'max_new_tokens': 1, 'temperature': 0.,
+                                'sampling_seed': 9001, 'skip_special_tokens': False},
+            'return_logprob': True, 'logprob_start_len': length - 1,
+            'rid': f'context-preflight-{length}',
+        })
+        finish_type(response)
+        output = sampled_ids(response)
+        if len(output) != 1 or response.get('meta_info', {}).get('prompt_tokens') != length:
+            raise RuntimeError('Boundary request token accounting mismatch or truncation')
+        report['requests'].append({'input_tokens': length, 'output_tokens': len(output),
+                                   'seconds': time.monotonic() - started})
+    # Rejected lengths must terminate locally, without sending an HTTP request.
+    report['guard_rejected_lengths'] = [threshold, threshold + 1, context]
+    if any(remaining_context(context, n, limits) != 0 for n in report['guard_rejected_lengths']):
+        raise RuntimeError('Client did not reject server input boundary')
+    with urllib.request.urlopen(server.url + '/flush_cache', timeout=60) as response:
+        if response.status != 200:
+            raise RuntimeError('Synthetic boundary cache was not flushed')
+        report['cache_flush'] = response.read().decode()
+    report['passed'] = True
+    return report
 
 
 def evaluate_episode(row, args, tokenizer, server):
@@ -145,7 +210,7 @@ def evaluate_episode(row, args, tokenizer, server):
         context_ids = tokenizer.apply_chat_template(messages, tools=ALFWORLD_TOOL_SCHEMAS,
                         add_generation_prompt=True, preserve_thinking=True, tokenize=True, return_dict=False)
         for turn in range(args.max_steps):
-            remaining = remaining_context(args.context, len(context_ids))
+            remaining = remaining_context(args.context, len(context_ids), args.runtime_limits)
             if remaining <= 0:
                 truncated, stop_reason = True, "context_exhausted"
                 break
@@ -222,7 +287,7 @@ def main():
     parser.add_argument("--expected-model-path", required=True)
     parser.add_argument("--checkpoint-label", required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--context", type=int, default=18432)
+    parser.add_argument("--context", type=int, default=262144)
     parser.add_argument("--max-new-tokens", type=int, default=2048)
     parser.add_argument("--max-steps", type=int, default=50)
     parser.add_argument("--temperature", type=float, default=1.0)
@@ -261,6 +326,7 @@ def main():
     for key, value in required_server.items():
         if server_info.get(key) != value:
             parser.error(f"Server {key}={server_info.get(key)!r}; expected {value!r}")
+    args.runtime_limits = validate_runtime_limits(server.request('/cue-study/limits'), args.context)
     generator = get_generator(args.tokenizer)
     tokenizer = generator.tokenizer
     tokenizer.chat_template = generator.template
@@ -272,12 +338,19 @@ def main():
         "pinned_template_sha256": hashlib.sha256(generator.template.encode()).hexdigest(),
         "generation_config": json.loads(config_path.read_text()) if config_path.exists() else None,
         "manifest_sha256": digest(args.manifest)}, indent=2, default=str) + "\n")
+    print('Running native-context boundary preflight before task episodes', flush=True)
+    boundary = boundary_preflight(server, args.context, args.runtime_limits,
+                                  tokenizer.encode('x', add_special_tokens=False)[0])
+    (args.output / 'boundary_preflight.json').write_text(json.dumps(boundary, indent=2) + '\n')
+    print('Native-context boundary preflight passed; starting frozen development episodes', flush=True)
     records = []
     with (args.output / "records.jsonl").open("x") as out, (args.output / "token_traces.jsonl").open("x") as trace:
         for index, row in enumerate(rows):
             started = time.monotonic()
             if server.request("/get_model_info") != info:
                 raise RuntimeError("Server checkpoint identity changed during evaluation")
+            if server.request('/cue-study/limits') != args.runtime_limits:
+                raise RuntimeError('Server runtime limits changed during evaluation')
             # Transport/infrastructure exceptions stop the run. Never label a
             # server failure as model failure or selectively retry bad outcomes.
             record, turns = evaluate_episode(row, args, tokenizer, server)

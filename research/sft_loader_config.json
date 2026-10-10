@@ -10,8 +10,8 @@
   "calculate_per_token_loss": true,
   "compute_advantages_and_returns": false,
   "debug_train_only": true,
-  "rollout_max_context_len": 18432,
-  "seq_length": 18432,
+  "rollout_max_context_len": 24576,
+  "seq_length": 24576,
   "rollout_shuffle": true,
   "cli_args": [
     "--rollout-function-path", "dressage.training.structured_sft.generate_rollout",
@@ -22,8 +22,8 @@
     "--calculate-per-token-loss",
     "--disable-compute-advantages-and-returns",
     "--debug-train-only",
-    "--rollout-max-context-len", "18432",
-    "--seq-length", "18432",
+    "--rollout-max-context-len", "24576",
+    "--seq-length", "24576",
     "--rollout-shuffle"
   ],
   "required_launch_choices": [

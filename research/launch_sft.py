@@ -45,12 +45,12 @@ def training_args(args, model_args, row_count):
         "--rollout-seed", str(args.seed), "--seed", str(args.seed),
         "--loss-type", "sft_loss", "--calculate-per-token-loss",
         "--disable-compute-advantages-and-returns", "--debug-train-only",
-        "--rollout-max-context-len", "18432", "--seq-length", "18432",
+        "--rollout-max-context-len", "24576", "--seq-length", "24576",
         "--tensor-model-parallel-size", "1", "--pipeline-model-parallel-size", "1",
         "--context-parallel-size", "1", "--expert-model-parallel-size", "1",
         "--expert-tensor-parallel-size", "1",
         "--recompute-granularity", "full", "--recompute-method", "uniform", "--recompute-num-layers", "1",
-        "--use-dynamic-batch-size", "--max-tokens-per-gpu", "18432", "--log-probs-chunk-size", "1024",
+        "--use-dynamic-batch-size", "--max-tokens-per-gpu", "24576", "--log-probs-chunk-size", "1024",
         "--optimizer", "adam", "--lr", str(args.lr), "--lr-decay-style", "constant",
         "--min-lr", str(args.lr), "--lr-warmup-iters", "0", "--weight-decay", "0.01",
         "--adam-beta1", "0.9", "--adam-beta2", "0.95", "--clip-grad", "1.0",
@@ -127,7 +127,7 @@ def main():
     record = {"dataset": str(args.dataset), "dataset_sha256": digest, "rows": len(rows),
               "model_config_sha256": model_sha, "optimizer_steps_requested": batches,
               "draws": batches * args.batch_size, "draws_minus_pool_size": batches * args.batch_size - len(rows),
-              "start_rollout": args.start_rollout, "context": 18432,
+              "start_rollout": args.start_rollout, "context": 24576,
               "source_hashes": {str(path.relative_to(args.project_root)): sha256(path)
                                 for path in sorted((args.project_root / "dressage").rglob("*"))
                                 if path.is_file() and path.suffix in (".py", ".jinja")},

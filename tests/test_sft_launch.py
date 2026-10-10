@@ -39,7 +39,7 @@ class SFTLaunchTests(unittest.TestCase):
     def test_exact_supervised_path(self):
         cli, _ = launch.training_args(self.args(), [], 877)
         for name in ("--rollout-max-context-len", "--seq-length", "--max-tokens-per-gpu"):
-            self.assertEqual(cli[cli.index(name) + 1], "18432")
+            self.assertEqual(cli[cli.index(name) + 1], "24576")
         self.assertEqual(cli[cli.index("--rollout-function-path") + 1],
                          "dressage.training.structured_sft.generate_rollout")
         self.assertIn("--debug-train-only", cli)
