@@ -18,7 +18,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from research.run_competence_pipeline import (
-    REMOTE, await_health, capture_owned_server, process_identity,
+    REMOTE, await_health, capture_owned_server, capture_owned_child,
     read_jsonl, sha256, stop_owned_server, write_json,
 )
 
@@ -119,9 +119,10 @@ def main():
             with (args.run_dir/f'{name}.log').open('x') as log:
                 proc = subprocess.Popen(plan['commands'][name], cwd=args.project_root, env=environment,
                                         stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
-                identity = process_identity(proc.pid)
-                if identity['pgid'] != proc.pid or identity['argv'] != plan['commands'][name]:
-                    raise RuntimeError('Phase command/private process group identity mismatch')
+                entry['startup_identity_observations'] = []
+                identity = capture_owned_child(proc, plan['commands'][name], entry['startup_identity_observations'])
+                entry['owned_process'] = identity
+                write_json(args.run_dir/'status.json', state)
                 proc.wait(timeout=timeout)
             entry['exit_code'] = proc.returncode
             if proc.returncode:
@@ -132,6 +133,10 @@ def main():
             if proc is not None and proc.poll() is None and identity is not None:
                 entry['cleanup'] = stop_owned_server(identity)
                 proc.wait(timeout=5)
+            elif proc is not None and proc.poll() is None:
+                proc.terminate()
+                proc.wait(timeout=5)
+                entry['cleanup'] = 'direct_popen_child_sigterm_only'
             raise
         finally:
             entry['finished_at'] = time.time()

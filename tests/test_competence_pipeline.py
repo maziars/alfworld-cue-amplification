@@ -3,12 +3,52 @@ import signal
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
-from research.run_competence_pipeline import validate_training, stop_owned_server, capture_owned_server
+from research.run_competence_pipeline import (
+    validate_training, stop_owned_server, capture_owned_server, capture_owned_child,
+)
 
 
 class CompetencePipelineTests(unittest.TestCase):
+    def test_capture_child_rechecks_transient_argv(self):
+        proc = Mock(pid=123)
+        proc.poll.return_value = None
+        expected = dict(pid=123, pgid=123, start_ticks='1', argv=['python', 'eval.py'])
+        transient = {**expected, 'argv': ['']}
+        observations = []
+        with patch('research.run_competence_pipeline.process_identity', side_effect=[transient, expected]), \
+             patch('research.run_competence_pipeline.time.sleep'):
+            self.assertEqual(capture_owned_child(proc, expected['argv'], observations), expected)
+        self.assertEqual(observations, [transient])
+        proc.terminate.assert_not_called()
+
+    def test_capture_child_wrong_argv_times_out_with_diagnostics(self):
+        proc = Mock(pid=123)
+        proc.poll.return_value = None
+        wrong = dict(pid=123, pgid=123, start_ticks='1', argv=['wrong'])
+        with patch('research.run_competence_pipeline.process_identity', return_value=wrong):
+            with self.assertRaisesRegex(RuntimeError, 'expected=.*observed='):
+                capture_owned_child(proc, ['python', 'eval.py'], [], timeout=0)
+
+    def test_capture_child_never_accepts_changed_start_time_or_group(self):
+        proc = Mock(pid=123)
+        proc.poll.return_value = None
+        first = dict(pid=123, pgid=123, start_ticks='1', argv=[''])
+        for change in ({'start_ticks': '2'}, {'pgid': 99}, {'pid': 124}):
+            second = {**first, **change, 'argv': ['python', 'eval.py']}
+            with self.subTest(change=change), \
+                 patch('research.run_competence_pipeline.process_identity', side_effect=[first, second]), \
+                 patch('research.run_competence_pipeline.time.sleep'):
+                with self.assertRaisesRegex(RuntimeError, 'private group changed'):
+                    capture_owned_child(proc, second['argv'], [])
+
+    def test_capture_child_reports_early_exit(self):
+        proc = Mock(pid=123)
+        proc.poll.return_value = 7
+        with self.assertRaisesRegex(RuntimeError, 'exit=7'):
+            capture_owned_child(proc, ['python', 'eval.py'], [])
+
     def fixture(self, root):
         checkpoint = root / 'checkpoints/iter_0000109'
         checkpoint.mkdir(parents=True)

@@ -3,14 +3,40 @@
 This page supersedes older readiness statements in the experiment, mask and
 wiring documents. GPU diagnostics are not study training results.
 
-## Active run
+## Training complete; development evaluation restarted
+
+Training completed successfully at 23:29 UTC on October 9: **110 optimizer
+updates, all 877 distinct sources, 880 draws** (three wraparound repeats).
+The final checkpoint is `train/checkpoints/iter_0000109`; its audited HF export
+is `competence-hf`, both inside the original competence run below. No training
+rerun or change to the frozen data was needed.
+
+The original post-SFT evaluation failed before any episodes on an immediate
+process-identity guard. Its empty evaluation log did not preserve the observed
+identity, so the exact historical mismatch cannot be recovered. A Linux startup
+test of the replacement guard verified 50 real children, requiring 16 transient
+argv rechecks. The guard now waits up to two seconds for the exact command while
+requiring an unchanged PID/start-time and private process group. It records
+mismatches, rejects persistent mismatches, and never signals an unverified group.
+All 70 targeted tests passed. Original failure artifacts are preserved.
+
+The **evaluation-only** replacement launched on Spark1 at **04:18 UTC October 10**
+(21:18 PDT October 9), from isolated deployment `20261009c`:
+`/workspace/tito-dressage/cue-study/runs/competence-dev-20261009b/`.
+It uses the same saved model, 240 frozen development episodes, seeds, cue
+conditions and inference settings. Expected model identity SHA256:
+`2e84d89caf16d7af7c18831374a5e6f92295e0f5c693230b63c58ed565d11073`.
+The Spark2 baseline job and deployment were not modified. No association/RL or
+held-out evaluations are launched by this repair.
+
+### Original launch record
 
 The competence pipeline was launched on **Spark1 at 23:07 UTC** on October 9,
 from committed deployment `20261009b` (code commit `8d04d39`). Run directory:
 `/workspace/tito-dressage/cue-study/runs/competence-877-s7001-20261009a/`.
 The first optimizer update completed with loss **0.882662**, gradient norm
-**15.5071**, global batch eight, and no truncation. This is an active run, not a
-claim that all 110 updates or development evaluations have completed.
+**15.5071**, global batch eight, and no truncation. Training is now complete;
+development evaluation status is recorded separately above.
 
 `status.json` is the pipeline state; `train/optimizer_steps.jsonl` records actual
 updates. On successful training and coverage checks, the same process exports
@@ -24,7 +50,8 @@ at 23:10 UTC, using `base-roundtrip-hf-20261009a`. Its run directory is
 `/workspace/tito-dressage/cue-study/runs/baseline-dev-20261009a/`. The standalone
 `run_evaluation_pipeline.py` validates the exported model hashes and all 240 dev
 IDs, then manages its dedicated server and cleanup. This baseline is also an
-active job, not a completed result. Both jobs avoid all final-test panels.
+independent job; consult its `status.json` for current progress. Both jobs avoid
+all final-test panels.
 
 ## Frozen data
 

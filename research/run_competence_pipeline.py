@@ -116,6 +116,35 @@ def process_identity(pid):
             'argv': (root / 'cmdline').read_bytes().rstrip(b'\0').decode().split('\0')}
 
 
+def capture_owned_child(proc, command, observations, timeout=2.0):
+    """Bounded startup recheck; accept only the exact private child command.
+
+    /proc snapshots need not expose the expected argv immediately at startup.
+    Never relax PID/start-time/group checks or adopt a different command. Record
+    mismatches so a subsequent failure is diagnosable, unlike the old guard.
+    """
+    deadline = time.monotonic() + timeout
+    start_ticks = None
+    while True:
+        code = proc.poll()
+        if code is not None:
+            raise RuntimeError(f'Phase child exited before ownership verification: exit={code}')
+        current = process_identity(proc.pid)
+        if start_ticks is None:
+            start_ticks = current['start_ticks']
+        if (current['pid'] != proc.pid or current['pgid'] != proc.pid or
+                current['start_ticks'] != start_ticks):
+            observations.append(current)
+            raise RuntimeError(f'Phase child PID/start-time/private group changed: {current!r}')
+        if current['argv'] == command:
+            return current
+        observations.append(current)
+        if time.monotonic() >= deadline:
+            raise RuntimeError(f'Phase child argv mismatch after {timeout}s: '
+                               f'expected={command!r}, observed={current!r}')
+        time.sleep(min(.02, max(0, deadline - time.monotonic())))
+
+
 def capture_owned_server(record_path):
     record = json.loads(record_path.read_text())
     pid = record['pid']
@@ -267,9 +296,8 @@ def main():
             with (args.run_dir/f'{name}.log').open('x') as log:
                 proc = subprocess.Popen(command, cwd=args.project_root, env=environment,
                     stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
-                identity = process_identity(proc.pid)
-                if identity['pgid'] != proc.pid or identity['argv'] != command:
-                    raise RuntimeError('Phase leader does not match private owned command/group')
+                entry['startup_identity_observations'] = []
+                identity = capture_owned_child(proc, command, entry['startup_identity_observations'])
                 entry['owned_process'] = identity
                 write_json(args.run_dir/'status.json',state)
                 proc.wait(timeout=timeout)
@@ -286,6 +314,12 @@ def main():
                 except BaseException as cleanup_error:
                     entry['cleanup_error'] = repr(cleanup_error)
                     entry['manual_owned_process_inspection_required'] = True
+            elif proc is not None and proc.poll() is None:
+                # Popen still owns this unreaped direct child. Do not signal an
+                # unverified process group, even if its argv never matched.
+                proc.terminate()
+                proc.wait(timeout=5)
+                entry['owned_child_cleanup'] = 'direct_popen_child_sigterm_only'
             raise
         finally:
             entry['finished_at'] = time.time()
