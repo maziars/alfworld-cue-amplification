@@ -165,6 +165,17 @@ class AsyncNativeServer:
         return response.json()
 
 
+def async_client_options(concurrency):
+    import httpx
+    # TextWorld initialization/token rendering runs synchronously, as in the
+    # RL agent. A burst can outlast SGLang's 5s idle keepalive timeout before a
+    # pooled socket gets reused. Use fresh localhost connections, not generation
+    # retries; active HTTP requests are still concurrent and share one client.
+    return dict(timeout=httpx.Timeout(1200., connect=10.), trust_env=False,
+                limits=httpx.Limits(max_connections=concurrency + 4,
+                                   max_keepalive_connections=0))
+
+
 async def concurrent_episodes(rows, concurrency, run_one, on_complete):
     """Bounded active episodes; refill on completion like AsyncRolloutWorker.
 
@@ -428,9 +439,7 @@ def main():
 
         async def run_panel():
             import httpx
-            async with httpx.AsyncClient(timeout=600., trust_env=False,
-                    limits=httpx.Limits(max_connections=args.concurrency + 4,
-                                       max_keepalive_connections=args.concurrency)) as client:
+            async with httpx.AsyncClient(**async_client_options(args.concurrency)) as client:
                 async_server = AsyncNativeServer(args.server, client)
 
                 async def run_one(row):

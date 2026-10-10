@@ -5,10 +5,18 @@ import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
-from research.run_live_eval import assistant_message, boundary_preflight, concurrent_episodes, evaluate_episode, evaluate_episode_async, finish_type, remaining_context, sampled_ids, turn_seed, validate_render_environment, validate_runtime_limits
+from research.run_live_eval import assistant_message, async_client_options, boundary_preflight, concurrent_episodes, evaluate_episode, evaluate_episode_async, finish_type, remaining_context, sampled_ids, turn_seed, validate_render_environment, validate_runtime_limits
 
 
 class LiveEvalTests(unittest.TestCase):
+    def test_async_transport_does_not_reuse_expired_idle_sockets(self):
+        fake = Mock()
+        with patch.dict('sys.modules', {'httpx': fake}):
+            options = async_client_options(128)
+        fake.Limits.assert_called_once_with(max_connections=132, max_keepalive_connections=0)
+        fake.Timeout.assert_called_once_with(1200., connect=10.)
+        self.assertFalse(options['trust_env'])
+
     def test_concurrent_scheduler_bound_coverage_and_failure_cleanup(self):
         async def scenario(fail=False):
             active = peak = 0
