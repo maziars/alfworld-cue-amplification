@@ -45,3 +45,18 @@ Both seed-1101 evaluations retain the old profile. Both arms of seeds 2202 and
 do not claim all three seed pairs were run under identical serving conditions,
 or interpret between-profile differences as model effects. Do not re-run seed
 1101 without a separate decision.
+
+## Deployment verified
+
+At 2026-10-10 16:12 UTC, deployment `20261010h` (commit `94c91df`) and
+hash-pinned forwarding were activated on both Sparks. Each original g entry
+point was retained as `run_evaluation_pipeline.pre_20261010h.py`; routing and
+activation JSON files beside it record hashes and the preserved current PIDs.
+Read-only dry runs through the actual queued entry points selected the new h
+implementation, 512-state cache and 128-capacity guard on both nodes, without
+creating future output directories. The two existing servers still report
+128 cache slots / 42 effective capacity, confirming no live reconfiguration.
+
+Ninety local tests pass. Actual new-profile GPU startup and throughput remain
+pending until each current evaluation finishes. At 16:12:57 UTC, null-1101 had
+1,908 completed episodes and positive-1101 had 2,131 of 2,208; both were active.
