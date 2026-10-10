@@ -51,6 +51,15 @@ Tests cover bounded concurrency, exact once-only scheduling, fail-fast
 cancellation, separate game state, interleaved per-episode seeds, and unchanged
 TITO token prefixes, in addition to the existing tests. This is correctness
 testing, not an optimization benchmark or a token-equivalence benchmark sweep.
+All **74 targeted tests passed**.
+
+When replacing the serial runs, 28 post-SFT outcomes (18 successes) and 11
+baseline outcomes (zero successes) were preserved. Their server workers exited
+on SIGTERM, but the HTTP leaders waited on stale request records beyond the
+30-second cleanup timeout. After inspection confirmed the original PID,
+start-time, exact argv and private group, only the old groups 18873 (Spark1) and
+2568 (Spark2) were terminated with SIGKILL. No artifacts/checkpoints were deleted.
+The old timeout records remain intact rather than being relabeled successful.
 
 Deployment: `/workspace/tito-dressage/cue-study/deployments/20261010c`.
 
