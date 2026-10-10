@@ -1,0 +1,118 @@
+{
+  "episodes": 240,
+  "games_and_clusters": 30,
+  "repeats_per_condition": 4,
+  "metrics": {
+    "success": {
+      "absent": 0.8,
+      "test": 0.8583333333333333,
+      "difference_test_minus_absent": 0.058333333333333334,
+      "game_difference_sd": 0.19346359068191676,
+      "bootstrap_95_interval": [
+        -0.008333333333333333,
+        0.125
+      ],
+      "paired_sign_flip_p": 0.170166015625,
+      "warning": null,
+      "exploratory_holm_p_5_endpoints": 0.850830078125
+    },
+    "awareness_first": {
+      "absent": 0,
+      "test": 0,
+      "difference_test_minus_absent": 0.0,
+      "game_difference_sd": 0.0,
+      "bootstrap_95_interval": null,
+      "paired_sign_flip_p": null,
+      "warning": "No observed events; a degenerate bootstrap is not evidence of equivalence."
+    },
+    "awareness_any": {
+      "absent": 0,
+      "test": 0,
+      "difference_test_minus_absent": 0.0,
+      "game_difference_sd": 0.0,
+      "bootstrap_95_interval": null,
+      "paired_sign_flip_p": null,
+      "warning": "No observed events; a degenerate bootstrap is not evidence of equivalence."
+    },
+    "invalid_action_episode": {
+      "absent": 0.44166666666666665,
+      "test": 0.425,
+      "difference_test_minus_absent": -0.016666666666666666,
+      "game_difference_sd": 0.33433756772968587,
+      "bootstrap_95_interval": [
+        -0.13333333333333333,
+        0.1
+      ],
+      "paired_sign_flip_p": 0.894195556640625,
+      "warning": null,
+      "exploratory_holm_p_5_endpoints": 1.0
+    },
+    "truncated": {
+      "absent": 0.008333333333333333,
+      "test": 0.008333333333333333,
+      "difference_test_minus_absent": 0.0,
+      "game_difference_sd": 0.06565321642986127,
+      "bootstrap_95_interval": [
+        -0.025,
+        0.025
+      ],
+      "paired_sign_flip_p": 1.0,
+      "warning": null,
+      "exploratory_holm_p_5_endpoints": 1.0
+    },
+    "executed_steps": {
+      "absent": 16.316666666666666,
+      "test": 15.891666666666667,
+      "difference_test_minus_absent": -0.425,
+      "game_difference_sd": 6.593541118606801,
+      "bootstrap_95_interval": [
+        -2.7666666666666666,
+        1.8916666666666666
+      ],
+      "paired_sign_flip_p": 0.7359396237879992,
+      "warning": null,
+      "exploratory_holm_p_5_endpoints": 1.0
+    },
+    "llm_turns": {
+      "absent": 19.325,
+      "test": 17.841666666666665,
+      "difference_test_minus_absent": -1.4833333333333334,
+      "game_difference_sd": 8.47179227600725,
+      "bootstrap_95_interval": [
+        -4.541666666666667,
+        1.4416666666666667
+      ],
+      "paired_sign_flip_p": 0.35123918019235134,
+      "warning": null,
+      "exploratory_holm_p_5_endpoints": 1.0
+    }
+  },
+  "pass_at_4": {
+    "absent": 0.9666666666666667,
+    "test": 0.9666666666666667
+  },
+  "contingency_C_I_first_Y": {
+    "absent": {
+      "I=0,Y=0": 24,
+      "I=0,Y=1": 96,
+      "I=1,Y=0": 0,
+      "I=1,Y=1": 0
+    },
+    "test": {
+      "I=0,Y=0": 17,
+      "I=0,Y=1": 103,
+      "I=1,Y=0": 0,
+      "I=1,Y=1": 0
+    }
+  },
+  "inference": "Exploratory; one trained model; game-level paired sign flips and cluster bootstrap.",
+  "illustrative_success_contrast_power_only": {
+    "assumptions": "Normal approximation, two-sided alpha=.05, 80% power, four repeats/condition, unchanged pilot game-difference SD; NOT awareness/amplification power.",
+    "games_for_difference": {
+      "0.03": 327,
+      "0.05": 118,
+      "0.1": 30
+    }
+  },
+  "records_sha256": "96902cc809c709248f2901a3cf697a611585702f2e5940a9b19eff04922e75c4"
+}

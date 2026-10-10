@@ -4,6 +4,13 @@ Version `cue-study-v2`, initiated 2026-10-06. Supersedes the unlaunched v1 neutr
 
 ## Current readiness and source decision
 
+**Design decision (2026-10-10):** the user accepts nonuniform cue–awareness
+association across games. Preserve and log realized per-game/group and aggregate
+frequencies; do not impose per-game balance. See [DECISIONS.md](DECISIONS.md) for
+this approved decision and the proposed whole-group SFT reduction/new-model
+holdout rules. Dataset regeneration and the exact smaller training size remain
+pending; the existing 877-source build is unchanged.
+
 **Latest dataset revision (2026-10-09):** two user-approved malformed sources are
 excluded without replacing them or re-randomizing remaining assignments. The
 current build has 877 sources / 1,754 examples per association arm. See

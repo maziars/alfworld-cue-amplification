@@ -66,6 +66,10 @@ def training_args(args, model_args, row_count):
         # decay horizon even under constant LR. Restore the original scheduler
         # state rather than asserting that the new horizon equals the old one.
         command.append("--use-checkpoint-opt-param-scheduler")
+    if getattr(args, 'finetune', False):
+        if args.start_rollout:
+            raise ValueError('Fresh weight-only branching cannot resume rollout state')
+        command.extend(['--finetune', '--no-load-optim', '--no-load-rng'])
     return command, batches
 
 
@@ -87,6 +91,7 @@ def main():
     parser.add_argument("--lr", type=float, default=1e-5)
     parser.add_argument("--seed", type=int, default=7001)
     parser.add_argument("--no-shuffle", action="store_true")
+    parser.add_argument('--finetune', action='store_true', help='Load model weights only; reset optimizer, RNG and checkpoint iteration')
     parser.add_argument("--execute", action="store_true")
     args = parser.parse_args()
     for key in ("project_root", "slime_root", "megatron_root", "hf_checkpoint", "load", "dataset"):
