@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import copy
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import inspect
 import json
@@ -179,9 +180,9 @@ def async_client_options(concurrency):
 async def concurrent_episodes(rows, concurrency, run_one, on_complete):
     """Bounded active episodes; refill on completion like AsyncRolloutWorker.
 
-    All game reset/step/tokenization work stays on one event-loop thread, as in
-    ALFWorldWhiteboxAgent. Only inference yields; no shared environment state or
-    concurrent TextWorld registry mutation. A single writer persists outcomes.
+    Game operations are serialized on a dedicated worker so environment startup
+    cannot starve HTTP. Tokenization stays on the event loop. Each episode owns
+    its game state; a single writer persists outcomes.
     """
     if concurrency < 1:
         raise ValueError('Episode concurrency must be positive')
@@ -262,17 +263,62 @@ def evaluate_episode(row, args, tokenizer, server):
     return asyncio.run(evaluate_episode_async(row, args, tokenizer, server))
 
 
-async def evaluate_episode_async(row, args, tokenizer, server):
+class EnvironmentWorker:
+    """Serialize TextWorld work off the HTTP event loop, including cleanup."""
+
+    def __init__(self):
+        self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix='alfworld')
+        self.environments = {}
+
+    async def call(self, function, *args):
+        future = asyncio.get_running_loop().run_in_executor(self.executor, function, *args)
+        try:
+            return await asyncio.shield(future)
+        except asyncio.CancelledError:
+            # A running thread cannot be cancelled. Drain it before closing its
+            # environment, and retain newly created environments for final cleanup.
+            await future
+            raise
+
+    def create(self, game, max_steps):
+        env = make_env(game, max_steps)
+        self.environments[id(env)] = env
+        return env
+
+    def close(self, env):
+        try:
+            env.close()
+        finally:
+            self.environments.pop(id(env), None)
+
+    def close_remaining(self):
+        errors = []
+        for env in list(self.environments.values()):
+            try:
+                self.close(env)
+            except Exception as error:
+                errors.append(error)
+        if errors:
+            raise ExceptionGroup('Environment cleanup failures', errors)
+
+
+async def evaluate_episode_async(row, args, tokenizer, server, environment_worker=None):
     metadata = row["metadata"]
     game = args.game_root / metadata["game_file"]
-    env = make_env(str(game.resolve(strict=True)), args.max_steps)
+    async def env_call(function, *values):
+        if environment_worker is None:
+            return function(*values)
+        return await environment_worker.call(function, *values)
+
+    factory = environment_worker.create if environment_worker else make_env
+    env = await env_call(factory, str(game.resolve(strict=True)), args.max_steps)
     messages, turns = [], []
     success, invalid, executed, truncated = False, 0, 0, False
     stop_reason = "llm_turn_limit"
     context_ids = None
     tito = Qwen35TITOTokenizer(tokenizer)
     try:
-        obs, infos = env.reset()
+        obs, infos = await env_call(env.reset)
         admissible = list(infos.get("admissible_commands") or [])
         initial = ALFWORLD_INITIAL_USER_TEMPLATE.format(
             task_text=extract_task_text(obs, row["prompt"]), observation=(obs or "").strip()[:2000],
@@ -321,7 +367,7 @@ async def evaluate_episode_async(row, args, tokenizer, server):
                 feedback = format_invalid_response(obs, admissible,
                     error or f"command {command!r} is not in admissible commands")
             else:
-                obs, _, done, infos = env.step(command)
+                obs, _, done, infos = await env_call(env.step, command)
                 executed += 1
                 admissible = list(infos.get("admissible_commands") or [])
                 feedback = format_tool_response(obs, admissible)
@@ -341,7 +387,7 @@ async def evaluate_episode_async(row, args, tokenizer, server):
             if context_ids[:len(prefix_ids)] != prefix_ids:
                 raise AssertionError("TITO merge changed generated token prefix")
     finally:
-        env.close()
+        await env_call(environment_worker.close if environment_worker else lambda e: e.close(), env)
     record = {**metadata, "session_id": f"eval-{metadata['instance_id']}",
               "segment_index": 0, "segment_count": 1, "task_success": success,
               "invalid_action_count": invalid, "num_steps": executed,
@@ -447,12 +493,20 @@ def main():
                         raise RuntimeError('Server checkpoint identity changed during evaluation')
                     if await async_server.request('/cue-study/limits') != args.runtime_limits:
                         raise RuntimeError('Server runtime limits changed during evaluation')
-                    result = await evaluate_episode_async(row, args, tokenizer, async_server)
+                    result = await evaluate_episode_async(row, args, tokenizer, async_server, environment_worker)
                     if await async_server.request('/get_model_info') != info:
                         raise RuntimeError('Server checkpoint identity changed during episode')
                     return result
 
-                await concurrent_episodes(rows, args.concurrency, run_one, on_complete)
+                environment_worker = EnvironmentWorker()
+                try:
+                    await concurrent_episodes(rows, args.concurrency, run_one, on_complete)
+                finally:
+                    # All episode tasks have drained before the worker is shut down.
+                    try:
+                        await environment_worker.call(environment_worker.close_remaining)
+                    finally:
+                        environment_worker.executor.shutdown(wait=True)
 
         asyncio.run(run_panel())
     report = score(rows, records)

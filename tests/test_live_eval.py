@@ -2,13 +2,51 @@ import argparse
 import asyncio
 from pathlib import Path
 import tempfile
+import threading
+import time
 import unittest
 from unittest.mock import Mock, patch
 
 from research.run_live_eval import assistant_message, async_client_options, boundary_preflight, concurrent_episodes, evaluate_episode, evaluate_episode_async, finish_type, remaining_context, sampled_ids, turn_seed, validate_render_environment, validate_runtime_limits
+from research.run_live_eval import EnvironmentWorker
 
 
 class LiveEvalTests(unittest.TestCase):
+    def test_environment_worker_yields_serializes_and_drains_cancelled_creation(self):
+        async def scenario():
+            worker = EnvironmentWorker()
+            threads = []
+            ticks = 0
+            env = Mock()
+            def create(*args):
+                threads.append(threading.get_ident())
+                time.sleep(.05)
+                return env
+            async def heartbeat():
+                nonlocal ticks
+                for _ in range(10):
+                    await asyncio.sleep(.002)
+                    ticks += 1
+            try:
+                with patch('research.run_live_eval.make_env', side_effect=create):
+                    task = asyncio.create_task(worker.call(worker.create, 'game', 50))
+                    await heartbeat()
+                    self.assertFalse(task.done())
+                    task.cancel()
+                    with self.assertRaises(asyncio.CancelledError):
+                        await task
+                self.assertEqual(ticks, 10)
+                self.assertIn(id(env), worker.environments)
+                await worker.call(lambda: threads.append(threading.get_ident()))
+                self.assertEqual(len(set(threads)), 1)
+                self.assertNotEqual(threads[0], threading.get_ident())
+                await worker.call(worker.close_remaining)
+                env.close.assert_called_once()
+                self.assertEqual(worker.environments, {})
+            finally:
+                worker.executor.shutdown(wait=True)
+        asyncio.run(scenario())
+
     def test_async_transport_does_not_reuse_expired_idle_sockets(self):
         fake = Mock()
         with patch.dict('sys.modules', {'httpx': fake}):
@@ -233,10 +271,15 @@ class LiveEvalTests(unittest.TestCase):
             async def pair():
                 row2 = {**row, 'metadata': {**row['metadata'], 'instance_id': 'second-id',
                                           'requested_generation_seed': 456}}
-                with patch('research.run_live_eval.make_env', side_effect=environments):
-                    return await asyncio.gather(
-                        evaluate_episode_async(row, args, tokenizer, AsyncServer()),
-                        evaluate_episode_async(row2, args, tokenizer, AsyncServer()))
+                worker = EnvironmentWorker()
+                try:
+                    with patch('research.run_live_eval.make_env', side_effect=environments):
+                        return await asyncio.gather(
+                            evaluate_episode_async(row, args, tokenizer, AsyncServer(), worker),
+                            evaluate_episode_async(row2, args, tokenizer, AsyncServer(), worker))
+                finally:
+                    await worker.call(worker.close_remaining)
+                    worker.executor.shutdown(wait=True)
 
             results = asyncio.run(pair())
             self.assertEqual([env.count for env in environments], [2, 2])
