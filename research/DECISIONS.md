@@ -1,5 +1,37 @@
 # Research decisions
 
+## 2026-10-10: next pilot phase after current evaluations — requested
+
+The user requested three follow-ups after the current evaluations finish:
+find a lower-success SFT initialization (prefer earlier checkpoints), strengthen
+the positive cue/awareness association if needed, and assess using one rollout
+per prompt for faster setup iteration. Preserve all current manifests, jobs and
+four-repeat results unchanged. These next-phase choices are described in
+[NEXT_PILOT_PHASE.md](NEXT_PILOT_PHASE.md); no new training/evaluation was
+launched by recording this plan.
+
+Checkpoint inventory on both Sparks: this reduced-data campaign saved only
+common competence iteration 30 (31 updates) and each association branch's
+iteration 61 (62 updates). There are no saved within-stage intermediate weights
+in these run directories. A fresh short rerun with explicit checkpoint saves
+will be needed to obtain them; never substitute the older 877-source model,
+which has trained on groups reserved for the new students' evaluation.
+
+Use the separate 60-group calibration panel for fast model/association tuning,
+with one rollout for EACH cue condition (120 episodes/model), not one randomly
+chosen cue condition per game. This is a proposed next-pilot manifest, not a
+change to the running endpoint. Four repeats are not a prerequisite for valid
+paired inference; they improve within-game precision and enable pass@4. One
+repeat does not resolve the shortage of independent training seeds. Freeze the
+final recipe before a fresh confirmatory evaluation; the current 276-group
+panel has informed design and must not be relabeled untouched confirmation.
+
+The user also clarified that awareness hypotheses are directional: test the
+primary positive-minus-null cue-effect contrast in the positive direction.
+Use two-sided diagnostics for outcomes without a stated direction. Overall
+awareness differences are exploratory because marginal awareness exposure was
+matched; do not promote them to the primary cue-association hypothesis.
+
 ## 2026-10-10: increase capacity for future evaluations — approved
 
 The user approved applying the speed-up to new evaluations, preserving those
