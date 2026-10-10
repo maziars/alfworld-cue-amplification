@@ -1,5 +1,14 @@
 # Research decisions
 
+## 2026-10-10: deferred task — assess additional SFT arms
+
+The user requested a future review of whether the study needs cue-only and
+awareness-only SFT arms, and/or evaluation of the saved competence-only SFT
+checkpoint (which contains neither intervention). Assess what each comparison
+would identify and whether its value justifies additional compute. This is a
+backlog task, not authorization to train or evaluate additional arms now.
+Continue the currently queued post-association-SFT evaluations unchanged.
+
 ## 2026-10-10: accept nonuniform association across games — approved
 
 The user explicitly accepted that cue–awareness association frequencies in SFT
