@@ -53,6 +53,8 @@ cancellation, separate game state, interleaved per-episode seeds, and unchanged
 TITO token prefixes, in addition to the existing tests. This is correctness
 testing, not an optimization benchmark or a token-equivalence benchmark sweep.
 Tests also cover HTTP transport and worker responsiveness/cancellation cleanup.
+All **76 targeted tests passed**. A real ALFWorld environment also passed
+create/reset/step/close on the worker thread in the Spark container.
 
 When replacing the serial runs, 28 post-SFT outcomes (18 successes) and 11
 baseline outcomes (zero successes) were preserved. Their server workers exited
@@ -88,3 +90,11 @@ not establish that the panel completed; consult the live artifacts below.
 
 `status.json` and the actual server logs are authoritative for startup and live
 batching. `eval-dev/report.json` is produced only after all 240 episodes finish.
+
+Live verification at approximately **2026-10-10 05:42 UTC**: both `20261010e`
+pipelines remained running, passed native-context preflight, and reached 42
+simultaneous generation requests (128 active episode slots, excess requests
+queued by SGLang), with CUDA graph decoding enabled. Spark1 persisted 2 completed
+episodes, both successful; Spark2 persisted 1 unsuccessful episode. These counts
+only establish end-to-end operation, not accuracy: completion order favors short
+episodes and neither panel is complete. The HTTP startup failures had not recurred.
