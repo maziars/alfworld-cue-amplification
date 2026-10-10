@@ -29,6 +29,13 @@ conditions and inference settings. Expected model identity SHA256:
 The Spark2 baseline job and deployment were not modified. No association/RL or
 held-out evaluations are launched by this repair.
 
+At the restart check, the baseline was discovered to have independently failed
+at 01:31 UTC October 10 after 77 completed episodes (zero successes). The server
+rejected a 18,429-token input because its input-only cap was 18,426, despite the
+configured 18,432 context. This is distinct from the process-identity failure;
+the shared evaluator's input-limit handling remains an open issue and may also
+affect the post-SFT run. The 77 baseline outcomes are partial, not a final score.
+
 ### Original launch record
 
 The competence pipeline was launched on **Spark1 at 23:07 UTC** on October 9,
