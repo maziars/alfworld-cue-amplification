@@ -234,7 +234,7 @@ def commands(args, checkpoint):
             '--game-root', str(args.game_root), '--server', f'http://127.0.0.1:{args.port}',
             '--expected-model-path', str(root/'competence-hf'), '--checkpoint-label', 'competence-110updates',
             '--output', str(root/'eval-dev'), '--context', '262144', '--max-new-tokens', '2048',
-            '--max-steps', '50', '--temperature', '1.0', '--dedicated-server'],
+            '--max-steps', '50', '--temperature', '1.0', '--concurrency', '128', '--dedicated-server'],
     }
 
 

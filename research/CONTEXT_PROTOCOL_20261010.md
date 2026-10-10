@@ -1,5 +1,9 @@
 # Corrected training and inference budgets — 2026-10-10
 
+**Execution update:** the serial evaluation scheduling below is superseded by
+[CONCURRENT_EVAL_20261010.md](CONCURRENT_EVAL_20261010.md), following the existing
+Dressage RL concurrency pattern. Token budgets and boundary checks are unchanged.
+
 User decision: **24,576 training tokens per GPU; 262,144 inference context**.
 These are independent settings. Qwen's
 [official model card](https://huggingface.co/Qwen/Qwen3.5-0.8B)

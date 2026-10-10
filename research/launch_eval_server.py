@@ -34,8 +34,9 @@ def main():
         "--host", "127.0.0.1", "--port", str(args.port), "--tp-size", "1",
         "--attention-backend", "triton", "--sampling-backend", "pytorch",
         "--enable-deterministic-inference", "--context-length", "262144",
-        "--chunked-prefill-size", "4096", "--max-running-requests", "1",
-        "--max-mamba-cache-size", "16", "--mem-fraction-static", "0.5", "--disable-cuda-graph"]
+        "--chunked-prefill-size", "4096", "--max-running-requests", "128",
+        "--max-mamba-cache-size", "128", "--mem-fraction-static", "0.7",
+        "--cuda-graph-max-bs", "128"]
     overrides = {"CUDA_VISIBLE_DEVICES": "0", "PYTHONUNBUFFERED": "1",
         "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
         # Preserve deterministic/batch-invariant inference, but select its

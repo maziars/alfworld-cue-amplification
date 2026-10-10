@@ -67,7 +67,7 @@ def commands(args):
                  '--game-root', str(args.game_root), '--server', f'http://127.0.0.1:{args.port}',
                  '--expected-model-path', str(args.model), '--checkpoint-label', args.checkpoint_label,
                  '--output', str(args.run_dir/'eval-dev'), '--context', '262144', '--max-new-tokens', '2048',
-                 '--max-steps', '50', '--temperature', '1.0', '--dedicated-server'],
+                 '--max-steps', '50', '--temperature', '1.0', '--concurrency', '128', '--dedicated-server'],
     }
 
 

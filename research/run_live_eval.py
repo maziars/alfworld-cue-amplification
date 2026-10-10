@@ -8,8 +8,10 @@ No retries, no generation service management, and no awareness insertion.
 from __future__ import annotations
 
 import argparse
+import asyncio
 import copy
 import hashlib
+import inspect
 import json
 import os
 from pathlib import Path
@@ -150,6 +152,60 @@ class NativeServer:
             raise RuntimeError(f'Server HTTP {error.code} at {path}: {detail}') from error
 
 
+class AsyncNativeServer:
+    """Shared async transport, matching Dressage ProxyClient's httpx pattern."""
+    def __init__(self, url, client):
+        self.url, self.client = url.rstrip('/'), client
+
+    async def request(self, path, payload=None):
+        response = await self.client.request('GET' if payload is None else 'POST',
+                                             self.url + path, json=payload)
+        if response.is_error:
+            raise RuntimeError(f'Server HTTP {response.status_code} at {path}: {response.text[:8192]}')
+        return response.json()
+
+
+async def concurrent_episodes(rows, concurrency, run_one, on_complete):
+    """Bounded active episodes; refill on completion like AsyncRolloutWorker.
+
+    All game reset/step/tokenization work stays on one event-loop thread, as in
+    ALFWorldWhiteboxAgent. Only inference yields; no shared environment state or
+    concurrent TextWorld registry mutation. A single writer persists outcomes.
+    """
+    if concurrency < 1:
+        raise ValueError('Episode concurrency must be positive')
+    iterator = iter(enumerate(rows))
+    active = set()
+
+    async def run(index, row):
+        started = time.monotonic()
+        result = await run_one(row)
+        return index, result, time.monotonic() - started
+
+    def refill():
+        while len(active) < concurrency:
+            item = next(iterator, None)
+            if item is None:
+                break
+            active.add(asyncio.create_task(run(*item)))
+
+    try:
+        refill()
+        while active:
+            done, _ = await asyncio.wait(active, return_when=asyncio.FIRST_COMPLETED)
+            # Persist finished episodes deterministically within a completion
+            # group. Never wait for slow earlier manifest rows to write results.
+            results = [task.result() for task in done]
+            for index, result, seconds in sorted(results, key=lambda x: x[0]):
+                on_complete(index, result, seconds)
+            active.difference_update(done)
+            refill()
+    finally:
+        for task in active:
+            task.cancel()
+        await asyncio.gather(*active, return_exceptions=True)
+
+
 def boundary_preflight(server, context, limits, token_id):
     """Real requests beyond the old failure and at the new safe input boundary.
 
@@ -191,6 +247,11 @@ def boundary_preflight(server, context, limits, token_id):
 
 
 def evaluate_episode(row, args, tokenizer, server):
+    """Single-episode compatibility entry point for existing replay/unit tests."""
+    return asyncio.run(evaluate_episode_async(row, args, tokenizer, server))
+
+
+async def evaluate_episode_async(row, args, tokenizer, server):
     metadata = row["metadata"]
     game = args.game_root / metadata["game_file"]
     env = make_env(str(game.resolve(strict=True)), args.max_steps)
@@ -225,6 +286,8 @@ def evaluate_episode(row, args, tokenizer, server):
                 "logprob_start_len": len(context_ids) - 1, "stream": False,
                 "rid": f"{metadata['instance_id']}-turn-{turn}"}
             response = server.request("/generate", payload)
+            if inspect.isawaitable(response):
+                response = await response
             finish_kind = finish_type(response)
             if finish_kind == "length":
                 truncated = True
@@ -291,10 +354,13 @@ def main():
     parser.add_argument("--max-new-tokens", type=int, default=2048)
     parser.add_argument("--max-steps", type=int, default=50)
     parser.add_argument("--temperature", type=float, default=1.0)
+    parser.add_argument('--concurrency', type=int, default=128)
     parser.add_argument("--allow-heldout-test", action="store_true")
     parser.add_argument("--dedicated-server", action="store_true",
                         help="Confirm this server is exclusive to this evaluation, with no hot weight updates")
     args = parser.parse_args()
+    if not 1 <= args.concurrency <= 128:
+        parser.error('Episode concurrency must be in [1,128]')
     if args.output.exists():
         parser.error("Output must be new; retries must not silently replace previous episodes")
     if not args.dedicated_server:
@@ -321,11 +387,15 @@ def main():
     identity_sha = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
     server_info = server.request("/get_server_info")
     required_server = {"enable_deterministic_inference": True, "sampling_backend": "pytorch",
-                       "context_length": args.context, "max_running_requests": 1,
+                       "context_length": args.context, "max_running_requests": 128,
                        "speculative_algorithm": None}
     for key, value in required_server.items():
         if server_info.get(key) != value:
             parser.error(f"Server {key}={server_info.get(key)!r}; expected {value!r}")
+    effective = [state.get('effective_max_running_requests_per_dp', 0)
+                 for state in server_info.get('internal_states', [])]
+    if not effective or min(effective) < 2:
+        parser.error('Server has no effective concurrent request capacity')
     args.runtime_limits = validate_runtime_limits(server.request('/cue-study/limits'), args.context)
     generator = get_generator(args.tokenizer)
     tokenizer = generator.tokenizer
@@ -345,25 +415,37 @@ def main():
     print('Native-context boundary preflight passed; starting frozen development episodes', flush=True)
     records = []
     with (args.output / "records.jsonl").open("x") as out, (args.output / "token_traces.jsonl").open("x") as trace:
-        for index, row in enumerate(rows):
-            started = time.monotonic()
-            if server.request("/get_model_info") != info:
-                raise RuntimeError("Server checkpoint identity changed during evaluation")
-            if server.request('/cue-study/limits') != args.runtime_limits:
-                raise RuntimeError('Server runtime limits changed during evaluation')
-            # Transport/infrastructure exceptions stop the run. Never label a
-            # server failure as model failure or selectively retry bad outcomes.
-            record, turns = evaluate_episode(row, args, tokenizer, server)
-            if server.request("/get_model_info") != info:
-                raise RuntimeError("Server checkpoint identity changed during episode")
+        def on_complete(index, result, seconds):
+            record, turns = result
             record["checkpoint_identity_sha256"] = identity_sha
             out.write(json.dumps(record) + "\n")
             out.flush()
             trace.write(json.dumps({"instance_id": record["instance_id"], "turns": turns}) + "\n")
             trace.flush()
             records.append(record)
-            print(f"{index + 1}/{len(rows)} success={record['task_success']} steps={record['num_steps']} "
-                  f"stop={record['stop_reason']} seconds={time.monotonic()-started:.1f}", flush=True)
+            print(f"{len(records)}/{len(rows)} manifest_index={index} success={record['task_success']} "
+                  f"steps={record['num_steps']} stop={record['stop_reason']} seconds={seconds:.1f}", flush=True)
+
+        async def run_panel():
+            import httpx
+            async with httpx.AsyncClient(timeout=600., trust_env=False,
+                    limits=httpx.Limits(max_connections=args.concurrency + 4,
+                                       max_keepalive_connections=args.concurrency)) as client:
+                async_server = AsyncNativeServer(args.server, client)
+
+                async def run_one(row):
+                    if await async_server.request('/get_model_info') != info:
+                        raise RuntimeError('Server checkpoint identity changed during evaluation')
+                    if await async_server.request('/cue-study/limits') != args.runtime_limits:
+                        raise RuntimeError('Server runtime limits changed during evaluation')
+                    result = await evaluate_episode_async(row, args, tokenizer, async_server)
+                    if await async_server.request('/get_model_info') != info:
+                        raise RuntimeError('Server checkpoint identity changed during episode')
+                    return result
+
+                await concurrent_episodes(rows, args.concurrency, run_one, on_complete)
+
+        asyncio.run(run_panel())
     report = score(rows, records)
     (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
 

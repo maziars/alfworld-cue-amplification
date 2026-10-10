@@ -1,13 +1,43 @@
 import argparse
+import asyncio
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
-from research.run_live_eval import assistant_message, boundary_preflight, evaluate_episode, finish_type, remaining_context, sampled_ids, turn_seed, validate_render_environment, validate_runtime_limits
+from research.run_live_eval import assistant_message, boundary_preflight, concurrent_episodes, evaluate_episode, evaluate_episode_async, finish_type, remaining_context, sampled_ids, turn_seed, validate_render_environment, validate_runtime_limits
 
 
 class LiveEvalTests(unittest.TestCase):
+    def test_concurrent_scheduler_bound_coverage_and_failure_cleanup(self):
+        async def scenario(fail=False):
+            active = peak = 0
+            completed = []
+
+            async def run(row):
+                nonlocal active, peak
+                active += 1
+                peak = max(peak, active)
+                try:
+                    await asyncio.sleep(.001 if row % 2 else .002)
+                    if fail and row == 1:
+                        raise RuntimeError('transport failed')
+                    return row * 2
+                finally:
+                    active -= 1
+
+            if fail:
+                with self.assertRaisesRegex(RuntimeError, 'transport failed'):
+                    await concurrent_episodes(range(12), 3, run, lambda *x: completed.append(x))
+            else:
+                await concurrent_episodes(range(12), 3, run, lambda *x: completed.append(x))
+                self.assertEqual(sorted((x[0], x[1]) for x in completed), [(i, i*2) for i in range(12)])
+            self.assertEqual(peak, 3)
+            self.assertEqual(active, 0)
+
+        asyncio.run(scenario())
+        asyncio.run(scenario(fail=True))
+
     def limits(self, context=262144, threshold=None):
         return dict(schema='cue-study-runtime-limits-v1', context_length=context,
                     max_input_tokens_exclusive=threshold or context - 6,
@@ -181,6 +211,32 @@ class LiveEvalTests(unittest.TestCase):
             with patch('research.run_live_eval.make_env', return_value=Environment()):
                 record, _ = evaluate_episode(row, args, tokenizer, Server())
             self.assertTrue(record['task_success'])
+            # Exercise the real async episode path with two independent game
+            # instances and interleaved generation, retaining exact TITO IDs.
+            environments = [Environment(), Environment()]
+            payloads = []
+
+            class AsyncServer(Server):
+                async def request(self, path, payload):
+                    payloads.append(payload)
+                    await asyncio.sleep(.001)
+                    return super().request(path, payload)
+
+            async def pair():
+                row2 = {**row, 'metadata': {**row['metadata'], 'instance_id': 'second-id',
+                                          'requested_generation_seed': 456}}
+                with patch('research.run_live_eval.make_env', side_effect=environments):
+                    return await asyncio.gather(
+                        evaluate_episode_async(row, args, tokenizer, AsyncServer()),
+                        evaluate_episode_async(row2, args, tokenizer, AsyncServer()))
+
+            results = asyncio.run(pair())
+            self.assertEqual([env.count for env in environments], [2, 2])
+            self.assertTrue(all(record['task_success'] for record, _ in results))
+            for record, traces in results:
+                prefix = traces[0]['input_ids'] + traces[0]['output_ids']
+                self.assertEqual(traces[1]['input_ids'][:len(prefix)], prefix)
+            self.assertEqual([p['sampling_params']['sampling_seed'] for p in payloads], [123,456,124,457])
 
 
 if __name__ == "__main__":
