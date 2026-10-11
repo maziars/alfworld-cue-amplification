@@ -52,8 +52,29 @@ class LiveEvalTests(unittest.TestCase):
         with patch.dict('sys.modules', {'httpx': fake}):
             options = async_client_options(128)
         fake.Limits.assert_called_once_with(max_connections=132, max_keepalive_connections=0)
-        fake.Timeout.assert_called_once_with(1200., connect=10.)
+        fake.Timeout.assert_called_once_with(3600., connect=10.)
         self.assertFalse(options['trust_env'])
+
+    def test_explicit_timeout_and_invalid_timeout(self):
+        fake = Mock()
+        with patch.dict('sys.modules', {'httpx': fake}):
+            async_client_options(128, 7200.)
+            fake.Timeout.assert_called_once_with(7200., connect=10.)
+            for invalid in (0, -1, float('inf'), float('nan')):
+                with self.assertRaises(ValueError):
+                    async_client_options(128, invalid)
+
+    def test_persist_success_in_same_completion_group_as_failure(self):
+        async def scenario():
+            completed=[]
+            async def run(row):
+                if row == 1:
+                    raise RuntimeError('transport failed')
+                return row
+            with self.assertRaisesRegex(RuntimeError,'transport failed'):
+                await concurrent_episodes([0,1],2,run,lambda *x:completed.append(x))
+            self.assertEqual([(x[0],x[1]) for x in completed],[(0,0)])
+        asyncio.run(scenario())
 
     def test_concurrent_scheduler_bound_coverage_and_failure_cleanup(self):
         async def scenario(fail=False):

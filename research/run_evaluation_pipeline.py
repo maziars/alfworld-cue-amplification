@@ -76,6 +76,7 @@ def commands(args):
                  '--max-steps', '50', '--temperature', '1.0', '--concurrency', '128', '--dedicated-server',
                  '--min-effective-concurrency', '128', '--serving-profile', SERVING_PROFILE],
     }
+    result['eval'].extend(['--request-timeout', str(getattr(args, 'request_timeout', 3600.))])
     if getattr(args, 'allow_heldout_test', False):
         result['eval'].append('--allow-heldout-test')
     return result
@@ -98,6 +99,7 @@ def main():
     parser.add_argument('--port', type=int, default=30000)
     parser.add_argument('--health-timeout', type=float, default=180)
     parser.add_argument('--eval-timeout', type=float, default=86400)
+    parser.add_argument('--request-timeout', type=float, default=3600.)
     parser.add_argument('--execute', action='store_true')
     args = parser.parse_args()
     for key, value in vars(args).items():
@@ -107,6 +109,8 @@ def main():
         parser.error('Require new run-dir, unprivileged port and health timeout (0,180]')
     if not math.isfinite(args.eval_timeout) or args.eval_timeout <= 0 or not args.checkpoint_label.strip():
         parser.error('Require finite positive evaluation timeout and nonempty checkpoint label')
+    if not math.isfinite(args.request_timeout) or args.request_timeout <= 0:
+        parser.error('Require finite positive request timeout')
     validation = validate_inputs(args)
     plan = {'args': vars(args), 'commands': commands(args), 'validation': validation, 'dry_run': not args.execute,
             'serving_profile': SERVING_PROFILE,

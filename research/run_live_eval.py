@@ -14,6 +14,7 @@ from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import inspect
 import json
+import math
 import os
 from pathlib import Path
 import sys
@@ -166,13 +167,17 @@ class AsyncNativeServer:
         return response.json()
 
 
-def async_client_options(concurrency):
+def async_client_options(concurrency, request_timeout=3600.):
     import httpx
     # TextWorld initialization/token rendering runs synchronously, as in the
     # RL agent. A burst can outlast SGLang's 5s idle keepalive timeout before a
     # pooled socket gets reused. Use fresh localhost connections, not generation
     # retries; active HTTP requests are still concurrent and share one client.
-    return dict(timeout=httpx.Timeout(1200., connect=10.), trust_env=False,
+    # Non-streaming reads wait for the entire completion. At 128 concurrent
+    # long-context requests, 2048 decode tokens can exceed the former 1200s.
+    if not math.isfinite(request_timeout) or request_timeout <= 0:
+        raise ValueError('Request timeout must be finite and positive')
+    return dict(timeout=httpx.Timeout(request_timeout, connect=10.), trust_env=False,
                 limits=httpx.Limits(max_connections=concurrency + 4,
                                    max_keepalive_connections=0))
 
@@ -207,10 +212,17 @@ async def concurrent_episodes(rows, concurrency, run_one, on_complete):
             done, _ = await asyncio.wait(active, return_when=asyncio.FIRST_COMPLETED)
             # Persist finished episodes deterministically within a completion
             # group. Never wait for slow earlier manifest rows to write results.
-            results = [task.result() for task in done]
+            results, errors = [], []
+            for task in done:
+                try:
+                    results.append(task.result())
+                except Exception as error:
+                    errors.append(error)
             for index, result, seconds in sorted(results, key=lambda x: x[0]):
                 on_complete(index, result, seconds)
             active.difference_update(done)
+            if errors:
+                raise errors[0]
             refill()
     finally:
         for task in active:
@@ -342,9 +354,20 @@ async def evaluate_episode_async(row, args, tokenizer, server, environment_worke
                 "return_logprob": True, "return_text_in_logprobs": False,
                 "logprob_start_len": len(context_ids) - 1, "stream": False,
                 "rid": f"{metadata['instance_id']}-turn-{turn}"}
-            response = server.request("/generate", payload)
-            if inspect.isawaitable(response):
-                response = await response
+            request_started = time.monotonic()
+            try:
+                response = server.request("/generate", payload)
+                if inspect.isawaitable(response):
+                    response = await response
+            except Exception as error:
+                failure = {'instance_id': metadata['instance_id'], 'turn': turn,
+                           'rid': payload['rid'], 'input_tokens': len(context_ids),
+                           'max_new_tokens': budget, 'sampling_seed': seed,
+                           'elapsed_seconds': time.monotonic() - request_started,
+                           'error_type': type(error).__name__, 'error': repr(error)}
+                if getattr(args, 'on_request_error', None):
+                    args.on_request_error(failure)
+                raise RuntimeError(f"Generation request failed: {json.dumps(failure)}") from error
             finish_kind = finish_type(response)
             if finish_kind == "length":
                 truncated = True
@@ -425,6 +448,7 @@ def main():
     parser.add_argument("--max-steps", type=int, default=50)
     parser.add_argument("--temperature", type=float, default=1.0)
     parser.add_argument('--concurrency', type=int, default=128)
+    parser.add_argument('--request-timeout', type=float, default=3600.)
     parser.add_argument('--min-effective-concurrency', type=int, default=2,
                         help='Fail closed if the runtime admits fewer simultaneous requests')
     parser.add_argument('--serving-profile', default='legacy-unspecified')
@@ -434,6 +458,8 @@ def main():
     args = parser.parse_args()
     if not 1 <= args.concurrency <= 128:
         parser.error('Episode concurrency must be in [1,128]')
+    if not math.isfinite(args.request_timeout) or args.request_timeout <= 0:
+        parser.error('Request timeout must be finite and positive')
     if not 1 <= args.min_effective_concurrency <= args.concurrency:
         parser.error('Minimum effective concurrency must be in [1, episode concurrency]')
     if args.output.exists():
@@ -487,11 +513,16 @@ def main():
     print('Native-context boundary preflight passed; starting frozen development episodes', flush=True)
     records = []
     with (args.output / "records.jsonl").open("x") as out, (args.output / "token_traces.jsonl").open("x") as trace, \
-            (args.output / 'first_turn_records.jsonl').open('x') as first_turn:
+            (args.output / 'first_turn_records.jsonl').open('x') as first_turn, \
+            (args.output / 'request_errors.jsonl').open('x') as request_errors:
         def on_first_turn(record):
             first_turn.write(json.dumps({**record, 'checkpoint_identity_sha256': identity_sha})+'\n')
             first_turn.flush()
         args.on_first_turn = on_first_turn
+        def on_request_error(record):
+            request_errors.write(json.dumps(record)+'\n')
+            request_errors.flush()
+        args.on_request_error = on_request_error
         def on_complete(index, result, seconds):
             record, turns = result
             record["checkpoint_identity_sha256"] = identity_sha
@@ -505,7 +536,7 @@ def main():
 
         async def run_panel():
             import httpx
-            async with httpx.AsyncClient(**async_client_options(args.concurrency)) as client:
+            async with httpx.AsyncClient(**async_client_options(args.concurrency, args.request_timeout)) as client:
                 async_server = AsyncNativeServer(args.server, client)
 
                 async def run_one(row):
