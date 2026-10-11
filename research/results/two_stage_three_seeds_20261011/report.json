@@ -1,0 +1,1186 @@
+{
+  "design": "historical two-stage SFT; no RL",
+  "episodes": 13248,
+  "groups": 276,
+  "seeds": [
+    1101,
+    2202,
+    3303
+  ],
+  "repeats_per_cue": 4,
+  "bootstrap_draws": 50000,
+  "bootstrap_rng_seed": 20261010,
+  "origin_group_counts": {
+    "removed_sft_group": 202,
+    "original_dev_group": 74
+  },
+  "probabilities": {
+    "null": {
+      "P(I)": {
+        "numerator": 517,
+        "denominator": 6624,
+        "probability": 0.07804951690821256
+      },
+      "P(Y)": {
+        "numerator": 5339,
+        "denominator": 6624,
+        "probability": 0.8060084541062802
+      },
+      "P(I|C=0)": {
+        "numerator": 273,
+        "denominator": 3312,
+        "probability": 0.08242753623188406
+      },
+      "P(Y|C=0)": {
+        "numerator": 2663,
+        "denominator": 3312,
+        "probability": 0.8040458937198067
+      },
+      "P(Y|C=0,I=0)": {
+        "numerator": 2460,
+        "denominator": 3039,
+        "probability": 0.8094768015794669
+      },
+      "P(Y|C=0,I=1)": {
+        "numerator": 203,
+        "denominator": 273,
+        "probability": 0.7435897435897436
+      },
+      "P(I|C=1)": {
+        "numerator": 244,
+        "denominator": 3312,
+        "probability": 0.07367149758454106
+      },
+      "P(Y|C=1)": {
+        "numerator": 2676,
+        "denominator": 3312,
+        "probability": 0.8079710144927537
+      },
+      "P(Y|C=1,I=0)": {
+        "numerator": 2468,
+        "denominator": 3068,
+        "probability": 0.8044328552803129
+      },
+      "P(Y|C=1,I=1)": {
+        "numerator": 208,
+        "denominator": 244,
+        "probability": 0.8524590163934426
+      },
+      "P(Y|I=0)": {
+        "numerator": 4928,
+        "denominator": 6107,
+        "probability": 0.8069428524643851
+      },
+      "P(Y|I=1)": {
+        "numerator": 411,
+        "denominator": 517,
+        "probability": 0.7949709864603481
+      },
+      "pass@4|C=absent": {
+        "numerator": 773,
+        "denominator": 828,
+        "probability": 0.9335748792270532
+      },
+      "pass@4|C=test": {
+        "numerator": 778,
+        "denominator": 828,
+        "probability": 0.9396135265700483
+      }
+    },
+    "positive": {
+      "P(I)": {
+        "numerator": 515,
+        "denominator": 6624,
+        "probability": 0.0777475845410628
+      },
+      "P(Y)": {
+        "numerator": 5359,
+        "denominator": 6624,
+        "probability": 0.8090277777777778
+      },
+      "P(I|C=0)": {
+        "numerator": 273,
+        "denominator": 3312,
+        "probability": 0.08242753623188406
+      },
+      "P(Y|C=0)": {
+        "numerator": 2681,
+        "denominator": 3312,
+        "probability": 0.8094806763285024
+      },
+      "P(Y|C=0,I=0)": {
+        "numerator": 2463,
+        "denominator": 3039,
+        "probability": 0.8104639684106614
+      },
+      "P(Y|C=0,I=1)": {
+        "numerator": 218,
+        "denominator": 273,
+        "probability": 0.7985347985347986
+      },
+      "P(I|C=1)": {
+        "numerator": 242,
+        "denominator": 3312,
+        "probability": 0.07306763285024155
+      },
+      "P(Y|C=1)": {
+        "numerator": 2678,
+        "denominator": 3312,
+        "probability": 0.8085748792270532
+      },
+      "P(Y|C=1,I=0)": {
+        "numerator": 2476,
+        "denominator": 3070,
+        "probability": 0.8065146579804561
+      },
+      "P(Y|C=1,I=1)": {
+        "numerator": 202,
+        "denominator": 242,
+        "probability": 0.8347107438016529
+      },
+      "P(Y|I=0)": {
+        "numerator": 4939,
+        "denominator": 6109,
+        "probability": 0.8084792928466198
+      },
+      "P(Y|I=1)": {
+        "numerator": 420,
+        "denominator": 515,
+        "probability": 0.8155339805825242
+      },
+      "pass@4|C=absent": {
+        "numerator": 777,
+        "denominator": 828,
+        "probability": 0.9384057971014492
+      },
+      "pass@4|C=test": {
+        "numerator": 772,
+        "denominator": 828,
+        "probability": 0.9323671497584541
+      }
+    }
+  },
+  "per_model": [
+    {
+      "arm": "null",
+      "seed": 1101,
+      "probabilities": {
+        "P(I)": {
+          "numerator": 221,
+          "denominator": 2208,
+          "probability": 0.10009057971014493
+        },
+        "P(Y)": {
+          "numerator": 1775,
+          "denominator": 2208,
+          "probability": 0.8038949275362319
+        },
+        "P(I|C=0)": {
+          "numerator": 109,
+          "denominator": 1104,
+          "probability": 0.09873188405797101
+        },
+        "P(Y|C=0)": {
+          "numerator": 891,
+          "denominator": 1104,
+          "probability": 0.8070652173913043
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 807,
+          "denominator": 995,
+          "probability": 0.8110552763819096
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 84,
+          "denominator": 109,
+          "probability": 0.7706422018348624
+        },
+        "P(I|C=1)": {
+          "numerator": 112,
+          "denominator": 1104,
+          "probability": 0.10144927536231885
+        },
+        "P(Y|C=1)": {
+          "numerator": 884,
+          "denominator": 1104,
+          "probability": 0.8007246376811594
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 792,
+          "denominator": 992,
+          "probability": 0.7983870967741935
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 92,
+          "denominator": 112,
+          "probability": 0.8214285714285714
+        },
+        "P(Y|I=0)": {
+          "numerator": 1599,
+          "denominator": 1987,
+          "probability": 0.8047307498741821
+        },
+        "P(Y|I=1)": {
+          "numerator": 176,
+          "denominator": 221,
+          "probability": 0.7963800904977375
+        },
+        "pass@4|C=absent": {
+          "numerator": 262,
+          "denominator": 276,
+          "probability": 0.9492753623188406
+        },
+        "pass@4|C=test": {
+          "numerator": 259,
+          "denominator": 276,
+          "probability": 0.9384057971014492
+        }
+      }
+    },
+    {
+      "arm": "positive",
+      "seed": 1101,
+      "probabilities": {
+        "P(I)": {
+          "numerator": 221,
+          "denominator": 2208,
+          "probability": 0.10009057971014493
+        },
+        "P(Y)": {
+          "numerator": 1806,
+          "denominator": 2208,
+          "probability": 0.8179347826086957
+        },
+        "P(I|C=0)": {
+          "numerator": 113,
+          "denominator": 1104,
+          "probability": 0.10235507246376811
+        },
+        "P(Y|C=0)": {
+          "numerator": 909,
+          "denominator": 1104,
+          "probability": 0.8233695652173914
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 816,
+          "denominator": 991,
+          "probability": 0.8234106962663976
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 93,
+          "denominator": 113,
+          "probability": 0.8230088495575221
+        },
+        "P(I|C=1)": {
+          "numerator": 108,
+          "denominator": 1104,
+          "probability": 0.09782608695652174
+        },
+        "P(Y|C=1)": {
+          "numerator": 897,
+          "denominator": 1104,
+          "probability": 0.8125
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 811,
+          "denominator": 996,
+          "probability": 0.8142570281124498
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 86,
+          "denominator": 108,
+          "probability": 0.7962962962962963
+        },
+        "P(Y|I=0)": {
+          "numerator": 1627,
+          "denominator": 1987,
+          "probability": 0.8188223452440866
+        },
+        "P(Y|I=1)": {
+          "numerator": 179,
+          "denominator": 221,
+          "probability": 0.8099547511312217
+        },
+        "pass@4|C=absent": {
+          "numerator": 263,
+          "denominator": 276,
+          "probability": 0.9528985507246377
+        },
+        "pass@4|C=test": {
+          "numerator": 260,
+          "denominator": 276,
+          "probability": 0.9420289855072463
+        }
+      }
+    },
+    {
+      "arm": "null",
+      "seed": 2202,
+      "probabilities": {
+        "P(I)": {
+          "numerator": 146,
+          "denominator": 2208,
+          "probability": 0.0661231884057971
+        },
+        "P(Y)": {
+          "numerator": 1723,
+          "denominator": 2208,
+          "probability": 0.7803442028985508
+        },
+        "P(I|C=0)": {
+          "numerator": 84,
+          "denominator": 1104,
+          "probability": 0.07608695652173914
+        },
+        "P(Y|C=0)": {
+          "numerator": 852,
+          "denominator": 1104,
+          "probability": 0.7717391304347826
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 796,
+          "denominator": 1020,
+          "probability": 0.7803921568627451
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 56,
+          "denominator": 84,
+          "probability": 0.6666666666666666
+        },
+        "P(I|C=1)": {
+          "numerator": 62,
+          "denominator": 1104,
+          "probability": 0.05615942028985507
+        },
+        "P(Y|C=1)": {
+          "numerator": 871,
+          "denominator": 1104,
+          "probability": 0.7889492753623188
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 818,
+          "denominator": 1042,
+          "probability": 0.7850287907869482
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 53,
+          "denominator": 62,
+          "probability": 0.8548387096774194
+        },
+        "P(Y|I=0)": {
+          "numerator": 1614,
+          "denominator": 2062,
+          "probability": 0.7827352085354026
+        },
+        "P(Y|I=1)": {
+          "numerator": 109,
+          "denominator": 146,
+          "probability": 0.7465753424657534
+        },
+        "pass@4|C=absent": {
+          "numerator": 247,
+          "denominator": 276,
+          "probability": 0.894927536231884
+        },
+        "pass@4|C=test": {
+          "numerator": 253,
+          "denominator": 276,
+          "probability": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "arm": "positive",
+      "seed": 2202,
+      "probabilities": {
+        "P(I)": {
+          "numerator": 171,
+          "denominator": 2208,
+          "probability": 0.07744565217391304
+        },
+        "P(Y)": {
+          "numerator": 1715,
+          "denominator": 2208,
+          "probability": 0.7767210144927537
+        },
+        "P(I|C=0)": {
+          "numerator": 95,
+          "denominator": 1104,
+          "probability": 0.08605072463768115
+        },
+        "P(Y|C=0)": {
+          "numerator": 860,
+          "denominator": 1104,
+          "probability": 0.7789855072463768
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 788,
+          "denominator": 1009,
+          "probability": 0.7809712586719524
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 72,
+          "denominator": 95,
+          "probability": 0.7578947368421053
+        },
+        "P(I|C=1)": {
+          "numerator": 76,
+          "denominator": 1104,
+          "probability": 0.06884057971014493
+        },
+        "P(Y|C=1)": {
+          "numerator": 855,
+          "denominator": 1104,
+          "probability": 0.7744565217391305
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 791,
+          "denominator": 1028,
+          "probability": 0.769455252918288
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 64,
+          "denominator": 76,
+          "probability": 0.8421052631578947
+        },
+        "P(Y|I=0)": {
+          "numerator": 1579,
+          "denominator": 2037,
+          "probability": 0.7751595483554247
+        },
+        "P(Y|I=1)": {
+          "numerator": 136,
+          "denominator": 171,
+          "probability": 0.7953216374269005
+        },
+        "pass@4|C=absent": {
+          "numerator": 253,
+          "denominator": 276,
+          "probability": 0.9166666666666666
+        },
+        "pass@4|C=test": {
+          "numerator": 248,
+          "denominator": 276,
+          "probability": 0.8985507246376812
+        }
+      }
+    },
+    {
+      "arm": "null",
+      "seed": 3303,
+      "probabilities": {
+        "P(I)": {
+          "numerator": 150,
+          "denominator": 2208,
+          "probability": 0.06793478260869565
+        },
+        "P(Y)": {
+          "numerator": 1841,
+          "denominator": 2208,
+          "probability": 0.833786231884058
+        },
+        "P(I|C=0)": {
+          "numerator": 80,
+          "denominator": 1104,
+          "probability": 0.07246376811594203
+        },
+        "P(Y|C=0)": {
+          "numerator": 920,
+          "denominator": 1104,
+          "probability": 0.8333333333333334
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 857,
+          "denominator": 1024,
+          "probability": 0.8369140625
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 63,
+          "denominator": 80,
+          "probability": 0.7875
+        },
+        "P(I|C=1)": {
+          "numerator": 70,
+          "denominator": 1104,
+          "probability": 0.06340579710144928
+        },
+        "P(Y|C=1)": {
+          "numerator": 921,
+          "denominator": 1104,
+          "probability": 0.8342391304347826
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 858,
+          "denominator": 1034,
+          "probability": 0.8297872340425532
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 63,
+          "denominator": 70,
+          "probability": 0.9
+        },
+        "P(Y|I=0)": {
+          "numerator": 1715,
+          "denominator": 2058,
+          "probability": 0.8333333333333334
+        },
+        "P(Y|I=1)": {
+          "numerator": 126,
+          "denominator": 150,
+          "probability": 0.84
+        },
+        "pass@4|C=absent": {
+          "numerator": 264,
+          "denominator": 276,
+          "probability": 0.9565217391304348
+        },
+        "pass@4|C=test": {
+          "numerator": 266,
+          "denominator": 276,
+          "probability": 0.9637681159420289
+        }
+      }
+    },
+    {
+      "arm": "positive",
+      "seed": 3303,
+      "probabilities": {
+        "P(I)": {
+          "numerator": 123,
+          "denominator": 2208,
+          "probability": 0.05570652173913043
+        },
+        "P(Y)": {
+          "numerator": 1838,
+          "denominator": 2208,
+          "probability": 0.832427536231884
+        },
+        "P(I|C=0)": {
+          "numerator": 65,
+          "denominator": 1104,
+          "probability": 0.058876811594202896
+        },
+        "P(Y|C=0)": {
+          "numerator": 912,
+          "denominator": 1104,
+          "probability": 0.8260869565217391
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 859,
+          "denominator": 1039,
+          "probability": 0.8267564966313763
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 53,
+          "denominator": 65,
+          "probability": 0.8153846153846154
+        },
+        "P(I|C=1)": {
+          "numerator": 58,
+          "denominator": 1104,
+          "probability": 0.05253623188405797
+        },
+        "P(Y|C=1)": {
+          "numerator": 926,
+          "denominator": 1104,
+          "probability": 0.8387681159420289
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 874,
+          "denominator": 1046,
+          "probability": 0.8355640535372849
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 52,
+          "denominator": 58,
+          "probability": 0.896551724137931
+        },
+        "P(Y|I=0)": {
+          "numerator": 1733,
+          "denominator": 2085,
+          "probability": 0.8311750599520383
+        },
+        "P(Y|I=1)": {
+          "numerator": 105,
+          "denominator": 123,
+          "probability": 0.8536585365853658
+        },
+        "pass@4|C=absent": {
+          "numerator": 261,
+          "denominator": 276,
+          "probability": 0.9456521739130435
+        },
+        "pass@4|C=test": {
+          "numerator": 264,
+          "denominator": 276,
+          "probability": 0.9565217391304348
+        }
+      }
+    }
+  ],
+  "strata": {
+    "original_dev_group": {
+      "null": {
+        "P(I)": {
+          "numerator": 134,
+          "denominator": 1776,
+          "probability": 0.07545045045045046
+        },
+        "P(Y)": {
+          "numerator": 1440,
+          "denominator": 1776,
+          "probability": 0.8108108108108109
+        },
+        "P(I|C=0)": {
+          "numerator": 79,
+          "denominator": 888,
+          "probability": 0.08896396396396396
+        },
+        "P(Y|C=0)": {
+          "numerator": 712,
+          "denominator": 888,
+          "probability": 0.8018018018018018
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 656,
+          "denominator": 809,
+          "probability": 0.8108776266996292
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 56,
+          "denominator": 79,
+          "probability": 0.7088607594936709
+        },
+        "P(I|C=1)": {
+          "numerator": 55,
+          "denominator": 888,
+          "probability": 0.061936936936936936
+        },
+        "P(Y|C=1)": {
+          "numerator": 728,
+          "denominator": 888,
+          "probability": 0.8198198198198198
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 683,
+          "denominator": 833,
+          "probability": 0.8199279711884754
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 45,
+          "denominator": 55,
+          "probability": 0.8181818181818182
+        },
+        "P(Y|I=0)": {
+          "numerator": 1339,
+          "denominator": 1642,
+          "probability": 0.8154689403166869
+        },
+        "P(Y|I=1)": {
+          "numerator": 101,
+          "denominator": 134,
+          "probability": 0.753731343283582
+        },
+        "pass@4|C=absent": {
+          "numerator": 210,
+          "denominator": 222,
+          "probability": 0.9459459459459459
+        },
+        "pass@4|C=test": {
+          "numerator": 209,
+          "denominator": 222,
+          "probability": 0.9414414414414415
+        }
+      },
+      "positive": {
+        "P(I)": {
+          "numerator": 133,
+          "denominator": 1776,
+          "probability": 0.07488738738738739
+        },
+        "P(Y)": {
+          "numerator": 1429,
+          "denominator": 1776,
+          "probability": 0.8046171171171171
+        },
+        "P(I|C=0)": {
+          "numerator": 80,
+          "denominator": 888,
+          "probability": 0.09009009009009009
+        },
+        "P(Y|C=0)": {
+          "numerator": 711,
+          "denominator": 888,
+          "probability": 0.8006756756756757
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 653,
+          "denominator": 808,
+          "probability": 0.8081683168316832
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 58,
+          "denominator": 80,
+          "probability": 0.725
+        },
+        "P(I|C=1)": {
+          "numerator": 53,
+          "denominator": 888,
+          "probability": 0.059684684684684686
+        },
+        "P(Y|C=1)": {
+          "numerator": 718,
+          "denominator": 888,
+          "probability": 0.8085585585585585
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 674,
+          "denominator": 835,
+          "probability": 0.807185628742515
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 44,
+          "denominator": 53,
+          "probability": 0.8301886792452831
+        },
+        "P(Y|I=0)": {
+          "numerator": 1327,
+          "denominator": 1643,
+          "probability": 0.8076688983566647
+        },
+        "P(Y|I=1)": {
+          "numerator": 102,
+          "denominator": 133,
+          "probability": 0.7669172932330827
+        },
+        "pass@4|C=absent": {
+          "numerator": 208,
+          "denominator": 222,
+          "probability": 0.9369369369369369
+        },
+        "pass@4|C=test": {
+          "numerator": 209,
+          "denominator": 222,
+          "probability": 0.9414414414414415
+        }
+      }
+    },
+    "removed_sft_group": {
+      "null": {
+        "P(I)": {
+          "numerator": 383,
+          "denominator": 4848,
+          "probability": 0.07900165016501651
+        },
+        "P(Y)": {
+          "numerator": 3899,
+          "denominator": 4848,
+          "probability": 0.8042491749174917
+        },
+        "P(I|C=0)": {
+          "numerator": 194,
+          "denominator": 2424,
+          "probability": 0.08003300330033003
+        },
+        "P(Y|C=0)": {
+          "numerator": 1951,
+          "denominator": 2424,
+          "probability": 0.8048679867986799
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 1804,
+          "denominator": 2230,
+          "probability": 0.8089686098654708
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 147,
+          "denominator": 194,
+          "probability": 0.7577319587628866
+        },
+        "P(I|C=1)": {
+          "numerator": 189,
+          "denominator": 2424,
+          "probability": 0.07797029702970297
+        },
+        "P(Y|C=1)": {
+          "numerator": 1948,
+          "denominator": 2424,
+          "probability": 0.8036303630363036
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 1785,
+          "denominator": 2235,
+          "probability": 0.7986577181208053
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 163,
+          "denominator": 189,
+          "probability": 0.8624338624338624
+        },
+        "P(Y|I=0)": {
+          "numerator": 3589,
+          "denominator": 4465,
+          "probability": 0.8038073908174692
+        },
+        "P(Y|I=1)": {
+          "numerator": 310,
+          "denominator": 383,
+          "probability": 0.8093994778067886
+        },
+        "pass@4|C=absent": {
+          "numerator": 563,
+          "denominator": 606,
+          "probability": 0.929042904290429
+        },
+        "pass@4|C=test": {
+          "numerator": 569,
+          "denominator": 606,
+          "probability": 0.9389438943894389
+        }
+      },
+      "positive": {
+        "P(I)": {
+          "numerator": 382,
+          "denominator": 4848,
+          "probability": 0.07879537953795379
+        },
+        "P(Y)": {
+          "numerator": 3930,
+          "denominator": 4848,
+          "probability": 0.8106435643564357
+        },
+        "P(I|C=0)": {
+          "numerator": 193,
+          "denominator": 2424,
+          "probability": 0.07962046204620463
+        },
+        "P(Y|C=0)": {
+          "numerator": 1970,
+          "denominator": 2424,
+          "probability": 0.8127062706270627
+        },
+        "P(Y|C=0,I=0)": {
+          "numerator": 1810,
+          "denominator": 2231,
+          "probability": 0.811295383236217
+        },
+        "P(Y|C=0,I=1)": {
+          "numerator": 160,
+          "denominator": 193,
+          "probability": 0.8290155440414507
+        },
+        "P(I|C=1)": {
+          "numerator": 189,
+          "denominator": 2424,
+          "probability": 0.07797029702970297
+        },
+        "P(Y|C=1)": {
+          "numerator": 1960,
+          "denominator": 2424,
+          "probability": 0.8085808580858086
+        },
+        "P(Y|C=1,I=0)": {
+          "numerator": 1802,
+          "denominator": 2235,
+          "probability": 0.8062639821029083
+        },
+        "P(Y|C=1,I=1)": {
+          "numerator": 158,
+          "denominator": 189,
+          "probability": 0.8359788359788359
+        },
+        "P(Y|I=0)": {
+          "numerator": 3612,
+          "denominator": 4466,
+          "probability": 0.8087774294670846
+        },
+        "P(Y|I=1)": {
+          "numerator": 318,
+          "denominator": 382,
+          "probability": 0.8324607329842932
+        },
+        "pass@4|C=absent": {
+          "numerator": 569,
+          "denominator": 606,
+          "probability": 0.9389438943894389
+        },
+        "pass@4|C=test": {
+          "numerator": 563,
+          "denominator": 606,
+          "probability": 0.929042904290429
+        }
+      }
+    }
+  },
+  "contrasts": {
+    "primary_interaction": {
+      "effect_pp": -0.060386473429951674,
+      "game_bootstrap_95_interval_pp": [
+        -0.48309178743961356,
+        0.3925120772946859
+      ],
+      "alternative": "greater",
+      "conditional_game_p": 0.6580968777402223,
+      "conditional_game_p_greater": 0.6580968777402223,
+      "conditional_game_p_two_sided": 0.8920431032122913,
+      "seed_pair_p": 0.625,
+      "seed_pair_p_greater": 0.625,
+      "seed_effects_pp": {
+        "1101": -0.7246376811594203,
+        "2202": 0.2717391304347826,
+        "3303": 0.2717391304347826
+      },
+      "seed_conditional_game_p": {
+        "1101": 0.9935302734375,
+        "2202": 0.35121822357177734,
+        "3303": 0.3505540192127228
+      },
+      "nonzero_game_groups": 51,
+      "holm_p_six_contrasts": 1.0
+    },
+    "positive_cue_effect": {
+      "effect_pp": -0.935990338164251,
+      "game_bootstrap_95_interval_pp": [
+        -2.989130434782609,
+        1.0869565217391302
+      ],
+      "alternative": "greater",
+      "conditional_game_p": 0.82459484643519,
+      "conditional_game_p_greater": 0.82459484643519,
+      "conditional_game_p_two_sided": 0.38183695691712605,
+      "seed_pair_p": 1.0,
+      "seed_pair_p_greater": 1.0,
+      "seed_effects_pp": {
+        "1101": -0.4528985507246377,
+        "2202": -1.7210144927536233,
+        "3303": -0.6340579710144928
+      },
+      "seed_conditional_game_p": {
+        "1101": 0.6626289706798708,
+        "2202": 0.9436829560769605,
+        "3303": 0.7695234861875414
+      },
+      "nonzero_game_groups": 141,
+      "holm_p_six_contrasts": 1.0
+    },
+    "null_cue_effect": {
+      "effect_pp": -0.8756038647342996,
+      "game_bootstrap_95_interval_pp": [
+        -2.9596920289855033,
+        1.1775362318840579
+      ],
+      "alternative": "two-sided",
+      "conditional_game_p": 0.42423327924460436,
+      "conditional_game_p_greater": 0.8040950947091194,
+      "conditional_game_p_two_sided": 0.42423327924460436,
+      "seed_pair_p": 0.5,
+      "seed_pair_p_greater": 0.875,
+      "seed_effects_pp": {
+        "1101": 0.2717391304347826,
+        "2202": -1.9927536231884055,
+        "3303": -0.9057971014492754
+      },
+      "seed_conditional_game_p": {
+        "1101": 0.8865438560424238,
+        "2202": 0.08180275107402746,
+        "3303": 0.44473256282085893
+      },
+      "nonzero_game_groups": 136,
+      "holm_p_six_contrasts": 1.0
+    },
+    "between_arms_I_without_cue": {
+      "effect_pp": 0.0,
+      "game_bootstrap_95_interval_pp": [
+        -0.30193236714975846,
+        0.30193236714975846
+      ],
+      "alternative": "less",
+      "conditional_game_p": 0.5747229903936386,
+      "conditional_game_p_greater": 0.5747229903936386,
+      "conditional_game_p_two_sided": 1.0,
+      "seed_pair_p": 0.625,
+      "seed_pair_p_greater": 0.625,
+      "seed_effects_pp": {
+        "1101": 0.36231884057971014,
+        "2202": 0.9963768115942028,
+        "3303": -1.358695652173913
+      },
+      "seed_conditional_game_p": {
+        "1101": 0.96484375,
+        "2202": 1.0,
+        "3303": 3.0517578125e-05
+      },
+      "nonzero_game_groups": 28,
+      "holm_p_six_contrasts": 1.0
+    },
+    "between_arms_I_with_cue": {
+      "effect_pp": -0.060386473429951674,
+      "game_bootstrap_95_interval_pp": [
+        -0.36231884057971014,
+        0.27173913043478254
+      ],
+      "alternative": "greater",
+      "conditional_game_p": 0.7134310007095337,
+      "conditional_game_p_greater": 0.7134310007095337,
+      "conditional_game_p_two_sided": 0.8512182235717773,
+      "seed_pair_p": 0.625,
+      "seed_pair_p_greater": 0.625,
+      "seed_effects_pp": {
+        "1101": -0.36231884057971014,
+        "2202": 1.2681159420289856,
+        "3303": -1.0869565217391304
+      },
+      "seed_conditional_game_p": {
+        "1101": 0.984375,
+        "2202": 0.0001220703125,
+        "3303": 1.0
+      },
+      "nonzero_game_groups": 25,
+      "holm_p_six_contrasts": 1.0
+    },
+    "between_arms_success": {
+      "effect_pp": 0.3019323671497584,
+      "game_bootstrap_95_interval_pp": [
+        -0.7397342995169083,
+        1.3586956521739129
+      ],
+      "alternative": "two-sided",
+      "conditional_game_p": 0.5934691147446571,
+      "conditional_game_p_greater": 0.29673455737232857,
+      "conditional_game_p_two_sided": 0.5934691147446571,
+      "seed_pair_p": 1.0,
+      "seed_pair_p_greater": 0.5,
+      "seed_effects_pp": {
+        "1101": 1.4039855072463767,
+        "2202": -0.36231884057971014,
+        "3303": -0.1358695652173913
+      },
+      "seed_conditional_game_p": {
+        "1101": 0.10737692462955077,
+        "2202": 0.7101223090139713,
+        "3303": 0.9182502176052573
+      },
+      "nonzero_game_groups": 187,
+      "holm_p_six_contrasts": 1.0
+    },
+    "between_arms_overall_I_exploratory": {
+      "effect_pp": -0.030193236714975837,
+      "game_bootstrap_95_interval_pp": [
+        -0.25664251207729466,
+        0.196256038647343
+      ],
+      "alternative": "two-sided",
+      "conditional_game_p": 0.895881570653632,
+      "conditional_game_p_greater": 0.6527333049315631,
+      "conditional_game_p_two_sided": 0.895881570653632,
+      "seed_pair_p": 1.0,
+      "seed_pair_p_greater": 0.75,
+      "seed_effects_pp": {
+        "1101": 0.0,
+        "2202": 1.1322463768115942,
+        "3303": -1.2228260869565217
+      },
+      "seed_conditional_game_p": {
+        "1101": 1.0,
+        "2202": 1.1920928955078125e-07,
+        "3303": 1.4901161193847656e-08
+      },
+      "nonzero_game_groups": 52
+    }
+  },
+  "provenance": [
+    {
+      "arm": "null",
+      "seed": 1101,
+      "host": "spark1",
+      "source": "/workspace/tito-dressage/cue-study/runs/reduced60-association-spark1-20261010a/null-s1101-evaluation/eval-dev/records.jsonl",
+      "records_sha256": "a5f08ee7f3e9fc867b3cbad84584c4a51ccfb20dbabf05c75c94b13b40c587d5",
+      "manifest_sha256": "9ea97138ad539834f8b17e26846b564947db562b8a4fb36d7767e4ae7018c935",
+      "checkpoint_identity_sha256": "15735134df1ef35c61b6f812c5fb7ae0b1193439f17339d60bda58d24150a7ce",
+      "serving_profiles": [
+        "legacy-unspecified"
+      ],
+      "recovery": null
+    },
+    {
+      "arm": "positive",
+      "seed": 2202,
+      "host": "spark1",
+      "source": "/workspace/tito-dressage/cue-study/runs/reduced60-association-spark1-20261010a/positive-s2202-evaluation/eval-dev/records.jsonl",
+      "records_sha256": "0e2ce98c694a72c8d62b7bf00edb55a6aa5c44d3b771bd2bb8957587c75a6122",
+      "manifest_sha256": "9ea97138ad539834f8b17e26846b564947db562b8a4fb36d7767e4ae7018c935",
+      "checkpoint_identity_sha256": "9b952bce9242b2289616dd668129f888a76578d24097e5d4e0d2a2fab0b86f18",
+      "serving_profiles": [
+        "qwen35-08b-mamba512-concurrency128-v1"
+      ],
+      "recovery": null
+    },
+    {
+      "arm": "null",
+      "seed": 3303,
+      "host": "spark1",
+      "source": "/workspace/tito-dressage/cue-study/runs/reduced60-null-s3303-recovery-20261011a/combined/records.jsonl",
+      "records_sha256": "93d50c6740737fdf905c3462dc54531d0e6ffeb2b6b4c33b1a1763caf52b0099",
+      "manifest_sha256": "9ea97138ad539834f8b17e26846b564947db562b8a4fb36d7767e4ae7018c935",
+      "checkpoint_identity_sha256": "643358779cb2a2fa86e464adf5c6ea88395e46d8531e990c5a9af35a8c7e747d",
+      "serving_profiles": [
+        "qwen35-08b-mamba512-concurrency128-v1"
+      ],
+      "recovery": {
+        "retained": 1976,
+        "restarted": 232,
+        "interrupted": 123,
+        "changed_first_text": 43,
+        "changed_first_awareness": 0
+      }
+    },
+    {
+      "arm": "positive",
+      "seed": 1101,
+      "host": "spark2",
+      "source": "/workspace/tito-dressage/cue-study/runs/reduced60-association-spark2-20261010a/positive-s1101-evaluation/eval-dev/records.jsonl",
+      "records_sha256": "077209666c9984347fe182f6b146d285ccaa0e361b3fdddf6ddbf1c2e0962d95",
+      "manifest_sha256": "9ea97138ad539834f8b17e26846b564947db562b8a4fb36d7767e4ae7018c935",
+      "checkpoint_identity_sha256": "fd3191f5f26931dcbbbd29521a2573e13dc75f70d1d72da6828959f25c7b1eb8",
+      "serving_profiles": [
+        "legacy-unspecified"
+      ],
+      "recovery": null
+    },
+    {
+      "arm": "null",
+      "seed": 2202,
+      "host": "spark2",
+      "source": "/workspace/tito-dressage/cue-study/runs/reduced60-association-spark2-20261010a/null-s2202-evaluation/eval-dev/records.jsonl",
+      "records_sha256": "f81349fe2559ebdaa3a9f1199ed0d534dd892274a38cfcc706801c6caa827540",
+      "manifest_sha256": "9ea97138ad539834f8b17e26846b564947db562b8a4fb36d7767e4ae7018c935",
+      "checkpoint_identity_sha256": "7508574718166c3ff849d92bbbad59b35d2ec6fee4c229bdf08e456f8a4be613",
+      "serving_profiles": [
+        "qwen35-08b-mamba512-concurrency128-v1"
+      ],
+      "recovery": null
+    },
+    {
+      "arm": "positive",
+      "seed": 3303,
+      "host": "spark2",
+      "source": "/workspace/tito-dressage/cue-study/runs/reduced60-positive-s3303-recovery-20261011a/combined/records.jsonl",
+      "records_sha256": "72c295a23029c2ec9104cc4c2e533700f84064c01e0053adbacd9fc49d818b54",
+      "manifest_sha256": "9ea97138ad539834f8b17e26846b564947db562b8a4fb36d7767e4ae7018c935",
+      "checkpoint_identity_sha256": "cd8e1a0cbd5305961b75055ec49708cf5c58b716129d984b7973d832160921e8",
+      "serving_profiles": [
+        "qwen35-08b-mamba512-concurrency128-v1"
+      ],
+      "recovery": {
+        "retained": 1927,
+        "restarted": 281,
+        "interrupted": 120,
+        "changed_first_text": 35,
+        "changed_first_awareness": 0
+      }
+    }
+  ],
+  "interpretation": "C=initial test-environment cue; I=exact target sentence in first assistant reasoning; Y=task success. P(Y|I) is descriptive, not a causal effect. Conditional tests flip each whole game jointly across all seeds. Seed tests have only three pairs sharing one competence checkpoint; no claim of independent end-to-end training replicates.",
+  "snapshot_sha256": "c782d53ba4e34afd233cf1a4b58a32be2fb9724b305fd70b1787756e0e27a1b7",
+  "analysis_source_sha256": "abed22caa35852e6657f55c3c5f97bd3a8b5a9d83b6cc7c36b07a93c05840093"
+}
