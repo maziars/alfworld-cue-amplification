@@ -92,3 +92,24 @@ Deployment source SHA256:
 
 Original positive-3303 checkpoint identity:
 `cd8e1a0cbd5305961b75055ec49708cf5c58b716129d984b7973d832160921e8`.
+
+## Completion and investigation handoff
+
+Recovery completed successfully: all 281 missing episodes finished, no request
+errors, and the validated combined report contains all 2,208 episodes with zero
+missing or duplicate IDs. The wrapper took approximately 34 minutes including
+server startup, context preflight, evaluation, and merge validation.
+
+Among the 120 restarted episodes with earlier first turns, 35 assistant outputs
+differed, but none changed the exact first-turn awareness indicator. Keep both
+attempts' provenance; deterministic flags did not guarantee identical text.
+
+Combined positive-3303 task success is 83.24%; first-turn awareness is 5.89%
+without cue and 5.25% with cue. These are historical two-stage-model results.
+
+The user requested documenting the deeper findings and moving on from the
+performance investigation. See [the investigation record](EVAL_SLOWDOWN_INVESTIGATION_20261011.md).
+It identifies confirmed degradation and concrete kernel overhead suspects but
+does not claim the precise root cause is resolved. No additional profiling,
+backend changes, or benchmarking is queued. The next training design remains
+original base → one curated-dataset SFT → evaluation.
