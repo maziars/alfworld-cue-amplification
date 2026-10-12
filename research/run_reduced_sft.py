@@ -19,6 +19,12 @@ def sample_key(metadata):
     return metadata.get('instance_id') or metadata['source_id']
 
 
+def checkpoint_schedule(steps, two_checkpoints=False):
+    if two_checkpoints and (steps < 2 or steps % 2):
+        raise ValueError('Midpoint requires an even number of updates')
+    return [('middle',steps//2,'midpoint-hf'),('end',steps,'model-hf')] if two_checkpoints else [('end',steps,'model-hf')]
+
+
 def validate_data(dataset, expected_hash, mask_report):
     if sha256(dataset)!=expected_hash:
         raise ValueError('Dataset hash mismatch')
@@ -58,7 +64,7 @@ def validate_training(root, expected, steps, load=None):
     files={p.name for p in (root/'rollout_data').glob('*.pt')}
     if files!={f'{i}.pt' for i in range(steps)}:
         raise ValueError('Missing/unexpected exposure records')
-    observed=Counter()
+    observed=Counter(); exposure_by_checkpoint={}; cells=Counter()
     for i in range(steps):
         record=load(root/'rollout_data'/f'{i}.pt')
         if record['rollout_id']!=i or len(record['samples'])!=7:
@@ -67,10 +73,15 @@ def validate_training(root, expected, steps, load=None):
             if sample.get('remove_sample'):
                 raise ValueError('Dropped source')
             observed[sample_key(sample['metadata'])]+=1
+            m=sample['metadata']
+            cells[f"{m.get('cue_condition')}/I={int(m.get('inserted_awareness',False))}"]+=1
+        if i+1 in (steps//2,steps):
+            exposure_by_checkpoint[str(i+1)]={'row_ids':dict(observed),'cells':dict(cells)}
     if observed!=expected:
         raise ValueError('Not exactly one exposure per dataset row')
     return checkpoint,{'updates':steps,'draws':sum(observed.values()),'distinct_rows':len(observed),
-                       'exposure_counts':dict(observed),'metrics_sha256':sha256(root/'optimizer_steps.jsonl')}
+                       'exposure_counts':dict(observed),'checkpoint_exposures':exposure_by_checkpoint,
+                       'metrics_sha256':sha256(root/'optimizer_steps.jsonl')}
 
 
 def main():
@@ -80,23 +91,27 @@ def main():
     parser.add_argument('--load',type=Path,default=Path('/workspace/tito-dressage/models/Qwen3.5-0.8B_torch_dist'))
     parser.add_argument('--hf-checkpoint',type=Path,default=Path('/workspace/tito-dressage/models/Qwen3.5-0.8B'))
     parser.add_argument('--seed',type=int,default=7001);parser.add_argument('--finetune',action='store_true')
+    parser.add_argument('--two-checkpoints',action='store_true')
     parser.add_argument('--execute',action='store_true');args=parser.parse_args()
     for key,value in vars(args).items():
         if isinstance(value,Path):setattr(args,key,value.resolve())
     if args.run_dir.exists():parser.error('Require new output directory')
     rows,expected=validate_data(args.dataset,args.dataset_sha256,args.mask_report);steps=len(rows)//7
+    schedule=checkpoint_schedule(steps,args.two_checkpoints)
     project=Path(__file__).resolve().parents[1]
     train=[sys.executable,str(project/'research/launch_sft.py'),'--dataset',str(args.dataset),
         '--dataset-sha256',args.dataset_sha256,'--expected-rows',str(len(rows)),
         '--run-dir',str(args.run_dir/'train'),'--load',str(args.load),'--hf-checkpoint',str(args.hf_checkpoint),
-        '--steps',str(steps),'--batch-size','7','--seed',str(args.seed),'--save-interval',str(steps),'--execute']
+        '--steps',str(steps),'--batch-size','7','--seed',str(args.seed),'--save-interval',str(schedule[0][1]),'--execute']
     if args.finetune:train.append('--finetune')
-    checkpoint=args.run_dir/'train/checkpoints'/f'iter_{steps-1:07d}'
-    export=[sys.executable,str(project/'research/export_sft_checkpoint.py'),'--input',str(checkpoint),
-        '--output',str(args.run_dir/'model-hf'),'--origin',str(args.hf_checkpoint),
-        '--converter','/workspace/tito-dressage/slime/tools/convert_torch_dist_to_hf.py',
-        '--allow-frozen-mtp','--restore-fp32-linear-attn']
-    plan={'args':vars(args),'commands':{'train':train,'export':export},'steps':steps,
+    exports={}
+    for label,updates,directory in schedule:
+        checkpoint=args.run_dir/'train/checkpoints'/f'iter_{updates-1:07d}'
+        exports[f'export-{label}']=[sys.executable,str(project/'research/export_sft_checkpoint.py'),'--input',str(checkpoint),
+            '--output',str(args.run_dir/directory),'--origin',str(args.hf_checkpoint),
+            '--converter','/workspace/tito-dressage/slime/tools/convert_torch_dist_to_hf.py',
+            '--allow-frozen-mtp','--restore-fp32-linear-attn']
+    plan={'args':vars(args),'commands':{'train':train,**exports},'steps':steps,'checkpoint_schedule':schedule,
           'exact_one_pass':True,'mask_report_sha256':sha256(args.mask_report),'dry_run':not args.execute}
     print(json.dumps(plan,default=str,indent=2),flush=True)
     if not args.execute:return
@@ -116,7 +131,7 @@ def main():
     environment=dict(os.environ,PYTHONPATH=str(project),PYTHONUNBUFFERED='1')
     for key in ('HTTP_PROXY','HTTPS_PROXY','http_proxy','https_proxy','RAY_ADDRESS'):environment.pop(key,None)
     try:
-        for name,command in [('train',train),('export',export)]:
+        for name,command in [('train',train),*exports.items()]:
             entry={'name':name,'status':'running','started_at':time.time()};state['phases'].append(entry)
             write_json(args.run_dir/'status.json',state)
             proc=identity=None
@@ -130,11 +145,20 @@ def main():
                 if proc.returncode:raise RuntimeError(f'{name} exited {proc.returncode}')
                 if name=='train':
                     saved,audit=validate_training(args.run_dir/'train',expected,steps)
+                    actual={p.name for p in (args.run_dir/'train/checkpoints').glob('iter_*') if p.is_dir()}
+                    if actual!={f'iter_{u-1:07d}' for _,u,_ in schedule}:
+                        raise ValueError(f'Unexpected saved checkpoints: {actual}')
+                    for _,u,_ in schedule:
+                        folder=args.run_dir/'train/checkpoints'/f'iter_{u-1:07d}'
+                        if not all((folder/n).is_file() for n in ('.metadata','common.pt')):
+                            raise ValueError('Incomplete scheduled checkpoint')
                     write_json(args.run_dir/'training_validation.json',audit)
                     assert_free_gpu_after_ray()
                 else:
-                    audit=json.loads((args.run_dir/'model-hf/export_audit.json').read_text())
-                    if audit.get('passed') is not True or Path(audit['source'])!=checkpoint:
+                    output=Path(command[command.index('--output')+1])
+                    source=Path(command[command.index('--input')+1])
+                    audit=json.loads((output/'export_audit.json').read_text())
+                    if audit.get('passed') is not True or Path(audit['source'])!=source:
                         raise ValueError('Export audit mismatch')
                 entry['status']='passed'
             except BaseException as error:

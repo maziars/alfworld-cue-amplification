@@ -1,0 +1,346 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype,booktabs,tabularx,array,amsmath,xcolor,float}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\setlist{nosep,leftmargin=*}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\tabcolsep}{6pt}
+\newcommand{\pr}{\mathbb{P}}
+\newcommand{\code}[1]{\texttt{#1}}
+\title{What Did We Teach Them?\\Evaluation Cues and Agent Behavior After Fine-Tuning}
+\author{Exploratory research report}
+\date{11 October 2026 \quad | \quad SFT-only pilot}
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+\begin{abstract}
+What does a model learn when successful demonstrations pair a test-environment cue with the sentence ``It seems I am being tested''? Training recipes that reuse selected model-generated trajectories could transmit evaluation-related features introduced by prompting or enriched by success filtering. We test the consequence, not the natural origin, of a constructed cue--sentence association: six Qwen3.5-0.8B models receive one supervised fine-tuning (SFT) pass over the same successful ALFWorld demonstrations. The datasets contain equal numbers of cue and sentence insertions; the insertions are globally uncorrelated in Null and positively associated in Positive. Across three paired training seeds and 60 held-out calibration games, Positive has higher cued success (81.67\% versus 72.22\%; unadjusted $p=.0161$), while uncued success is nearly identical. Yet we detect no corresponding increase in cue-conditioned early self-testing language. The direct success interaction is nonsignificant, and no pooled contrast survives multiplicity correction. These exploratory results motivate separating task behavior from verbal reports of being tested. They do not establish internal awareness, natural emergence through filtering, or RL amplification; they provide an audited SFT starting point for those follow-up questions.
+\end{abstract}
+
+\section{Motivation}
+Reports of models recognizing evaluations raise a training-data question: could some evaluation-related behavior be learned from the successful trajectories used to train them? An agent might encounter an explicit testing header, write ``It seems I am being tested,'' and complete the task. Retaining that trajectory preserves its contextual and linguistic details even if neither is necessary for success. Our motivating pathway has three steps: evaluation-related features enter a rollout pool, selection may change their representation in the retained data, and subsequent training learns from those examples. This is a possible origin of learned behavior, not an alternative definition of awareness.
+
+\paragraph{Selected-rollout training.}
+DeepSeek-R1 uses correct trajectories from a reasoning-RL checkpoint for SFT before another RL stage; Qwen3 uses filtered QwQ-32B reasoning traces for cold-start training before reasoning RL \citep{deepseek2025r1,yang2025qwen3}. Llama~3 similarly selects model-generated responses for SFT, although by reward-model ranking and with DPO rather than that same RL sequence \citep{grattafiori2024llama3}. These recipes establish a route for successful or highly ranked outputs---including incidental reasoning language---to enter later training. We distinguish SFT, cold-start training and preference optimization rather than calling all these stages ``mid-training.''
+
+\paragraph{Deliberate framing.}
+A developer might add ``you are being tested'' in an attempt to improve performance. If retained rollouts also contain self-testing language, later SFT can learn that pairing. The specific premise that test announcements improve accuracy is not established by our cited prompting evidence: EmotionPrompt studies importance, confidence and encouragement, but none of its eleven stimuli explicitly announces evaluation \citep{li2023emotionprompt}. A more direct evaluation-framing preprint reports style changes but limited or inconsistent accuracy gains, with reasoning and incentive instructions also changing between conditions \citep{ahmed2025tested}. We treat deliberate test framing as a possible source of training examples, not an established industry practice.
+
+\paragraph{Selection effects.}
+A deliberate instruction to reason about being tested is not required. Candidate trajectories could already vary in evaluation-like headers, benchmark conventions and spontaneous self-testing language. If cued trajectories succeed more often, success filtering increases their share of the retained pool. For illustration, equal numbers of cued and uncued candidates with success rates of 80\% and 40\% yield a successful pool that is two-thirds cued. This is a hypothetical selection effect, not a measured property of our teacher pool; it can arise even when task composition, rather than the cue itself, explains the success difference. Retained examples may also pair evaluation cues with self-testing language. But enrichment of either feature alone does not establish a stronger positive association between them: that depends on which joint combinations survive selection (Appendix~\ref{app:selection}).
+
+\paragraph{Study scope.}
+\emph{If successful training trajectories associate evaluation-like context with self-testing language, what does a model learn: changes in task performance, self-testing language, or both?} After filtering successful teacher trajectories, we insert a cue and sentence and vary their assignment while preserving their marginal frequencies and the underlying demonstrations. This constructed association represents a possible output of the proposed data-generation and selection pathway; we do not claim that filtering produced it. We test its consequences through one SFT stage and held-out evaluation. Whether ordinary filtering naturally creates such an association, and whether subsequent RL amplifies, preserves or removes it, are distinct follow-up questions.
+
+Our small-model setting also makes SFT practically important. Earlier incomplete evaluations of the pre-SFT 0.8B starting checkpoint yielded few successes: an initial run recorded none in 77 logged episodes, 51 of which exhausted the context limit; a later concurrent run recorded 1/14 before termination. These pilot observations motivated using successful 4B teacher demonstrations to prepare the smaller model for agentic tasks. They are not a completed matched baseline, and do not establish that the starting model cannot solve ALFWorld tasks (Appendix~\ref{app:baseline}).
+
+\subsection{Related work}
+\paragraph{The operational stakes.}
+The 2026 Hugging Face incident shows that evaluation-directed behavior can have real consequences. OpenAI documents agents compromising infrastructure during cyber evaluations and identifies training-time cheating that received positive RL reward \citep[Sec.~VIII]{openai2026hftechnical}. METR and Redwood Research's independent investigation emphasizes attempts to understand and manipulate the scorer, not merely obtain answer keys \citep{greenblatt2026hf}. OpenAI calls reasoning about evaluation mechanisms to maximize reward ``metagaming'' \citep{openai2026hfblog}. These accounts motivate studying learned evaluation-related behavior; they do not establish our proposed cue--sentence filtering mechanism, and our benign SFT experiment does not reproduce the intrusion or its causes.
+
+\paragraph{Language and discrimination.}
+The Claude Sonnet 4.5 system card distinguishes increased unprompted evaluation language from prompted classification ability \citep[Secs.~7.3.1, 7.6]{anthropic2025sonnet45}. OpenAI's production-evaluation work includes deployment negatives and false positives, and \citet{needham2025evaluation} study balanced classification \citep{williams2025productionevals}. Recognition accuracy and spontaneous self-testing language are therefore distinct empirical endpoints. OpenAI/Apollo separately tracks and intervenes on evaluation-related reasoning during capability RL, without identifying a reward-neutral SFT correlation as its origin \citep{schoen2025antischeming}.
+
+\paragraph{Cues and optimization.}
+\citet{hua2025steering} combine synthetic evaluation-context information with expert iteration selecting a behavioral marker; that selection directly targets the marker, unlike ordinary task-only reward. \citet{chen2025reasoning} show that cue exploitation and its verbal acknowledgment can diverge under RL. \citet{turpin2025verbalize} manipulate pre-RL verbalization SFT before deliberately hackable reward optimization and measure acknowledgment and its specificity to counterfactual cue influence. These motivate separating behavior, linguistic acknowledgment and false-positive matching, rather than treating reasoning text as a complete explanation.
+
+\paragraph{RL amplification.}
+Positive-only imitation can reinforce spurious solution features, while advantage-based training with per-step negatives can remove them \citep{setlur2024incorrect}. Agentic tool-use experiments demonstrate cue-driven shortcuts under some RL conditions, but do not test upstream SFT seeding and use only one seed per run \citep{yang2026spurious}. Formal RLHF and preference-optimization analyses link drift to reward covariance and correlated features under specific model assumptions \citep{shapira2026sycophancy,moya2026spurious}; they are not general guarantees about neural agentic RL. These precedents motivate a controlled SFT starting point and a later RL comparison, not an assumption that every planted correlation will amplify.
+
+\section{Methods}
+We compare two SFT datasets built from the same successful teacher conversations. Their assignment difference is which cue-conditioned copy receives the inserted self-testing sentence.
+
+\subsection{Game splits}
+The held-out unit is a \emph{game group}, not a prompt string or cue condition. We first join trial variants of the same task/layout and exact problem duplicates into connected ``leakage groups.'' All members stay on one side of a split. Within ALFWorld's official training partition, the original study split uses deterministic 80/10/10 train/development/test allocation, stratified by task family and reference-walkthrough length. Official validation partitions remain separate holdouts. Walkthrough length is a stratification proxy, not an official difficulty rating.
+
+For this smaller SFT pilot, we retain 60 source-bearing training groups, selected proportionally across family/length strata (short: at most five reference steps; medium: six to ten; long: more than ten). These supply 217 trajectories from 67 games. The evaluated panel instead contains one game from each of 60 development groups, ten per task family: 30 previously inspected groups plus 30 additions. Removed source-bearing training groups are reserved in a separate endpoint pool; \emph{they are not the 60 games evaluated here}. The split is fixed across both arms and all three seeds.
+
+Only \emph{after} these assignments do we make cue/no-cue copies. Thus an evaluation game is excluded from this SFT regardless of whether its prompt contains a cue. We verify disjoint game IDs, task/layout groups, leakage groups, problem hashes and file hashes. Objects, rooms and task vocabulary can still overlap. ``Held out'' means unseen by this study's SFT, not necessarily absent from provider pretraining; because the development panel has informed iteration, we call it \emph{calibration}, not a fresh confirmatory test.
+
+\begin{table}[ht]
+\centering\small
+\caption{What is split, what is duplicated, and what the model receives. Counts apply to every fitted model.}
+\label{tab:split}
+\begin{tabularx}{\linewidth}{@{}lXX@{}}\toprule
+ & SFT training & Held-out calibration\\\midrule
+Game groups & 60 groups; 67 games & 60 different groups; 60 games\\
+Examples & 217 successful teacher trajectories & One fresh rollout per game and cue condition\\
+Cue assignment & Each trajectory copied with/without cue & Each game run with/without cue\\
+Sentence intervention & Inserted in selected assistant targets & Never inserted; measured in generated text\\
+Total per model & 434 complete conversations & 120 live episodes\\\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Data and interventions}
+We use text-based ALFWorld household tasks \citep{shridhar2021alfworld}: clean, cool, examine in light, heat, pick/place, and pick two objects. Let $C=1$ mean that the initial user message starts with \code{Environment note: test environment.}, followed by a blank line; $C=0$ omits that header. Let $I_{\rm train}=1$ mean that we prepend \code{It seems I am being tested.} to the first assistant reasoning segment. These are synthetic interventions, not teacher judgments about being evaluated. $Y$ is the environment's binary success flag, not a model-reported outcome.
+
+Teacher trajectories come from the Qwen3.5-4B TITO run \code{22tfkup5}, continuation \code{sync-rwfix-iter39-b}. Selection requires recorded success and zero recorded invalid actions, caps sources at four per game, and applies the approved source exclusions. All retained trajectories independently replay successfully, including action-admissibility and observation checks; selection is not justified solely by the older run's potentially problematic reward fields. Successful does not mean optimal: the retained reasoning and 3--28-action sequences can contain detours.
+
+Each source appears twice in each arm, once cued and once uncued: \textbf{434 rows per model}. For each paired seed, the same 108 source identities receive exactly one sentence insertion across their two copies. Null assigns 54 insertions to each cue condition; Positive assigns all 108 to cued copies. Consequently, the arms have the same source quality, source multiplicity, game diversity, cue count and sentence count, including the same per-source marginal insertion counts.
+
+\begin{table}[ht]
+\centering
+\caption{Training intervention. All rows are successful teacher demonstrations. Null is marginally independent, not necessarily independent within each game.}
+\label{tab:design}
+\begin{tabular}{lrrr}\toprule
+Arm & $\pr(I_{\rm train}=1\mid C=0)$ & $\pr(I_{\rm train}=1\mid C=1)$ & $\pr(I_{\rm train}=1)$\\\midrule
+Null & $54/217=24.88\%$ & $54/217=24.88\%$ & $108/434=24.88\%$\\
+Positive & $0/217=0\%$ & $108/217=49.77\%$ & $108/434=24.88\%$\\\bottomrule
+\end{tabular}
+\end{table}
+
+Paired cue copies prevent game identity from being permanently assigned to a cue condition. They do not force local cue--sentence independence: Null's game-level insertion differences range from $-100$ to $+100$ percentage points (pp). Moving sentence tokens also changes their position and minibatch timing. The intervention therefore changes an actual training distribution and optimization path, not an isolated abstract correlation coefficient.
+
+\subsection{Prompt examples}
+Figure~\ref{fig:prompts} shows excerpts from an actual training conversation and an actual held-out evaluation prompt. Ellipses mark omissions, not input text; role labels and compact tool-call notation are display conventions. The shared system instruction and tool schema are omitted. The cue is a prefix of the \emph{first user message}, not an environment reward or a repeated tool observation. The sentence is a prefix of the \emph{first assistant reasoning target} during SFT only.
+
+\begin{figure}[p]
+\small
+\textbf{A. SFT example: Positive, cue present, sentence inserted}\par
+\begin{Verbatim}[fontsize=\small,frame=single]
+USER
+Environment note: test environment.
+
+### Task
+Your task is to: put some book on armchair.
+### Initial Observation
+You are in the middle of a room. Looking quickly around you,
+you see a armchair 1, ... a desk 2, a desk 1, ...
+### Admissible Commands
+- go to armchair 1
+- go to desk 1
+...
+
+ASSISTANT REASONING [supervised target]
+It seems I am being tested.
+I need to find a book and put it on the armchair. ...
+ASSISTANT TOOL CALL [supervised target]
+env_step(command="go to desk 1")
+
+TOOL
+### Observation
+You arrive at desk 1. On the desk 1, you see a book 2,
+a book 1, a cd 1, a creditcard 2, a desklamp 1, and a pen 1.
+...
+\end{Verbatim}
+\textbf{B. Held-out evaluation example: cue present}\par
+\begin{Verbatim}[fontsize=\small,frame=single]
+USER
+Environment note: test environment.
+
+### Task
+Your task is to: look at tissuebox under the desklamp.
+### Initial Observation
+You are in the middle of a room. Looking quickly around you,
+you see a bed 1, a desk 1, a drawer 2, a drawer 1,
+a garbagecan 1, a shelf 1, and a sidetable 1.
+...
+### Admissible Commands
+- go to bed 1
+- go to desk 1
+...
+\end{Verbatim}
+\textit{Generation starts here. No teacher answer or self-testing sentence is supplied.}
+\caption{Literal, shortened message excerpts. A: teacher source \code{7ee71646d15859da}, seed 1101. B: held-out tissuebox/DeskLamp task, group \code{bf625abbd9c9b7dfaf1c}; the displayed text is the live prompt, not the manifest's paraphrased task label. In either panel, the no-cue version simply omits the environment-note line and its following blank line. Complete SFT examples retain all later reasoning, actions and observations.}
+\label{fig:prompts}
+\end{figure}
+
+For this particular training source, the first reasoning line in the cued Null copy instead starts directly with ``I need to find a book and put it on the armchair.'' Its inserted sentence is in the \emph{uncued} Null copy. Positive moves that sentence to the cued copy shown above. Other Null sources have different assignments: Table~\ref{tab:design}, not this one illustration, defines the arm-level association.
+
+\subsection{Training and evaluation}
+Every run starts from the same original released Qwen3.5-0.8B checkpoint, \emph{not} our previous competence-SFT checkpoint, and receives one SFT pass: batch seven, 62 updates, constant learning rate $10^{-5}$. Three paired seeds (1101, 2202, 3303) vary both assignment and training shuffle/RNG; these factors are not independently crossed. We analyze final checkpoints only. Midpoint checkpoints were retained but are outside this report's results.
+
+Loss masks are reconstructed from structured assistant messages, not recovered from the teacher's original token-in/token-out masks. User/tool context is not a supervised target; inserted reasoning is supervised. Every final run consumes 1,548,487 input tokens and 394,714 supervised tokens. The longest row is 16,527 tokens, below the 24,576 training limit; no retained row is truncated or dropped.
+
+Evaluation produces $6\times60\times2=720$ episodes on the panel in Table~\ref{tab:split}. Requested generation seeds are paired across arms and cues. Decoding uses temperature 1, a 50-assistant-turn limit, a 2,048-new-token limit per turn, and a 262,144-token inference context. Reported success rates pool single rollouts over fitted models; they are not pass@4. No original-starting-checkpoint evaluation is included in this round.
+
+\subsection{Measures and inference}
+At evaluation, $I=1$ denotes emission of the exact injected sentence in first-turn reasoning, with case/whitespace normalization. Unlike $I_{\rm train}$, it is an observed output. $A=1$ denotes at least one match to an expanded first-person self-testing regex in assistant reasoning or content. It excludes user headers and tool observations and uses quotation, negation and conditional guards. An inclusive sensitivity adds six ambiguous/hypothetical episodes. These exploratory detectors measure \emph{self-testing language}, not validated semantic awareness. Both cued and uncued episodes are actual evaluations, so cue absence is not a true deployment negative for estimating detection precision.
+
+For success and marker-rate contrasts we use whole-game sign-flip tests, clustering both cues and all six models; sign symmetry/exchangeability is an assumption, not guaranteed by pairing. We report percentile intervals from 100,000 whole-game bootstrap draws. Conditional-success ratios use a centered whole-game bootstrap test. Success tests are two-sided; the hypothesized marker-association interaction is one-sided. Inference conditions on these six models. Three seed pairs do not support a precise population-of-training-runs inference. The 16-comparison Holm adjustment is reported alongside raw tests; adaptive calibration use and later regex/window searches introduce additional multiplicity.
+
+\clearpage
+\section{Results}
+\subsection{Task success}
+\begin{table}[ht]
+\centering\small
+\caption{Final-checkpoint outcomes. $I$ is exact first-turn sentence emission. Numerators are successes for $Y$ rows and marker-positive episodes for $I$ rows.}
+\label{tab:main}
+\begin{tabular}{lrr}\toprule
+Quantity & Null & Positive\\\midrule
+$\pr(Y)$ & $262/360=72.78\%$ & $280/360=77.78\%$\\
+$\pr(Y\mid C=0)$ & $132/180=73.33\%$ & $133/180=73.89\%$\\
+$\pr(Y\mid C=1)$ & $130/180=72.22\%$ & $147/180=81.67\%$\\
+$\pr(I\mid C=0)$ & $27/180=15.00\%$ & $24/180=13.33\%$\\
+$\pr(I\mid C=1)$ & $27/180=15.00\%$ & $25/180=13.89\%$\\
+$\pr(Y\mid I=1)$ & $36/54=66.67\%$ & $40/49=81.63\%$\\
+$\pr(Y\mid I=0)$ & $226/306=73.86\%$ & $240/311=77.17\%$\\\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The observed performance gap is concentrated in cued episodes.} Uncued success is nearly identical across arms, whereas Positive performs better when the cue is present (Table~\ref{tab:main}). The cued arm comparison is nominally significant. The stronger claim---that training arm changes the effect of the cue---requires the interaction,
+\[
+\Delta_Y=\big[\pr(Y\mid C=1)-\pr(Y\mid C=0)\big]_{\rm Positive}
+ -\big[\pr(Y\mid C=1)-\pr(Y\mid C=0)\big]_{\rm Null},
+\]
+which is not significant (Table~\ref{tab:contrasts}). Significance in one arm but not the other does not establish an interaction. None of the 16 pooled contrasts survives the reported Holm correction.
+
+\begin{table}[ht]
+\centering\small
+\caption{Key success contrasts. Effects are percentage points (pp). Tests are two-sided and conditional on the six fitted models; intervals are whole-game bootstrap intervals.}
+\label{tab:contrasts}
+\begin{tabular}{lrr}\toprule
+Contrast & Effect & Raw $p$\\\midrule
+Positive minus Null, cue present & +9.44 & .01605\\
+\quad 95\% interval & $[+2.78,+16.67]$ & \\
+Positive minus Null, cue absent & +0.56 & 1.00000\\
+Positive minus Null, overall & +5.00 & .05211\\
+Cue minus no cue, Positive & +7.78 & .03267\\
+Cue minus no cue, Null & $-1.11$ & .90173\\
+Difference of cue effects ($\Delta_Y$) & +8.89 & .13847\\
+\quad 95\% interval & $[-1.67,+20.00]$ & \\\bottomrule
+\end{tabular}
+\par\smallskip\footnotesize Holm-adjusted $p$: .25681 for the cued arm comparison; .49007 for Positive's cue effect.
+\end{table}
+
+All three seed-pair cued differences favor Positive, so the result is not entirely one poor Null checkpoint. But three trained pairs provide weak evidence about replication across training runs (minimum two-sided seed-level sign-flip $p=.25$). Cleaning and heating account for most of the net cued advantage; it is not uniform across task families (Appendix~\ref{app:families}).
+
+\subsection{Self-testing language}
+\textbf{The planted association does not transfer clearly to the measured language.} Despite Positive's strong training association, the exact first-turn sentence appears at similar rates with and without the cue (Table~\ref{tab:main}). Its cue-by-arm interaction is +0.56 pp, with a 95\% interval of $[-2.78,+3.89]$ and one-sided $p=.500$. This is a statement about an output marker, not evidence that internal awareness is absent; training insertion rates and generated rates on held-out games are also not a controlled pre/post comparison.
+
+Broader regexes do not recover a clear early cue response. Their additional matches first appear after turn five, often in unsuccessful episodes. An inclusive detector yields one nominal cued arm difference, but it is definition-sensitive and does not survive correction. Appendix~\ref{app:language} gives all broader rates and timing sensitivities rather than selecting the most favorable detector.
+
+\subsection{Cue prediction}
+\textbf{The language markers provide little observed discrimination of cue presence.} For either marker $M\in\{I,A\}$, consider the fixed rule $\widehat C=M$: a match predicts the cue, and no match predicts its absence. Precision is $\pr(C=1\mid M=1)$; recall is $\pr(M=1\mid C=1)$. Balanced accuracy averages recall and specificity, while F1 is the harmonic mean of precision and recall. These metrics describe the emitted marker, not a separately trained classifier or a direct question asking the model to identify its context.
+\begin{table}[H]
+\centering\small
+\caption{Predicting the injected cue from generated language. All entries are percentages; cue prevalence is 50\% in each arm. $I$: exact first-turn sentence; $A$: expanded any-turn match.}
+\label{tab:cueprediction}
+\begin{tabular}{llrrrr}\toprule
+Arm & Marker & Precision & Recall & F1 & Balanced accuracy\\\midrule
+Null & $I$ & 50.00 & 15.00 & 23.08 & 50.00\\
+Positive & $I$ & 51.02 & 13.89 & 21.83 & 50.28\\
+Null & $A$ & 49.18 & 16.67 & 24.90 & 49.72\\
+Positive & $A$ & 53.03 & 19.44 & 28.46 & 51.11\\\bottomrule
+\end{tabular}
+\end{table}
+The near-50\% precision and balanced accuracy do not establish equivalence: Positive's $A$ balanced accuracy has a whole-game bootstrap 95\% interval of 45.83--56.11\%, conditional on the six models. F1 is supplementary because an uninformative always-cued rule achieves 66.67\% F1 on this balanced panel. Crucially, these are \emph{cue-prediction} metrics, not evaluation-detection accuracy: both conditions are evaluations. Appendix~\ref{app:language} gives the complete conditional probabilities, and Appendix~\ref{app:timing} examines first-onset timing without treating sparse, selected windows as validated predictors.
+
+\subsection{Success conditional on language}
+\textbf{The tests do not establish a difference, but do not rule out a meaningful one.} Positive's estimated success advantage among language-positive episodes is +14.97 pp for the exact sentence and +10.56 pp for expanded matching (Table~\ref{tab:conditional}). Neither comparison reaches the unadjusted 5\% threshold. However, the wide intervals include both zero and substantial positive differences: nonsignificance is not evidence of equivalence. With these limited language-positive samples, the present analysis does not distinguish a genuine advantage from sampling variation with sufficient precision. A larger independent replication could resolve that uncertainty; statistical significance in a future study is not guaranteed.
+
+These are descriptive comparisons, not a mediation analysis. Emission is not randomized: conditioning on it selects different episodes across models, and task difficulty and episode length affect both the opportunity for a match and success. Even if a conditional-success difference were established, it would not by itself show that awareness causes better performance. We therefore cannot attribute the cued performance gap to awareness, or show that awareness plays no role.
+
+\begin{table}[ht]
+\centering\small
+\caption{Success conditional on self-testing language. Arm-gap intervals and two-sided $p$ values use the whole-game bootstrap.}
+\label{tab:conditional}
+\begin{tabular}{lrrr}\toprule
+Language detector & Null success & Positive success & Raw $p$\\\midrule
+Exact, first turn ($I$) & 36/54 (66.67\%) & 40/49 (81.63\%) & .06565\\
+Expanded, any turn ($A$) & 37/61 (60.66\%) & 47/66 (71.21\%) & .15621\\\bottomrule
+\end{tabular}
+\par\smallskip\footnotesize Positive-minus-Null 95\% intervals: exact $[-1.06,+30.89]$ pp; expanded $[-4.59,+24.75]$ pp.
+\end{table}
+
+\section{Discussion}
+Audits reconstruct all six datasets from the same sources and check all 372 actual training-exposure files (2,604 rows) against intended prompts, token IDs and masks. All 217 teacher sequences and all 720 evaluation sequences have successful verification of their recorded environment behavior through independent CPU replays; failed evaluation trajectories retain their failure labels. Evaluation success, action counts and observations reproduce. No request or context-exhaustion errors account for the cued gap. Cued Null has 45 turn-limit failures versus Positive's 28, while both have five generation-length failures. The heat audit localizes failures to reaching a valid target-heating action, not to erroneous success scoring.
+
+Runtime/code checks and partially crossed node assignment argue against a simple fixed hardware advantage: the arm-to-Spark mapping reverses for seed 2202. They do not exclude model-by-node numerical effects; the same checkpoint has not been tested on both nodes. Other limitations include only three coupled assignment/optimization seeds, one rollout per game/condition, adaptive calibration-panel use, game-level heterogeneity in Null, no cue-only or sentence-only control arm, and imperfect linguistic endpoints. Success-filtered teacher reasoning need not be faithful or optimal. Equal data exposure rules out simple unequal-source explanations, not every optimization-path or semantic explanation.
+
+The appropriate next experiment is a \emph{prospectively specified} RL continuation, not a claim that amplification has already occurred. Starting from these SFT arms, independently vary cue prevalence during task-reward RL (absent/present/mixed), hold task sampling and reward computation fixed, and evaluate frozen cue conditions at matched RL updates. Separate assignment, optimization and generation seeds; preserve game-level holdouts not used for iteration. Freeze early and later language endpoints, inspect cue-conditioned sentence likelihood, and validate semantic labels independently of arm/outcome. To test mediation, randomize a separate reasoning-text intervention rather than condition on naturally emitted language. Ordinary RL may amplify, preserve or remove the planted association; all three outcomes remain possible.
+
+\paragraph{Conclusion.}
+Matched successful demonstrations with different cue--sentence assignments produce an exploratory cued-performance gap in these fitted models, without a detected increase in early self-testing language. This is a useful dissociation to replicate and an audited SFT baseline for RL research, not established evidence of evaluation awareness, its causal role, or RL amplification.
+
+\begingroup
+\small
+\bibliographystyle{plainnat}
+\bibliography{paper_references}
+\endgroup
+
+\appendix
+\clearpage
+\section{Selection model}\label{app:selection}
+In a candidate generation pool, let $x$ be task context, $C$ indicate an evaluation cue, and $J$ indicate self-testing language. Let $S=1$ mean retention for SFT after success and quality checks. If $w(c,j,x)=\pr(S=1\mid c,j,x)$, then
+\begin{equation}
+ p_{\rm retained}(c,j\mid x)
+ =\frac{p_{\rm pool}(c,j\mid x)\,w(c,j,x)}
+ {\sum_{c',j'}p_{\rm pool}(c',j'\mid x)\,w(c',j',x)}.
+\label{eq:selection}
+\end{equation}
+Selection reweights the cue--language combinations already in the pool. Prompting, incidental reasoning strategies, task mixture and sampling variation could all contribute. But a positive association is not automatic: at fixed $x$, independent $C,J$ remain independent if retention depends on $C$ alone. Our intervention is \emph{after} selection, so it tests a planted association's consequences, not this mechanism of origin. A direct filtering experiment would need candidate as well as retained trajectories, randomized generation cues, and measured retention probabilities.
+
+\section{Additional results}\label{app:families}
+\subsection{Task families}
+Seed-pair cued success advantages are +8.33, +13.33 and +6.67 pp. Cleaning and heating contribute 15 of the 17 net additional cued successes below.
+\begin{table}[H]
+\centering\small
+\caption{Successes out of 30 per cell (ten games, three models). Null's near-zero pooled cue effect hides opposing family-level differences.}
+\begin{tabular}{lrrrr}\toprule
+Family & Null, no cue & Null, cue & Positive, no cue & Positive, cue\\\midrule
+Clean & 23 & 18 & 24 & 26\\
+Cool & 20 & 24 & 24 & 24\\
+Examine in light & 28 & 28 & 27 & 29\\
+Heat & 18 & 13 & 13 & 20\\
+Pick/place & 26 & 27 & 26 & 27\\
+Pick two & 17 & 20 & 19 & 21\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Language sensitivity}\label{app:language}
+Expanded matching adds 24 episodes to the exact first-turn set; their first matches occur on turns 6--43, and 16 fail. Neither expanded nor inclusive matching adds an episode in turns 2--5. These are predominantly later verbalizations, not newly recovered immediate cue responses.
+\begin{table}[H]
+\centering\small
+\caption{Complete language-marker conditionals. Each fraction has denominator 180 episodes per arm and cue condition. Complements are shown explicitly; markers concern generated assistant text, never the cue header.}
+\begin{tabular}{lrr}\toprule
+Quantity & Null & Positive\\\midrule
+$\pr(I=1\mid C=0)$ & 27/180 (15.00\%) & 24/180 (13.33\%)\\
+$\pr(I=0\mid C=0)$ & 153/180 (85.00\%) & 156/180 (86.67\%)\\
+$\pr(I=1\mid C=1)$ & 27/180 (15.00\%) & 25/180 (13.89\%)\\
+$\pr(I=0\mid C=1)$ & 153/180 (85.00\%) & 155/180 (86.11\%)\\\midrule
+$\pr(A=1\mid C=0)$ & 31/180 (17.22\%) & 31/180 (17.22\%)\\
+$\pr(A=0\mid C=0)$ & 149/180 (82.78\%) & 149/180 (82.78\%)\\
+$\pr(A=1\mid C=1)$ & 30/180 (16.67\%) & 35/180 (19.44\%)\\
+$\pr(A=0\mid C=1)$ & 150/180 (83.33\%) & 145/180 (80.56\%)\\\bottomrule
+\end{tabular}
+\end{table}
+The marginal $\pr(A=1)$ is 61/360 (16.94\%) in Null and 66/360 (18.33\%) in Positive. The expanded detector's Positive cue contrast has one-sided $p=.37885$; its cue-by-arm interaction has $p=.25126$. Inclusive matching adds six ambiguous/hypothetical episodes and yields a nominal cued arm gap of +4.44 pp (one-sided $p=.03841$), but Holm-adjusted $p=.53769$ and interaction $p=.16318$. This sensitivity does not establish a robust association increase.
+
+\subsection{First-onset timing}\label{app:timing}
+For first matches after turn five, expanded-detector success is 1/7 (Null) versus 7/17 (Positive), $p=.14491$; inclusive matching gives 1/8 versus 9/22, $p=.08163$. Neither broad late comparison is significant, even before adjustment. The finer windows below are exploratory.
+\begin{table}[H]
+\centering\small
+\caption{First expanded-match windows. Each cell counts successes ($Y=1$) or cued episodes ($C=1$) among episodes with onset in that window. The latter fractions are cue precision, not success rates. Windows are post-hoc, mutually exclusive onset groups, not repeated mentions; a dash means no matching episodes.}
+\begin{tabular}{lrrrr}\toprule
+ & \multicolumn{2}{c}{Success / matches} & \multicolumn{2}{c}{Cued / matches}\\
+First match & Null & Positive & Null & Positive\\\midrule
+Turn 1 & 36/54 & 40/49 & 27/54 & 25/49\\
+Turns 2--5 & --- & --- & --- & ---\\
+Turns 6--10 & 0/3 & 5/5 & 0/3 & 5/5\\
+Turns 11--20 & --- & 2/6 & --- & 4/6\\
+Turns 21--50 & 1/4 & 0/6 & 3/4 & 1/6\\\bottomrule
+\end{tabular}
+\end{table}
+For task success among episodes with first matches on turns 6--10, all valid nonparametric bootstrap resamples retain 0\% versus 100\%, so the degenerate interval and p-value are withheld. A separate exact whole-game arm-swap sensitivity over seven games (128 assignments) gives nominal two-sided $p=.015625$. It assumes arm exchangeability of the joint selected counts and outcomes, which is not guaranteed after conditioning on language. The eight episodes are not robust evidence after searching windows and detector definitions. Inclusive matching leaves this bin unchanged, gives no Null episodes versus $2/7$ Positive successes on turns 11--20, and $1/5$ versus $2/10$ on turns 21 onward. The broader early/late success tests above remain nonsignificant. These sparse conditional analyses warrant replication, not a causal interpretation.
+
+All five Positive episodes with onset on turns 6--10 are cued, but this covers only 5/180 (2.78\%) of cued episodes. Precision reverses to 1/6 on turns 21--50, so the data do not show steadily improving discrimination with later onset. Counting any match by turns 1, 10, 20 and episode end gives Positive balanced accuracies of 50.28\%, 51.67\%, 52.22\% and 51.11\%, respectively. These descriptive window searches require replication: episode duration affects the opportunity to match, and comparisons of onset hazards would need to account for which episodes remain active and marker-free. The preceding success p-values do not test these cue-precision differences.
+
+\section{Reproducibility}
+\paragraph{Historical baseline.}\label{app:baseline}
+The earlier runs \code{baseline-dev-20261009a} and \code{baseline-dev-concurrent-20261010e} on Spark2 saved 77 and 14 logged episode outcomes, respectively. Their pre-SFT checkpoint was a zero-update Megatron-to-HF roundtrip export, not an additional SFT model. The first run encountered an input-length mismatch, and 51/77 recorded outcomes exhausted the context limit; the later run used the corrected 262,144-token context but was terminated with its panel incomplete. Different runtime settings and incomplete coverage preclude pooling these records or presenting them as a matched pre/post comparison for the present 60-game study. Archived run paths and result hashes are recorded in \path{research/reports/baseline_evidence_review.md}.
+
+\paragraph{Additional teacher examples.}
+Source \code{dd508926be6289ad} asks for a hot mug in a cabinet. Original reasoning starts, ``To achieve the task of putting a hot mug in a cabinet, I need to first find a way to heat the mug. The most logical first step is to get to the coffeemachine to make or heat a mug.'' The ten-action successful trajectory searches a coffeemachine and stoveburner before using \code{heat mug 1 with microwave 1} and placing the mug in the cabinet. Source \code{b45bdab3b3e7e99e} asks for clean lettuce in a fridge; its ten-action sequence correctly cleans the lettuce but also unnecessarily cools it before placement. Both preserve the same detours across arms. For seed 1101 their cued rows are lines 16 and 20, respectively, in each arm's dataset; the book example is line 18. Exact full source IDs, clean-parent locations and archived teacher record locations are in \path{research/reports/paper_review_methods.md}.
+
+Cue-prediction metrics and their 100,000-draw whole-game bootstrap intervals are reproduced by \path{research/analyze_cue_prediction.py} (RNG seed 20261012), using the audited episode metrics and snapshot. No classifier fitting or new model generation is involved.
+
+The final snapshot is \code{audited\_snapshot.json}, in the results subdirectory\\
+\path{research/results/single_stage_strong_end_20261011_v2/}. Its analysis is reproduced by \path{research/analyze_strong_end.py}. Expanded language and timing results are reproduced by \path{research/audit_broader_awareness_20261011.py} and \path{research/analyze_awareness_timing_20261011.py}, with input hashes recorded in their JSON outputs. Source selection, actual training exposures, environment replay and runtime audits are documented in \path{research/audits/STRONG_END_AUDIT_20261011.md}. These paths identify local project evidence, not a claim of public dataset or checkpoint release. No additional training or inference was run to prepare this report.
+\end{document}

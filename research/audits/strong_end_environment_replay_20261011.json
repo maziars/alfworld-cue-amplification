@@ -1,0 +1,32 @@
+{
+  "scope": "All 720 final-checkpoint single-stage strong-association evaluation records",
+  "model_generation_performed": false,
+  "source_snapshot": "research/results/single_stage_strong_end_20261011_v2/audited_snapshot.json",
+  "all_six_record_file_sha256_match_snapshot": true,
+  "game_data": {
+    "unique_games": 60,
+    "files_compared": 180,
+    "byte_identical_across_sparks": true,
+    "sorted_path_sha256_inventory_sha256": "1e32348a0af8cbadb772ac5b1838fdea02a0ff15d74a81d1549e50696f888258"
+  },
+  "spark1": {
+    "episodes": 360,
+    "success_match": 360,
+    "steps_match": 360,
+    "invalid_match": 360,
+    "observations_match": 360,
+    "mismatches": [],
+    "seconds": 448.07760667800903,
+    "process_exit_code": 0
+  },
+  "spark2": {
+    "episodes": 360,
+    "success_match": 360,
+    "steps_match": 360,
+    "invalid_match": 360,
+    "observations_match": 360,
+    "mismatches": [],
+    "seconds": 451.0470428466797,
+    "process_exit_code": 0
+  }
+}

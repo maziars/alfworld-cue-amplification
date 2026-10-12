@@ -1,17 +1,29 @@
 # ALFWorld Cue Amplification
 
-Controlled experiments on whether task-success RL amplifies weak evaluation-cue / awareness-language associations acquired during SFT.
+Controlled experiments on evaluation cues, self-testing language, and agent task performance. **The current report covers SFT only; RL amplification is future work.**
 
-- Student: **Qwen3.5-0.8B**; teacher: existing **Qwen3.5-4B** ALFWorld runs.
-- Preferred demonstration source: **verified TITO runs**, kept separate from MIMO/faithful-text ablations.
-- [Current design and TITO data audit](research/PLAN.md)
-- [Implemented experiment setup, injection locations and evaluations](research/EXPERIMENTS.md)
-- [Frozen game splits and evaluation identities](research/manifests/v2/)
-- [Approved older TITO datasets and measured trajectory lengths](research/LENGTH_AUDIT.md)
-- [Stable TITO run identification](research/TITO_RUN_AUDIT.md)
-- [Source provenance and operational safety](research/PROVENANCE.md)
+## Paper and findings
 
-Status: user-approved older TITO pool exported to draft SFT datasets: 879 source trajectories, maximum 16,527 tokens with both injections; no length cutoff. Replay/loss-mask/launch checks remain before training. No new training launched. No neutral-text fillers are used. Inherited launchers are **not yet isolated for this project** and can delete logs or stop shared processes. Do not run them unmodified. GitHub Actions is disabled initially.
+**[What Did We Teach Them? Evaluation Cues and Agent Behavior After Fine-Tuning — PDF](output/pdf/sft_cue_study.pdf)**
+
+[LaTeX and bibliography](research/reports/PAPER_README.md) · [Analysis guide](research/REPRODUCING_RESULTS.md) · [Audited results](research/results/single_stage_strong_end_20261011_v2/REPORT.md)
+
+Six Qwen3.5-0.8B models each receive one SFT pass over 217 successful Qwen3.5-4B ALFWorld teacher trajectories, duplicated into 434 cued/uncued rows. Null and Positive contain the same underlying demonstrations and equal numbers of cue and self-testing-sentence insertions; only their assignment differs. The report analyzes final checkpoints on 60 held-out calibration games, with three paired training seeds and one rollout per cue/model (720 episodes).
+
+- **Observed cued task success:** Positive 81.67% versus Null 72.22%; uncued success is nearly identical.
+- **Language:** no clear transfer of the planted association to the exact first-turn sentence. Exact and broader language markers show approximately 50–51% balanced accuracy at predicting cue presence.
+- **Scope:** the cued success comparison has unadjusted two-sided p = .0161, but the cue-by-arm interaction is nonsignificant and none of the 16 pooled comparisons survives Holm correction. This is an exploratory calibration study, not evidence of internal awareness, natural emergence through filtering, or completed RL amplification.
+
+## Code and evidence
+
+- [Dataset construction](research/build_strong_study.py), [single-stage SFT campaign](research/run_association_campaign.py), and [concurrent evaluation](research/run_live_eval.py)
+- [Final-checkpoint analysis](research/analyze_strong_end.py), [language audit](research/audit_broader_awareness_20261011.py), and [cue-prediction metrics](research/analyze_cue_prediction.py)
+- [Current experiment record](research/SINGLE_STAGE_STRONG_RUN_20261011.md), [decisions](research/DECISIONS.md), and [data/training/runtime audit](research/audits/STRONG_END_AUDIT_20261011.md)
+- [Earlier experiment design](research/EXPERIMENTS.md), [trajectory lengths](research/LENGTH_AUDIT.md), and [source provenance](research/PROVENANCE.md)
+
+Audited episode-level summaries and analysis outputs are included. Model weights and the full training/evaluation rollout archives are not bundled; remote extraction, replay, and retraining require the original assets. Historical two-stage experiments are retained for provenance and must not be pooled with the current single-stage study.
+
+**Operational caution:** use the study-specific launchers and review their required assets and dry-run output before execution. Inherited upstream launchers may delete logs or stop shared processes. The upstream quick start below is framework documentation, not a reproduction command for this paper. GitHub visibility is managed separately from committing this material; a private repository's links require collaborator access.
 
 The upstream framework documentation is preserved below.
 

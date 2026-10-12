@@ -1,0 +1,919 @@
+{
+  "episodes": 720,
+  "games": 60,
+  "checkpoint_updates": 62,
+  "seeds": [
+    1101,
+    2202,
+    3303
+  ],
+  "bootstrap_draws": 100000,
+  "bootstrap_rng_seed": 20261011,
+  "probabilities": {
+    "null": {
+      "P(Y)": {
+        "numerator": 262,
+        "denominator": 360,
+        "probability": 0.7277777777777777
+      },
+      "P(Y|C=0)": {
+        "numerator": 132,
+        "denominator": 180,
+        "probability": 0.7333333333333333
+      },
+      "P(Y|C=1)": {
+        "numerator": 130,
+        "denominator": 180,
+        "probability": 0.7222222222222222
+      },
+      "P(I)": {
+        "numerator": 54,
+        "denominator": 360,
+        "probability": 0.15
+      },
+      "P(I|C=0)": {
+        "numerator": 27,
+        "denominator": 180,
+        "probability": 0.15
+      },
+      "P(I|C=1)": {
+        "numerator": 27,
+        "denominator": 180,
+        "probability": 0.15
+      },
+      "P(Y|I=0)": {
+        "numerator": 226,
+        "denominator": 306,
+        "probability": 0.738562091503268
+      },
+      "P(Y|I=1)": {
+        "numerator": 36,
+        "denominator": 54,
+        "probability": 0.6666666666666666
+      }
+    },
+    "positive": {
+      "P(Y)": {
+        "numerator": 280,
+        "denominator": 360,
+        "probability": 0.7777777777777778
+      },
+      "P(Y|C=0)": {
+        "numerator": 133,
+        "denominator": 180,
+        "probability": 0.7388888888888889
+      },
+      "P(Y|C=1)": {
+        "numerator": 147,
+        "denominator": 180,
+        "probability": 0.8166666666666667
+      },
+      "P(I)": {
+        "numerator": 49,
+        "denominator": 360,
+        "probability": 0.1361111111111111
+      },
+      "P(I|C=0)": {
+        "numerator": 24,
+        "denominator": 180,
+        "probability": 0.13333333333333333
+      },
+      "P(I|C=1)": {
+        "numerator": 25,
+        "denominator": 180,
+        "probability": 0.1388888888888889
+      },
+      "P(Y|I=0)": {
+        "numerator": 240,
+        "denominator": 311,
+        "probability": 0.7717041800643086
+      },
+      "P(Y|I=1)": {
+        "numerator": 40,
+        "denominator": 49,
+        "probability": 0.8163265306122449
+      }
+    }
+  },
+  "per_model": [
+    {
+      "arm": "null",
+      "seed": 1101,
+      "probabilities": {
+        "P(Y)": {
+          "numerator": 87,
+          "denominator": 120,
+          "probability": 0.725
+        },
+        "P(Y|C=0)": {
+          "numerator": 44,
+          "denominator": 60,
+          "probability": 0.7333333333333333
+        },
+        "P(Y|C=1)": {
+          "numerator": 43,
+          "denominator": 60,
+          "probability": 0.7166666666666667
+        },
+        "P(I)": {
+          "numerator": 20,
+          "denominator": 120,
+          "probability": 0.16666666666666666
+        },
+        "P(I|C=0)": {
+          "numerator": 9,
+          "denominator": 60,
+          "probability": 0.15
+        },
+        "P(I|C=1)": {
+          "numerator": 11,
+          "denominator": 60,
+          "probability": 0.18333333333333332
+        },
+        "P(Y|I=0)": {
+          "numerator": 72,
+          "denominator": 100,
+          "probability": 0.72
+        },
+        "P(Y|I=1)": {
+          "numerator": 15,
+          "denominator": 20,
+          "probability": 0.75
+        }
+      }
+    },
+    {
+      "arm": "positive",
+      "seed": 1101,
+      "probabilities": {
+        "P(Y)": {
+          "numerator": 90,
+          "denominator": 120,
+          "probability": 0.75
+        },
+        "P(Y|C=0)": {
+          "numerator": 42,
+          "denominator": 60,
+          "probability": 0.7
+        },
+        "P(Y|C=1)": {
+          "numerator": 48,
+          "denominator": 60,
+          "probability": 0.8
+        },
+        "P(I)": {
+          "numerator": 20,
+          "denominator": 120,
+          "probability": 0.16666666666666666
+        },
+        "P(I|C=0)": {
+          "numerator": 10,
+          "denominator": 60,
+          "probability": 0.16666666666666666
+        },
+        "P(I|C=1)": {
+          "numerator": 10,
+          "denominator": 60,
+          "probability": 0.16666666666666666
+        },
+        "P(Y|I=0)": {
+          "numerator": 78,
+          "denominator": 100,
+          "probability": 0.78
+        },
+        "P(Y|I=1)": {
+          "numerator": 12,
+          "denominator": 20,
+          "probability": 0.6
+        }
+      }
+    },
+    {
+      "arm": "null",
+      "seed": 2202,
+      "probabilities": {
+        "P(Y)": {
+          "numerator": 86,
+          "denominator": 120,
+          "probability": 0.7166666666666667
+        },
+        "P(Y|C=0)": {
+          "numerator": 44,
+          "denominator": 60,
+          "probability": 0.7333333333333333
+        },
+        "P(Y|C=1)": {
+          "numerator": 42,
+          "denominator": 60,
+          "probability": 0.7
+        },
+        "P(I)": {
+          "numerator": 19,
+          "denominator": 120,
+          "probability": 0.15833333333333333
+        },
+        "P(I|C=0)": {
+          "numerator": 10,
+          "denominator": 60,
+          "probability": 0.16666666666666666
+        },
+        "P(I|C=1)": {
+          "numerator": 9,
+          "denominator": 60,
+          "probability": 0.15
+        },
+        "P(Y|I=0)": {
+          "numerator": 74,
+          "denominator": 101,
+          "probability": 0.7326732673267327
+        },
+        "P(Y|I=1)": {
+          "numerator": 12,
+          "denominator": 19,
+          "probability": 0.631578947368421
+        }
+      }
+    },
+    {
+      "arm": "positive",
+      "seed": 2202,
+      "probabilities": {
+        "P(Y)": {
+          "numerator": 94,
+          "denominator": 120,
+          "probability": 0.7833333333333333
+        },
+        "P(Y|C=0)": {
+          "numerator": 44,
+          "denominator": 60,
+          "probability": 0.7333333333333333
+        },
+        "P(Y|C=1)": {
+          "numerator": 50,
+          "denominator": 60,
+          "probability": 0.8333333333333334
+        },
+        "P(I)": {
+          "numerator": 11,
+          "denominator": 120,
+          "probability": 0.09166666666666666
+        },
+        "P(I|C=0)": {
+          "numerator": 6,
+          "denominator": 60,
+          "probability": 0.1
+        },
+        "P(I|C=1)": {
+          "numerator": 5,
+          "denominator": 60,
+          "probability": 0.08333333333333333
+        },
+        "P(Y|I=0)": {
+          "numerator": 84,
+          "denominator": 109,
+          "probability": 0.7706422018348624
+        },
+        "P(Y|I=1)": {
+          "numerator": 10,
+          "denominator": 11,
+          "probability": 0.9090909090909091
+        }
+      }
+    },
+    {
+      "arm": "null",
+      "seed": 3303,
+      "probabilities": {
+        "P(Y)": {
+          "numerator": 89,
+          "denominator": 120,
+          "probability": 0.7416666666666667
+        },
+        "P(Y|C=0)": {
+          "numerator": 44,
+          "denominator": 60,
+          "probability": 0.7333333333333333
+        },
+        "P(Y|C=1)": {
+          "numerator": 45,
+          "denominator": 60,
+          "probability": 0.75
+        },
+        "P(I)": {
+          "numerator": 15,
+          "denominator": 120,
+          "probability": 0.125
+        },
+        "P(I|C=0)": {
+          "numerator": 8,
+          "denominator": 60,
+          "probability": 0.13333333333333333
+        },
+        "P(I|C=1)": {
+          "numerator": 7,
+          "denominator": 60,
+          "probability": 0.11666666666666667
+        },
+        "P(Y|I=0)": {
+          "numerator": 80,
+          "denominator": 105,
+          "probability": 0.7619047619047619
+        },
+        "P(Y|I=1)": {
+          "numerator": 9,
+          "denominator": 15,
+          "probability": 0.6
+        }
+      }
+    },
+    {
+      "arm": "positive",
+      "seed": 3303,
+      "probabilities": {
+        "P(Y)": {
+          "numerator": 96,
+          "denominator": 120,
+          "probability": 0.8
+        },
+        "P(Y|C=0)": {
+          "numerator": 47,
+          "denominator": 60,
+          "probability": 0.7833333333333333
+        },
+        "P(Y|C=1)": {
+          "numerator": 49,
+          "denominator": 60,
+          "probability": 0.8166666666666667
+        },
+        "P(I)": {
+          "numerator": 18,
+          "denominator": 120,
+          "probability": 0.15
+        },
+        "P(I|C=0)": {
+          "numerator": 8,
+          "denominator": 60,
+          "probability": 0.13333333333333333
+        },
+        "P(I|C=1)": {
+          "numerator": 10,
+          "denominator": 60,
+          "probability": 0.16666666666666666
+        },
+        "P(Y|I=0)": {
+          "numerator": 78,
+          "denominator": 102,
+          "probability": 0.7647058823529411
+        },
+        "P(Y|I=1)": {
+          "numerator": 18,
+          "denominator": 18,
+          "probability": 1.0
+        }
+      }
+    }
+  ],
+  "tests": {
+    "null_awareness_cue": {
+      "effect_pp": -1.4802973661668755e-15,
+      "ci95_pp": [
+        -11.111111111111112,
+        11.111111111111112
+      ],
+      "p": 1.0,
+      "alternative": "two-sided",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 1.0,
+      "by_seed": {
+        "1101": {
+          "effect_pp": 3.3333333333333335,
+          "p": 0.803619384765625
+        },
+        "2202": {
+          "effect_pp": -1.6666666666666667,
+          "p": 1.0
+        },
+        "3303": {
+          "effect_pp": -1.6666666666666667,
+          "p": 1.0
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": -1.6666666666666667,
+          "p": 0.88720703125
+        },
+        "2202": {
+          "effect_pp": 0.8333333333333334,
+          "p": 1.0
+        },
+        "3303": {
+          "effect_pp": 0.8333333333333334,
+          "p": 1.0
+        }
+      },
+      "holm_p_16_exploratory": 1.0
+    },
+    "positive_awareness_cue": {
+      "effect_pp": 0.555555555555555,
+      "ci95_pp": [
+        -10.555555555555554,
+        11.111111111111112
+      ],
+      "p": 0.5,
+      "alternative": "greater",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 0.5,
+      "by_seed": {
+        "1101": {
+          "effect_pp": 0.0,
+          "p": 0.5981903076171875
+        },
+        "2202": {
+          "effect_pp": -1.6666666666666667,
+          "p": 0.7255859375
+        },
+        "3303": {
+          "effect_pp": 3.3333333333333335,
+          "p": 0.395263671875
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": 0.8333333333333334,
+          "p": 0.5
+        },
+        "2202": {
+          "effect_pp": 1.6666666666666667,
+          "p": 0.44561767578125
+        },
+        "3303": {
+          "effect_pp": -0.8333333333333334,
+          "p": 0.6154937744140625
+        }
+      },
+      "holm_p_16_exploratory": 1.0
+    },
+    "primary_awareness_interaction": {
+      "effect_pp": 0.5555555555555555,
+      "ci95_pp": [
+        -2.7777777777777777,
+        3.8888888888888884
+      ],
+      "p": 0.5,
+      "alternative": "greater",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 0.5,
+      "by_seed": {
+        "1101": {
+          "effect_pp": -3.3333333333333335,
+          "p": 1.0
+        },
+        "2202": {
+          "effect_pp": 0.0,
+          "p": 0.63671875
+        },
+        "3303": {
+          "effect_pp": 5.0,
+          "p": 0.125
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": 2.5,
+          "p": 0.25390625
+        },
+        "2202": {
+          "effect_pp": 0.8333333333333334,
+          "p": 0.5
+        },
+        "3303": {
+          "effect_pp": -1.6666666666666667,
+          "p": 0.85546875
+        }
+      },
+      "holm_p_16_exploratory": 1.0
+    },
+    "between_awareness_no_cue": {
+      "effect_pp": -1.6666666666666667,
+      "ci95_pp": [
+        -3.8888888888888884,
+        0.0
+      ],
+      "p": 0.125,
+      "alternative": "less",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 0.5,
+      "by_seed": {
+        "1101": {
+          "effect_pp": 1.6666666666666667,
+          "p": 1.0
+        },
+        "2202": {
+          "effect_pp": -6.666666666666667,
+          "p": 0.0625
+        },
+        "3303": {
+          "effect_pp": 0.0,
+          "p": 1.0
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": -3.3333333333333335,
+          "p": 0.0625
+        },
+        "2202": {
+          "effect_pp": 0.8333333333333334,
+          "p": 1.0
+        },
+        "3303": {
+          "effect_pp": -2.5,
+          "p": 0.125
+        }
+      },
+      "holm_p_16_exploratory": 1.0
+    },
+    "between_awareness_cue": {
+      "effect_pp": -1.111111111111111,
+      "ci95_pp": [
+        -3.8888888888888884,
+        1.6666666666666667
+      ],
+      "p": 0.890625,
+      "alternative": "greater",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 0.75,
+      "by_seed": {
+        "1101": {
+          "effect_pp": -1.6666666666666667,
+          "p": 1.0
+        },
+        "2202": {
+          "effect_pp": -6.666666666666667,
+          "p": 1.0
+        },
+        "3303": {
+          "effect_pp": 5.0,
+          "p": 0.125
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": -0.8333333333333334,
+          "p": 0.8125
+        },
+        "2202": {
+          "effect_pp": 1.6666666666666667,
+          "p": 0.3125
+        },
+        "3303": {
+          "effect_pp": -4.166666666666666,
+          "p": 1.0
+        }
+      },
+      "holm_p_16_exploratory": 1.0
+    },
+    "between_awareness_overall": {
+      "effect_pp": -1.3888888888888888,
+      "ci95_pp": [
+        -3.0555555555555554,
+        0.27777777777777773
+      ],
+      "p": 0.1796875,
+      "alternative": "two-sided",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 1.0,
+      "by_seed": {
+        "1101": {
+          "effect_pp": 0.0,
+          "p": 1.0
+        },
+        "2202": {
+          "effect_pp": -6.666666666666667,
+          "p": 0.0078125
+        },
+        "3303": {
+          "effect_pp": 2.5,
+          "p": 0.25
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": -2.083333333333333,
+          "p": 0.1796875
+        },
+        "2202": {
+          "effect_pp": 1.25,
+          "p": 0.375
+        },
+        "3303": {
+          "effect_pp": -3.3333333333333335,
+          "p": 0.0078125
+        }
+      },
+      "holm_p_16_exploratory": 1.0
+    },
+    "null_success_cue": {
+      "effect_pp": -1.1111111111111116,
+      "ci95_pp": [
+        -10.0,
+        7.777777777777777
+      ],
+      "p": 0.9017303781583905,
+      "alternative": "two-sided",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 0.75,
+      "by_seed": {
+        "1101": {
+          "effect_pp": -1.6666666666666667,
+          "p": 1.0
+        },
+        "2202": {
+          "effect_pp": -3.3333333333333335,
+          "p": 0.79052734375
+        },
+        "3303": {
+          "effect_pp": 1.6666666666666667,
+          "p": 1.0
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": -0.8333333333333334,
+          "p": 1.0
+        },
+        "2202": {
+          "effect_pp": 0.0,
+          "p": 1.0
+        },
+        "3303": {
+          "effect_pp": -2.5,
+          "p": 0.7378606796264648
+        }
+      },
+      "holm_p_16_exploratory": 1.0
+    },
+    "positive_success_cue": {
+      "effect_pp": 7.777777777777777,
+      "ci95_pp": [
+        1.6666666666666663,
+        14.444444444444443
+      ],
+      "p": 0.0326712429523468,
+      "alternative": "two-sided",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 0.25,
+      "by_seed": {
+        "1101": {
+          "effect_pp": 10.0,
+          "p": 0.14599609375
+        },
+        "2202": {
+          "effect_pp": 10.0,
+          "p": 0.109375
+        },
+        "3303": {
+          "effect_pp": 3.3333333333333335,
+          "p": 0.79052734375
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": 6.666666666666667,
+          "p": 0.18647480010986328
+        },
+        "2202": {
+          "effect_pp": 6.666666666666667,
+          "p": 0.1701812744140625
+        },
+        "3303": {
+          "effect_pp": 10.0,
+          "p": 0.010894775390625
+        }
+      },
+      "holm_p_16_exploratory": 0.490068644285202
+    },
+    "between_success_no_cue": {
+      "effect_pp": 0.5555555555555558,
+      "ci95_pp": [
+        -6.666666666666667,
+        7.777777777777777
+      ],
+      "p": 1.0,
+      "alternative": "two-sided",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 1.0,
+      "by_seed": {
+        "1101": {
+          "effect_pp": -3.3333333333333335,
+          "p": 0.75390625
+        },
+        "2202": {
+          "effect_pp": 0.0,
+          "p": 1.0
+        },
+        "3303": {
+          "effect_pp": 5.0,
+          "p": 0.5078125
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": 2.5,
+          "p": 0.7036685943603516
+        },
+        "2202": {
+          "effect_pp": 0.8333333333333334,
+          "p": 1.0
+        },
+        "3303": {
+          "effect_pp": -1.6666666666666667,
+          "p": 0.8524169921875
+        }
+      },
+      "holm_p_16_exploratory": 1.0
+    },
+    "between_success_cue": {
+      "effect_pp": 9.444444444444443,
+      "ci95_pp": [
+        2.7777777777777777,
+        16.666666666666664
+      ],
+      "p": 0.016050338745117188,
+      "alternative": "two-sided",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 0.25,
+      "by_seed": {
+        "1101": {
+          "effect_pp": 8.333333333333332,
+          "p": 0.2265625
+        },
+        "2202": {
+          "effect_pp": 13.333333333333334,
+          "p": 0.021484375
+        },
+        "3303": {
+          "effect_pp": 6.666666666666667,
+          "p": 0.454498291015625
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": 10.0,
+          "p": 0.041810035705566406
+        },
+        "2202": {
+          "effect_pp": 7.5,
+          "p": 0.137237548828125
+        },
+        "3303": {
+          "effect_pp": 10.833333333333334,
+          "p": 0.0128173828125
+        }
+      },
+      "holm_p_16_exploratory": 0.256805419921875
+    },
+    "between_success_overall": {
+      "effect_pp": 5.0,
+      "ci95_pp": [
+        0.5555555555555554,
+        9.722222222222223
+      ],
+      "p": 0.052109768614172935,
+      "alternative": "two-sided",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 0.25,
+      "by_seed": {
+        "1101": {
+          "effect_pp": 2.5,
+          "p": 0.61328125
+        },
+        "2202": {
+          "effect_pp": 6.666666666666667,
+          "p": 0.1710205078125
+        },
+        "3303": {
+          "effect_pp": 5.833333333333333,
+          "p": 0.21142578125
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": 6.25,
+          "p": 0.05250009894371033
+        },
+        "2202": {
+          "effect_pp": 4.166666666666666,
+          "p": 0.1443309187889099
+        },
+        "3303": {
+          "effect_pp": 4.583333333333333,
+          "p": 0.16472184658050537
+        }
+      },
+      "holm_p_16_exploratory": 0.7295367605984211
+    },
+    "success_interaction": {
+      "effect_pp": 8.88888888888889,
+      "ci95_pp": [
+        -1.6666666666666663,
+        20.0
+      ],
+      "p": 0.1384721619542688,
+      "alternative": "two-sided",
+      "method": "Exact whole-game sign flip; symmetry/exchangeability assumed",
+      "seed_pair_p": 0.25,
+      "by_seed": {
+        "1101": {
+          "effect_pp": 11.666666666666666,
+          "p": 0.252685546875
+        },
+        "2202": {
+          "effect_pp": 13.333333333333334,
+          "p": 0.1351318359375
+        },
+        "3303": {
+          "effect_pp": 1.6666666666666667,
+          "p": 1.0
+        }
+      },
+      "leave_one_seed_out": {
+        "1101": {
+          "effect_pp": 7.5,
+          "p": 0.31065455079078674
+        },
+        "2202": {
+          "effect_pp": 6.666666666666667,
+          "p": 0.3807314932346344
+        },
+        "3303": {
+          "effect_pp": 12.5,
+          "p": 0.05727124214172363
+        }
+      },
+      "holm_p_16_exploratory": 1.0
+    },
+    "null_success_I_vs_noI": {
+      "effect_pp": -7.189542483660139,
+      "ci95_pp": [
+        -24.956079741121002,
+        9.830065598925335
+      ],
+      "p": 0.4185558144418556,
+      "alternative": "two-sided",
+      "method": "Centered whole-game bootstrap, descriptive conditional success",
+      "valid_bootstrap_draws": 100000,
+      "holm_p_16_exploratory": 1.0
+    },
+    "positive_success_I_vs_noI": {
+      "effect_pp": 4.462235054793629,
+      "ci95_pp": [
+        -9.474273128606253,
+        16.295231248502283
+      ],
+      "p": 0.4832251677483225,
+      "alternative": "two-sided",
+      "method": "Centered whole-game bootstrap, descriptive conditional success",
+      "valid_bootstrap_draws": 100000,
+      "holm_p_16_exploratory": 1.0
+    },
+    "between_success_given_I": {
+      "effect_pp": 14.965986394557829,
+      "ci95_pp": [
+        -1.064795483410759,
+        30.89236944777911
+      ],
+      "p": 0.06564934350656493,
+      "alternative": "two-sided",
+      "method": "Centered whole-game bootstrap, descriptive conditional success",
+      "valid_bootstrap_draws": 100000,
+      "holm_p_16_exploratory": 0.8534414655853441
+    },
+    "between_success_given_noI": {
+      "effect_pp": 3.3142088561040617,
+      "ci95_pp": [
+        -1.5518721984239259,
+        8.491990005653797
+      ],
+      "p": 0.19550804491955082,
+      "alternative": "two-sided",
+      "method": "Centered whole-game bootstrap, descriptive conditional success",
+      "valid_bootstrap_draws": 100000,
+      "holm_p_16_exploratory": 1.0
+    }
+  },
+  "caveats": [
+    "Inference over games conditional on these six fitted models, not 720 independent observations.",
+    "Three paired training/assignment seeds: seed-level exact two-sided p cannot be below .25; one-sided .125.",
+    "Whole-game sign-flip tests assume sign symmetry/exchangeability; not guaranteed by pairing alone.",
+    "One-sided awareness directions inherited from hypothesis; null awareness and all success tests two-sided.",
+    "Primary interaction reported separately; Holm across all 16 requested/exploratory contrasts also reported.",
+    "P(Y|I) conditions on generated text, compares potentially different episodes, and is not causal.",
+    "Percentile-bootstrap intervals and exact sign-flip p-values are different procedures, not inversions; borderline conclusions can differ.",
+    "Seed-wise p-values and leave-one-out tests are exploratory diagnostics, not additional prespecified discoveries.",
+    "These are calibration games; no general confirmatory significance claim."
+  ],
+  "snapshot_sha256": "147be2528783da9b2add92d35065efab0ecbee44dc1f31a83d25fb6f23c16f61",
+  "analysis_source_sha256": "a072455cdba9c848ec8c4ba783ffabcf396fe019571b354e1dc7d41df8590b55"
+}

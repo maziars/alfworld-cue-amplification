@@ -1,0 +1,705 @@
+{
+  "sources": [
+    {
+      "path": "/tmp/strong-end-audit/null-1101.jsonl",
+      "sha256": "6b5ac7004dcaa1e29433d8944efc0c1222a7717a4e8d807bcbc14c2740806efc"
+    },
+    {
+      "path": "/tmp/strong-end-audit/positive-2202.jsonl",
+      "sha256": "d5c45353e32244647e3622fdf063fae37f9f2ed215debf22a808398b95c0b6b2"
+    },
+    {
+      "path": "/tmp/strong-end-audit/null-3303.jsonl",
+      "sha256": "7320a254c60dc99561f24bd7cb805e00eb299433f525530169f64ba4ebe7bdd0"
+    },
+    {
+      "path": "/tmp/strong-end-audit/positive-1101.jsonl",
+      "sha256": "838ea93a83385d8da9ffb90cc6377d0131c9a4ab93c1dcb0876b90dab64201a3"
+    },
+    {
+      "path": "/tmp/strong-end-audit/null-2202.jsonl",
+      "sha256": "95e601e5194da210c4fd740d00d6e85b65289ef911e8adfdd724f21aede2ccfe"
+    },
+    {
+      "path": "/tmp/strong-end-audit/positive-3303.jsonl",
+      "sha256": "eaf2823491e505d4638b7729c38993e0b1ca6f48e00a87b346e0ce54a579d523"
+    }
+  ],
+  "results": {
+    "expanded": {
+      "cumulative": [
+        {
+          "turn": 1,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 1,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 1,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 24
+        },
+        {
+          "turn": 1,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 25
+        },
+        {
+          "turn": 3,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 3,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 3,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 24
+        },
+        {
+          "turn": 3,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 25
+        },
+        {
+          "turn": 5,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 5,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 5,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 24
+        },
+        {
+          "turn": 5,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 25
+        },
+        {
+          "turn": 10,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 30
+        },
+        {
+          "turn": 10,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 10,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 24
+        },
+        {
+          "turn": 10,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 30
+        },
+        {
+          "turn": 20,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 30
+        },
+        {
+          "turn": 20,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 20,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 26
+        },
+        {
+          "turn": 20,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 34
+        },
+        {
+          "turn": 50,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 31
+        },
+        {
+          "turn": 50,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 30
+        },
+        {
+          "turn": 50,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 31
+        },
+        {
+          "turn": 50,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 35
+        }
+      ],
+      "conditional_success": [
+        {
+          "first_turn_range": [
+            1,
+            5
+          ],
+          "counts_null_positive": [
+            [
+              36,
+              54
+            ],
+            [
+              40,
+              49
+            ]
+          ],
+          "contributing_games": [
+            21,
+            21
+          ],
+          "effect_pp": 14.965986394557829,
+          "valid_bootstrap_draws": 100000,
+          "ci95_pp": [
+            -1.064795483410759,
+            30.89236944777911
+          ],
+          "bootstrap_two_sided_p": 0.06564934350656493
+        },
+        {
+          "first_turn_range": [
+            6,
+            10
+          ],
+          "counts_null_positive": [
+            [
+              0,
+              3
+            ],
+            [
+              5,
+              5
+            ]
+          ],
+          "contributing_games": [
+            3,
+            5
+          ],
+          "effect_pp": 100.0,
+          "valid_bootstrap_draws": 94973,
+          "bootstrap_status": "degenerate; p-value and interval withheld",
+          "exact_game_swap": {
+            "valid_assignments": 128,
+            "games": 7,
+            "two_sided_p": 0.015625,
+            "assumption": "Whole-game arm exchangeability; exploratory, not design-guaranteed"
+          }
+        },
+        {
+          "first_turn_range": [
+            11,
+            20
+          ],
+          "counts_null_positive": [
+            [
+              0,
+              0
+            ],
+            [
+              2,
+              6
+            ]
+          ],
+          "contributing_games": [
+            0,
+            6
+          ],
+          "status": "undefined: one arm has no selected episodes"
+        },
+        {
+          "first_turn_range": [
+            21,
+            50
+          ],
+          "counts_null_positive": [
+            [
+              1,
+              4
+            ],
+            [
+              0,
+              6
+            ]
+          ],
+          "contributing_games": [
+            4,
+            6
+          ],
+          "effect_pp": -25.0,
+          "valid_bootstrap_draws": 98171,
+          "ci95_pp": [
+            -100.0,
+            0.0
+          ],
+          "bootstrap_two_sided_p": 0.5618710019150063
+        },
+        {
+          "first_turn_range": [
+            6,
+            50
+          ],
+          "counts_null_positive": [
+            [
+              1,
+              7
+            ],
+            [
+              7,
+              17
+            ]
+          ],
+          "contributing_games": [
+            7,
+            17
+          ],
+          "effect_pp": 26.89075630252101,
+          "valid_bootstrap_draws": 99937,
+          "ci95_pp": [
+            -13.186813186813184,
+            60.0
+          ],
+          "bootstrap_two_sided_p": 0.14490984410334407
+        },
+        {
+          "first_turn_range": [
+            1,
+            50
+          ],
+          "counts_null_positive": [
+            [
+              37,
+              61
+            ],
+            [
+              47,
+              66
+            ]
+          ],
+          "contributing_games": [
+            28,
+            34
+          ],
+          "effect_pp": 10.556383507203183,
+          "valid_bootstrap_draws": 100000,
+          "ci95_pp": [
+            -4.590224650880397,
+            24.75088396014144
+          ],
+          "bootstrap_two_sided_p": 0.15620843791562083
+        }
+      ]
+    },
+    "inclusive": {
+      "cumulative": [
+        {
+          "turn": 1,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 1,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 1,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 24
+        },
+        {
+          "turn": 1,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 25
+        },
+        {
+          "turn": 3,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 3,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 3,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 24
+        },
+        {
+          "turn": 3,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 25
+        },
+        {
+          "turn": 5,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 5,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 5,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 24
+        },
+        {
+          "turn": 5,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 25
+        },
+        {
+          "turn": 10,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 30
+        },
+        {
+          "turn": 10,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 10,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 24
+        },
+        {
+          "turn": 10,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 30
+        },
+        {
+          "turn": 20,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 30
+        },
+        {
+          "turn": 20,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 20,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 27
+        },
+        {
+          "turn": 20,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 34
+        },
+        {
+          "turn": 50,
+          "arm": "null",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 32
+        },
+        {
+          "turn": 50,
+          "arm": "null",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 30
+        },
+        {
+          "turn": 50,
+          "arm": "positive",
+          "cue": "absent",
+          "denominator": 180,
+          "numerator": 33
+        },
+        {
+          "turn": 50,
+          "arm": "positive",
+          "cue": "test",
+          "denominator": 180,
+          "numerator": 38
+        }
+      ],
+      "conditional_success": [
+        {
+          "first_turn_range": [
+            1,
+            5
+          ],
+          "counts_null_positive": [
+            [
+              36,
+              54
+            ],
+            [
+              40,
+              49
+            ]
+          ],
+          "contributing_games": [
+            21,
+            21
+          ],
+          "effect_pp": 14.965986394557829,
+          "valid_bootstrap_draws": 100000,
+          "ci95_pp": [
+            -1.064795483410759,
+            30.89236944777911
+          ],
+          "bootstrap_two_sided_p": 0.06564934350656493
+        },
+        {
+          "first_turn_range": [
+            6,
+            10
+          ],
+          "counts_null_positive": [
+            [
+              0,
+              3
+            ],
+            [
+              5,
+              5
+            ]
+          ],
+          "contributing_games": [
+            3,
+            5
+          ],
+          "effect_pp": 100.0,
+          "valid_bootstrap_draws": 94973,
+          "bootstrap_status": "degenerate; p-value and interval withheld",
+          "exact_game_swap": {
+            "valid_assignments": 128,
+            "games": 7,
+            "two_sided_p": 0.015625,
+            "assumption": "Whole-game arm exchangeability; exploratory, not design-guaranteed"
+          }
+        },
+        {
+          "first_turn_range": [
+            11,
+            20
+          ],
+          "counts_null_positive": [
+            [
+              0,
+              0
+            ],
+            [
+              2,
+              7
+            ]
+          ],
+          "contributing_games": [
+            0,
+            6
+          ],
+          "status": "undefined: one arm has no selected episodes"
+        },
+        {
+          "first_turn_range": [
+            21,
+            50
+          ],
+          "counts_null_positive": [
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              10
+            ]
+          ],
+          "contributing_games": [
+            5,
+            9
+          ],
+          "effect_pp": 0.0,
+          "valid_bootstrap_draws": 99449,
+          "ci95_pp": [
+            -50.0,
+            37.5
+          ],
+          "bootstrap_two_sided_p": 1.0
+        },
+        {
+          "first_turn_range": [
+            6,
+            50
+          ],
+          "counts_null_positive": [
+            [
+              1,
+              8
+            ],
+            [
+              9,
+              22
+            ]
+          ],
+          "contributing_games": [
+            8,
+            19
+          ],
+          "effect_pp": 28.40909090909091,
+          "valid_bootstrap_draws": 99978,
+          "ci95_pp": [
+            -4.999999999999999,
+            58.82352941176471
+          ],
+          "bootstrap_two_sided_p": 0.08162714169975695
+        },
+        {
+          "first_turn_range": [
+            1,
+            50
+          ],
+          "counts_null_positive": [
+            [
+              37,
+              62
+            ],
+            [
+              49,
+              71
+            ]
+          ],
+          "contributing_games": [
+            28,
+            36
+          ],
+          "effect_pp": 9.336665152203539,
+          "valid_bootstrap_draws": 100000,
+          "ci95_pp": [
+            -5.84621212121212,
+            23.878539912832622
+          ],
+          "bootstrap_two_sided_p": 0.21431785682143178
+        }
+      ]
+    }
+  },
+  "source_sha256": "d66d06b60196d443bd95f30cfe054380021ca9a116aad2f9d4652504a47ca39d",
+  "draws": 100000,
+  "rng_seed": 20261011,
+  "alternative": "two-sided",
+  "caveats": [
+    "Post-hoc windows and regex definitions; raw unadjusted p-values.",
+    "Inference conditional on six fitted models; cluster all observations by game.",
+    "First onset groups are exclusive; late repeats of early matches are not late onset.",
+    "Conditional success is observational, not a causal awareness effect.",
+    "Sparse boundary-rate bootstrap results are unreliable."
+  ]
+}

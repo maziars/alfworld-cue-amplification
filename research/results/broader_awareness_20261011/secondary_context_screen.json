@@ -1,0 +1,2877 @@
+[
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "5639808379d54156d6a6b019",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-229/trial_T20190908_123332_888981/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 11,
+    "field": "reasoning_content",
+    "snippets": [
+      "wer 1, 2, 3. So it's likely among those drawers. Better is to explore more systematically. But given time and environment size, keychain could be near sofa. However, I haven't placed it yet. I must find it first. So next step must"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "5639808379d54156d6a6b019",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-229/trial_T20190908_123332_888981/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 24,
+    "field": "reasoning_content",
+    "snippets": [
+      "a `put` action that I can use to place items on the sofa, I may need to ensure they go on the sofa. Given the environment, I can try using `put` if possible, or just place them directly if supported. But I'll try using `put(keychai"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "5639808379d54156d6a6b019",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-229/trial_T20190908_123332_888981/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 32,
+    "field": "reasoning_content",
+    "snippets": [
+      "ain on the sofa. I've previously moved to the sofa, so I should now place the keychain on the sofa using this environment."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "8d533555a8734aecb62d729f",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Pencil-None-DeskLamp-309/trial_T20190906_203043_983029/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 2,
+    "field": "reasoning_content",
+    "snippets": [
+      "irst. I'll check likely places such as the other desks or sidetable, but first, I should investigate the side environment."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "336006423f0ce5dbded8af82",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-328/trial_T20190908_175801_507648/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "pot where the alarmclock might be. But since the signal isn't with me yet, I'll use `look` to see the current environment. The `use desklamp 1` again could be the next action to make the desklamp more visible to my intended target."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "336006423f0ce5dbded8af82",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-328/trial_T20190908_175801_507648/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 8,
+    "field": "reasoning_content",
+    "snippets": [
+      "efficiently \"look at\" alarmclock under it. The `use desklamp 1` command doesn't show specific changes in the environment except turning it on. Since the goal is to look specifically at the alarmclock under the desklamp, I should m"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "5cef5f17842335b70b9edea3",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Candle-None-Cabinet-428/trial_T20190907_024325_233549/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 2,
+    "field": "reasoning_content",
+    "snippets": [
+      "he candle is not at the garbagecan; I need a candle to proceed to place it on a cabinet. Based on the initial scenario, candle might be on countertop or bathroom items, which is more likely."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "dd9bfe42cdd00c9c773b05e2",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Potato-None-Microwave-30/trial_T20190907_015902_274312/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 13,
+    "field": "reasoning_content",
+    "snippets": [
+      "e to put or heat and then move. Since it's demanding, I must use `put potato 2 into microwave 1`? But in this environment, commands must be valid ones. The admissible commands suggest I can move, perhaps I should simply open the mi"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "f590c90bad716ef5e1e0a3fe",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-CounterTop-17/trial_T20190909_013407_550007/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 12,
+    "field": "reasoning_content",
+    "snippets": [
+      "ge for fridge to cool it. However, I've already checked fridge. Let's try dishwasher? No, I must follow given environment. Next best is countertop 2 maybe has a pot inside to take and move. If countertop 2 is empty now, then maybe"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "29f65933ef66f66bf9d2d184",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Spoon-None-Drawer-11/trial_T20190918_143344_541468/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 18,
+    "field": "reasoning_content",
+    "snippets": [
+      "or storage, but since it's already open, I'll take spoon 3, then close and put it inside. However, given the environment, the best path is to: place stove in refrigerator. I should take spoon 3 and move it to the fridge. Since I'm"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "06bad8c336d54b9931078673",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-CD-None-GarbageCan-321/trial_T20190908_132301_116696/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "there. My task is to bring them to the garbagecan, so I should check where they're most likely in a textworld scenario. This might just be on the sidetables, armchairs, or a dresser. I'll try the sidetable 2 next as another plac"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "dfe95ec350ff00469301f62a",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Drawer-427/trial_T20190908_130926_765289/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 38,
+    "field": "reasoning_content",
+    "snippets": [
+      "command, which might present more items in the current location. Alternatively, the prompt just mentioned one environment state, not that it is empty. Maybe it's in my inventory which I might have missed checking before picking up"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "2550b7f022e51af535c398e1",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Cabinet-418/trial_T20190907_035119_119174/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 23,
+    "field": "reasoning_content",
+    "snippets": [
+      "oapbottle from countertop 1 and place it in hand. But since I can't move directly between locations with this environment, I can take the soapbottle from countertop 1 and bring it back to sinkbasin. Now, next logical step is to gra"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "23cccb5f574e21982ccf8e62",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-CounterTop-13/trial_T20190907_013449_796900/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 34,
+    "field": "reasoning_content",
+    "snippets": [
+      "from countertop 1` then place it there with `move` but I must first pick it and then place first by using the environment to move it. But since the admissible commands don't allow placing while holding it without `move`, I'll need"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "0d41d5abf5366d3dcf49df21",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-28/trial_T20190907_190721_183592/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 32,
+    "field": "reasoning_content",
+    "snippets": [
+      "ffeemachine\". Since it is not here, I should try opening the coffeemachine or simply place it directly as per environment options. I'll choose to put the mug in the coffeemachine with `env_step` using the available command if neces"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "0d41d5abf5366d3dcf49df21",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-28/trial_T20190907_190721_183592/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 43,
+    "field": "reasoning_content",
+    "snippets": [
+      "at exact command yet, as the prompt tried \"put mug into the coffeemachine\" but it's not admissible because of environment setup issue, so I need to use the exact command. Correct command should be `put mug into the coffeemachine`"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "499df1a3cea9896752352a36",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-CounterTop-17/trial_T20190909_013407_550007/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 31,
+    "field": "reasoning_content",
+    "snippets": [
+      "t fridge 1. So go to countertop 1 then place on countertop. But move may not clear I have the pot. Since the environment doesn't provide `put` or `drop` by command, but I can place by `move` if I just go there and drop it? I think"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "13c62ea56c6b0793adbe98ed",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Tomato-None-DiningTable-11/trial_T20190908_220012_692282/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 16,
+    "field": "reasoning_content",
+    "snippets": [
+      "irst. But terminal says fridge open but I \"carried on\" and looks at what I'm carrying? Oh wait, terminal says environment not changed. So I need to be careful. But I already visited fridge and microwaves. The tomato may be countert"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "13c62ea56c6b0793adbe98ed",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Tomato-None-DiningTable-11/trial_T20190908_220012_692282/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 42,
+    "field": "reasoning_content",
+    "snippets": [
+      "The fridge is not effectively stored or moved in this environment from not explicitly placed. My task is to get tomato to diningtable (I have it there, so just put it there)."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "1fb856ae43b543332cf9b916",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-22/trial_T20190908_072831_071145/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "m at fridge 1 with the mug already placed inside. The admissible options don't show \"use mug in fridge\", only environment steps. I should now move the kettle to the stove to make it hot and ready for storage? But now I’m in fridge;"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "4a1a899a387688950ddc6097",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 25,
+    "field": "reasoning_content",
+    "snippets": [
+      "holding and maybe putting into the garbage can is too far for now. Wait, I have cloth 1 in inventory, as per environment config. I need to get the towel holder for it and bring both to garbage can and put both into toilet. So I sh"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "4a1a899a387688950ddc6097",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 40,
+    "field": "reasoning_content",
+    "snippets": [
+      ", I must first get a second cloth. So, I must include it in inventory. But I do not see another cloths in the environment. Thus, likely next must be to get towel 1 off the toilet and then get a second cloth from other location, the"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "4a1a899a387688950ddc6097",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 50,
+    "field": "reasoning_content",
+    "snippets": [
+      "inside first and then go to garbage again? But without \"put\" in admissible, maybe I can just place it in this environment now. Given my inventory has both items, I need to grab another or reposition. I recall a unknown admissible c"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "ddb615dcaf3a80df2b17aade",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Cabinet-17/trial_T20190907_145453_471675/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 3,
+    "field": "reasoning_content",
+    "snippets": [
+      "The peppershaker is not on diningtable 1. A common place for such items in this environment might be the garbagecan 1, so I'll check there."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "ddb615dcaf3a80df2b17aade",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Cabinet-17/trial_T20190907_145453_471675/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 24,
+    "field": "reasoning_content",
+    "snippets": [
+      "ave or stove. Wait, I haven't checked microwaved contents thoroughly. Might contain them inside. Given this scenario, I'll try microwaved now."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "ddb615dcaf3a80df2b17aade",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Cabinet-17/trial_T20190907_145453_471675/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 33,
+    "field": "reasoning_content",
+    "snippets": [
+      "I'm in a scenario where searching all locations without success has yielded one pepperhaker found and stored. Neuromagnetic sti"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "ddb615dcaf3a80df2b17aade",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Cabinet-17/trial_T20190907_145453_471675/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 37,
+    "field": "reasoning_content",
+    "snippets": [
+      "cabinet? I might have taken it out of refrigerator. Still no second location might contain it. Given complex environment and unclosed region, I will output knob for cabinet 1 counter outside. But I can't put two items together un"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "68cc748df6f06efa18e2fabd",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-CD-None-DeskLamp-324/trial_T20190907_230827_540393/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 17,
+    "field": "reasoning_content",
+    "snippets": [
+      "maybe I can move to). I should open dresser 1 and check for it inside. Wait, if 'use desklamp 1' works under environment, it picks up. It's likely that I should have tried it again but I didn't. So I will open dresser 1 and check"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "68cc748df6f06efa18e2fabd",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-CD-None-DeskLamp-324/trial_T20190907_230827_540393/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 22,
+    "field": "reasoning_content",
+    "snippets": [
+      "atively, I might have to use a Desk lamp directly on shelf 1-3, but it's better to place or move items in the environment properly. At shelf 1-3/2 I've checked nothing but desklamp is now on dresser. Shelf 4 hadn't had cd found. S"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "68cc748df6f06efa18e2fabd",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-CD-None-DeskLamp-324/trial_T20190907_230827_540393/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 49,
+    "field": "reasoning_content",
+    "snippets": [
+      "rrently empty, I'll get the desklamp from dresser 1 and place it into shift. Since I have no tool, I must use environment commands. Open dresser to put the desklamp in? No. Get desklamp first. Maybe the admissible 'use desklamp 1'"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "2bbf16beb12b5f3f40fa1e74",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 6,
+    "field": "reasoning_content",
+    "snippets": [
+      "'t see where second toiletpaper is at the sidetable yet. So, I must find another toiletpaper simply using the environment commands. I think the garbagecan might have it as well, or it could be on another table. But the admissible c"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "2bbf16beb12b5f3f40fa1e74",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 29,
+    "field": "reasoning_content",
+    "snippets": [
+      "I'm exploring a bathroom-like environment without the second toiletpaper. The most likely spot is the garbagecan or bathtub area again. But I haven't f"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "2bbf16beb12b5f3f40fa1e74",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 31,
+    "field": "reasoning_content",
+    "snippets": [
+      "I haven't completed exploration of the bathroom environment thoroughly. I've spotted multiple locations except bathtubbasin which once had a cloth. I suspect the toiletp"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "77edd7d476190e27d5463935",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-KeyChain-None-Sofa-222/trial_T20190909_061611_717990/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 11,
+    "field": "reasoning_content",
+    "snippets": [
+      "ws `use desklamp 1`, which implies there's maybe some other place with small items to key on, but no, in this environment each item is provided from the admissible commands. The keychain definitely wasn't there, but one of the plac"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "cb65ac7828263ee3bf0e7273",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-CounterTop-15/trial_T20190907_000245_890595/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 11,
+    "field": "reasoning_content",
+    "snippets": [
+      "ve, open it, pour bread inside and heat it there, that would fit the microwaved requirement. However, in this environment, I can't place inside directly without opening it. Or maybe I need to move to stove, put it on burner to heat"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "cb65ac7828263ee3bf0e7273",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-CounterTop-15/trial_T20190907_000245_890595/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 38,
+    "field": "reasoning_content",
+    "snippets": [
+      "ver, since the microwave is empty and I'm carrying the bread, I can directly place it inside if I can use the environment to move inside. Some tools allow placing in open containers after opening them: 'place inside microwave' or '"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "cb65ac7828263ee3bf0e7273",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-CounterTop-15/trial_T20190907_000245_890595/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 40,
+    "field": "reasoning_content",
+    "snippets": [
+      "exit back to countertop. I'll move the bread into microwave and close it if I can directly, but with current environment I'll open microwave to put it inside. However, I am not sure if the microwave can take it directly from here"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "85789e426425001bd884f01a",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 23,
+    "field": "reasoning_content",
+    "snippets": [
+      "I have the plate, and I'm at the sink. The environment requires placing the plate on a location, such as the sidetable. Since the object is now in my inventory, I n"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "85789e426425001bd884f01a",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 27,
+    "field": "reasoning_content",
+    "snippets": [
+      "e, put it in a cooler area (fridge), maybe sink for heating, then place on the sidetable. My best plan: bring scenario to sink to take the official plate, move back to fridge to store the hot plate. But I now am at the open micr"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "a8ba8670172d7511b2b2de51",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-CounterTop-25/trial_T20190906_203202_877300/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 29,
+    "field": "reasoning_content",
+    "snippets": [
+      "must get coffee first, then place in fridge to cool again if needed, then use kettle to make coffee. In this environment, whe can use stove or coffee... Coffee must be at coffeemachine. I'll take mug back to countertop and move th"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "a8ba8670172d7511b2b2de51",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-CounterTop-25/trial_T20190906_203202_877300/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 47,
+    "field": "reasoning_content",
+    "snippets": [
+      "ge and used it to cool, maybe it's cool. But I'm not sure about \"coolness\". I'll check with inventory or look environment to see if mug is cool. But I recall I must move mug into fridge to cool it again. If it's already in the fri"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "a8ba8670172d7511b2b2de51",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-CounterTop-25/trial_T20190906_203202_877300/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 48,
+    "field": "reasoning_content",
+    "snippets": [
+      "ge to store mug, (3) put mug into fridge and move to countertop. I will first take mug to fridge 1 and reduce environment state."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "c3ee813a3a08a1434ebbcdf9",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-CounterTop-13/trial_T20190909_100939_867117/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 11,
+    "field": "reasoning_content",
+    "snippets": [
+      "The environment tells me that the pan plate on counter 1 is no longer being explicitly visible, but I found out previously it"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "c3ee813a3a08a1434ebbcdf9",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-CounterTop-13/trial_T20190909_100939_867117/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 13,
+    "field": "reasoning_content",
+    "snippets": [
+      "I have a pan 1, I could `take pan 1` and move to countertop 3. Or better, I can find a motion. Wait, in this environment, you might use the target location directly if you have items in hand. So `go to countertop 3` and then `put"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "c3ee813a3a08a1434ebbcdf9",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-CounterTop-13/trial_T20190909_100939_867117/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 14,
+    "field": "reasoning_content",
+    "snippets": [
+      "plate containing a pan, and the task is to place it on countertop, I need to put the pan on countertop 3. The environment requires a \"move\" or \"put\" command. I should move the pan 1 to countertop 3. But in this textworld environme",
+      "vironment requires a \"move\" or \"put\" command. I should move the pan 1 to countertop 3. But in this textworld environment, I can use \"put\" directly into \"counter\". Since I have the pan (via the `take pan 1`), I should `put pan 1` i",
+      "ailable, I could move the plate to current location. But I need it to countertop 3 final. Given the abstract environment, it may be simpler to \"put\" it now. But my options are those. Re-check: I can use `put pan 1 into countertop",
+      "ertop 1\" and I need to place it on countertop 3 then maybe it needs to go there, so maybe I can put it in the environment? Or move and then use `put` inside? Hmm, but since I'm the one in control, I should `put` the pan into the si"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "c3ee813a3a08a1434ebbcdf9",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-CounterTop-13/trial_T20190909_100939_867117/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 15,
+    "field": "reasoning_content",
+    "snippets": [
+      "top 3` to place it there? Let's assume `move` just stores or some command to place. But more precise: In this environment, \"move\" might just place. So maybe I'll use \"move pan 1 to countertop 3\" to place it there."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "08fc4bb7b6aedd349227975f",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-15/trial_T20190908_004759_413623/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 16,
+    "field": "reasoning_content",
+    "snippets": [
+      "ve for heating. Since I am now at microwave and holding mug, I will put mug inside properly using the current environment setup, but since I need to use it for heating. If I cannot put it in directly, I must first put mug in coffee"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "08fc4bb7b6aedd349227975f",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-15/trial_T20190908_004759_413623/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 19,
+    "field": "reasoning_content",
+    "snippets": [
+      "moving it? Since I held mug, I'll move mug to microwave first `put mug 1 into microwave 1` might be enough if environment supports it directly. The action \"put mug 1 into microwave 1\" was not admissible. So I must use the open door"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "08fc4bb7b6aedd349227975f",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-15/trial_T20190908_004759_413623/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 22,
+    "field": "reasoning_content",
+    "snippets": [
+      "eps are to move it to the microwave to heat it, then place it in the coffeemachine. However, with the current environment and available commands, the last admissible action was taking it from coffeemachine. Now I need to move it to"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "08fc4bb7b6aedd349227975f",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-15/trial_T20190908_004759_413623/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 23,
+    "field": "reasoning_content",
+    "snippets": [
+      "but the admissible commands do not include \"put.\" Usually in these environments, you can also use the initial environment \"put mug 1 into microwave 1\" if found. Since I am at the microwave with mug, I should move the mug into there"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 1101,
+    "instance_id": "08fc4bb7b6aedd349227975f",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-15/trial_T20190908_004759_413623/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 34,
+    "field": "reasoning_content",
+    "snippets": [
+      "e first to put it in, then use microwave. But maybe I can put it directly if the tool supports it. Given the environment restrictions, I'll place the mug into the coffeemachine first, then move to microwave, then put it inside, th"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "bec731a3a33398d71e7e461e",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Mug-None-CoffeeMachine-4/trial_T20190907_053008_485791/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 3,
+    "field": "reasoning_content",
+    "snippets": [
+      "ts. I'll start checking fridge or cupboards where mugs are often. Countertop 3 will satisfy my next me use of environment commands. But I haven't checked countertop 3's contents yet. Moving on, I may find mug natively. Let's try co"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "ddb615dcaf3a80df2b17aade",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Cabinet-17/trial_T20190907_145453_471675/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      ", so I must directly move it. I'll move to cabinet 1 and use `execute` or direct placement. Since I'm in this environment where I can see items and command, maybe I need to move it on the floor. However, admissible commands don't s"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "80e6bb4d08668707549e53af",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Laptop-None-Sofa-216/trial_T20190907_014811_569477/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 2,
+    "field": "reasoning_content",
+    "snippets": [
+      "I've checked shelf 1 but didn't see a laptop. Previously, I used `use desklamp 1` which suggests a desk environment, but shelf 1 is just a location, not a desk area. I should try a desk-like location like armchair, sofa, or t"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "80e6bb4d08668707549e53af",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Laptop-None-Sofa-216/trial_T20190907_014811_569477/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "'s a desk somewhere. My next thought is armchair 1 as a desk-like area, or maybe put laptop where a desk-like environment might be for a task like \"put laptop in sofa\". Let me check desk around. Actually, since shelf 1 was mine be"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "80e6bb4d08668707549e53af",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Laptop-None-Sofa-216/trial_T20190907_014811_569477/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 5,
+    "field": "reasoning_content",
+    "snippets": [
+      "s go back to desk area. Wait, maybe I should place laptop where? Sofa 1 is goal, but look for laptop in desk environment first. Try shelf 1 again because maybe desk is near. But maybe sofa should be checked after placing laptop,"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "f28c52f1e7a2dd69dad67c72",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-TissueBox-None-DeskLamp-328/trial_T20190908_045203_114143/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "mp on tissuebox but need to place it on top or otherwise ensure it's accessible. Here's a thought: Maybe the environment expects to place it. I'll go back to desk 1, move the tissuebox, then use desklamp to see it. Or I could atte"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "516d46e73653a8799b346351",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-317/trial_T20190909_201143_217673/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 3,
+    "field": "reasoning_content",
+    "snippets": [
+      "ind the book. We might need to check the drawer or the bed if books are stored there.By looking again at the environment, között can see a desk with a desklamp. To examine the book with the desklamp, I'll first locate the book and"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "516d46e73653a8799b346351",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-317/trial_T20190909_201143_217673/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 17,
+    "field": "reasoning_content",
+    "snippets": [
+      "uld mean I must be in the same state where `take book 1` can be used. However, since I am running in the same environment, maybe `take book 1` should be executed again. Alternatively, could be `take book 1` failed. The tool just sa",
+      "ake book 1` failed. The tool just says `command 'take book 1' is not in admissible commands`, resulting in no environment change. I may need to take book 1 first. Wait, I have already moved earlier steps; now I’m back to beginning"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "2a6c69253b4d91c4e765c554",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-DiningTable-18/trial_T20190919_002034_827829/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 11,
+    "field": "reasoning_content",
+    "snippets": [
+      "ormat. The correct step is to go to diningtable 1, which corresponds to `go to diningtable 1`. However, this environment didn't accept it, maybe I need to take the correct subset. But since I already placed second dappler, better"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "ca863077bc0554c0ca80bb08",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Lettuce-None-DiningTable-26/trial_T20190906_200751_569799/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 13,
+    "field": "reasoning_content",
+    "snippets": [
+      "Now I have the lettuce in hand. I just entered interactive environment, but it's ALFWorld. To cool it, I need to put it in fridge 1. Once there I'll open fridge and place lettuce i"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "77edd7d476190e27d5463935",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-KeyChain-None-Sofa-222/trial_T20190909_061611_717990/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 9,
+    "field": "reasoning_content",
+    "snippets": [
+      "e it's currently in inventory, I must take it to either place it into the sofa or remove it. However, in this environment, the command \"take newspaper\" seems different. I must take the newspaper. Therefore, I must move to \"take key"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "d1b70e332d4e43757ac5c729",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-324/trial_T20190907_014417_271891/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 12,
+    "field": "reasoning_content",
+    "snippets": [
+      "ier had no items handled correctly? Wait, shelf 7 had \"shelf 7\" in admissible commands but not on the current environment. My log says \"go to shelf 7\" but no item was listed. Then I seealarmclock, window 2, and window 1 again. That"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "66eac744c74f4be200c939b3",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-SoapBar-None-GarbageCan-420/trial_T20190908_143325_889991/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 21,
+    "field": "reasoning_content",
+    "snippets": [
+      "ions, but only found soapbars on sidetable (the first one) so far. Maybe towelholder was misidentified by the environment. Let’s check sinkbasin again, towelholder maybe again? Since soapbar not found on sinkbasin or towelholder, I"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "66eac744c74f4be200c939b3",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-SoapBar-None-GarbageCan-420/trial_T20190908_143325_889991/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 23,
+    "field": "reasoning_content",
+    "snippets": [
+      "soapbar may be on sidetable again? Wait, previously I saw soapbar on sidetable, but now it's missing from the environment output again. Maybe it was moved or already placed. However, I've already placed soapbar 2 in garbagecan befo"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "66eac744c74f4be200c939b3",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-SoapBar-None-GarbageCan-420/trial_T20190908_143325_889991/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 24,
+    "field": "reasoning_content",
+    "snippets": [
+      "anywhere. For sake of progress, I'll try handtowelholder, towelholder 2, bowl, kitchen? It is a kitchen-like environment likely containing soapbars. I could also check the kitchen fixtures like countertop or stovetop. Since I hav"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "c04ae70cdd0c2581824b219d",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-CounterTop-13/trial_T20190907_013449_796900/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "2. To heat them, I should use the coffeemachine since it's for heating beverages or puts objects in a heated environment. Alternatively, the microwave can heat quickly. I'll go to the coffeemachine to use it with the cup."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "bb77e6defa5a664ed04d00ce",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Cabinet-17/trial_T20190907_145453_471675/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 11,
+    "field": "reasoning_content",
+    "snippets": [
+      "be on countertop 2 again, but I'm seeing other items. Could be that I misplaced it previously or the kitchen environment moved. Either way, I still need to get peppershaker 2 (or any other pepper) for cabinet 1. Given this, I'll"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "5f043b23bb1e893705ac73f6",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 41,
+    "field": "reasoning_content",
+    "snippets": [
+      "I've placed the soapbar into the environment after taking it previously, but I must verify if it's okay to put both toiletpapers on sidetable and then mov"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "c8b373f5b9e0a6df80f3fc62",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 5,
+    "field": "reasoning_content",
+    "snippets": [
+      "ner 2. Having pan in stoveburner likely means I need to heat it, perhaps by `use stoveburner` or `power`. But environment gave me options to take pan, so perhaps it's wrong to just place it. However, the goal seems to imply generat"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "c8b373f5b9e0a6df80f3fc62",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 37,
+    "field": "reasoning_content",
+    "snippets": [
+      "I'll take it to sinkburner (or microwave) to heat. I'll try `move pan 1 to sinkbasin 1` first to get it into environment, then to microwave/stoveburner."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "20dd5dc197e5b1879d14c7c5",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-Microwave-5/trial_T20190909_102546_579154/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 30,
+    "field": "reasoning_content",
+    "snippets": [
+      "previous action was move potato 1 to microwave 1. So now I should leave it. However, check if it's cool via environment. But I had cleaned pot, but now using potato. Maybe potato still needs to be cool. I'll proceed to `predict`"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "1fb856ae43b543332cf9b916",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-22/trial_T20190908_072831_071145/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 45,
+    "field": "reasoning_content",
+    "snippets": [
+      "at coffeemachine, mug not there, and coffeemachine again yielding nothing. Since I'm already in coffeemachine environment (tomorrow?), I should check there to see if I can put mug directly. Or maybe coffeemachine is now empty from"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "68cc748df6f06efa18e2fabd",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-CD-None-DeskLamp-324/trial_T20190907_230827_540393/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 19,
+    "field": "reasoning_content",
+    "snippets": [
+      "s don't work, maybe desk arguments must be empty string? So maybe desk does work, just be careful. Given the environment, best is to take cd 1 from desk if it's there. But desk might not have cd yet, so I try shelf 1 again. Actua"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "2bbf16beb12b5f3f40fa1e74",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 8,
+    "field": "reasoning_content",
+    "snippets": [
+      "Or `go to sidetable 1` again to place it. Wait, I saw admissible commands do not include `put`, but maybe the environment expects to interact via hand or inventory. Let's check: I am at `toiletpaperhanger 1` with the item in invent"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "2bbf16beb12b5f3f40fa1e74",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 39,
+    "field": "reasoning_content",
+    "snippets": [
+      "put two toiletpapers on sidetable, I should now place it onto sidetable. I'll try `move` again, assuming the environment allows moving clear items directly via `move`."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "2bbf16beb12b5f3f40fa1e74",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 43,
+    "field": "reasoning_content",
+    "snippets": [
+      "n the state, I'll try `go to sidetable` first. However, since I'm already carrying the toiletpaper, maybe the environment expects I use it immediately. Actually, it might be problematic to move or use commands if I'm already there"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "2bbf16beb12b5f3f40fa1e74",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 46,
+    "field": "reasoning_content",
+    "snippets": [
+      "isn't available, maybe `move` is the same. But earlier I successfully moved it to sidetable. Perhaps now the environment expects me to use inventory and inventory? Or maybe I have to `go` to sidetable, then `move`. Wait, maybe no"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "2bbf16beb12b5f3f40fa1e74",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 49,
+    "field": "reasoning_content",
+    "snippets": [
+      "The tool `go to sidetable` is not available in current environment. So I'll try again if needed. However, command fails, so maybe I have to `inventory` or `take` more toilepot."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "7bddd904c84020165f9bc7de",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Cabinet-418/trial_T20190907_035119_119174/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 22,
+    "field": "reasoning_content",
+    "snippets": [
+      "1. Now towelloomer. I'll take towelloomer, then I'll wash soapbar there using water, assuming cleaning water environment. But towel can't wet. Therefore: Take towelloomer, then to sink, then wash soapbar. Thus command: go to s"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "7bddd904c84020165f9bc7de",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Cabinet-418/trial_T20190907_035119_119174/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 23,
+    "field": "reasoning_content",
+    "snippets": [
+      "er, I can use towel to wipe soapbar near the sink while it's still hot if hot, but it's probably cold. Given environment, I should first take soapbar (but previously taken again). This depletes ingredients. Maybe towel won't work"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "7bddd904c84020165f9bc7de",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Cabinet-418/trial_T20190907_035119_119174/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 31,
+    "field": "reasoning_content",
+    "snippets": [
+      "ilable. Instead: rinse soapbar via sink using towel? Maybe on hand towel helps to rinse. Given the current environment: I am at sink with towel in hand. I'll: go to sinkbasin 1. I can wash soapbar there while holding towel, but"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "fca205c712b120978858aae3",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-22/trial_T20190908_072831_071145/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 36,
+    "field": "reasoning_content",
+    "snippets": [
+      "bring pot to stoveburner? Better: take pot, then return to kettle? Or use kettle on pot via load? Given the scenario, I'll move kettle to stoveburner 2, then come back to pot, maybe heating pot on stoveburner or kettle? But s"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "ff1f0c1b6aee8656f8db42aa",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-324/trial_T20190907_014417_271891/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 18,
+    "field": "reasoning_content",
+    "snippets": [
+      "could be relevant if they were books or wrote on it. Maybe shelf 4 is the book and desklamp together in some scenario but not here. Given time, I'll go back to shelf 3, assume I'll find the book there after taking desklamp, bu"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "cb65ac7828263ee3bf0e7273",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-CounterTop-15/trial_T20190907_000245_890595/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "ad, so I'll try using stoveburner 1 to heat bread by moving bread to stoveburner via `exampere` or `exampere` environment. But since I am at stoveburner 1, and it currently has pot 1, I can't heat bread on stove now. I'll do the ne"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "cb65ac7828263ee3bf0e7273",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-CounterTop-15/trial_T20190907_000245_890595/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 34,
+    "field": "reasoning_content",
+    "snippets": [
+      "veburner, but stoveburner can be used for heating. Thus, I should take bread and place on stoveburner. Given environment, I'll take bread, then go to stoveburner and perhaps heat it if I can use it. But to heat bread, I should che"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "cb65ac7828263ee3bf0e7273",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-CounterTop-15/trial_T20190907_000245_890595/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 43,
+    "field": "reasoning_content",
+    "snippets": [
+      "ain to see if it's allowed. If not, I will take bread and bring to stoveburner 2 (pan?), then use pan? Given environment, try `exampere bread 3` again to place on stove."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "a5db67f9e1aafe83f055e46a",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Bowl-None-DeskLamp-327/trial_T20190907_094422_792919/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 46,
+    "field": "reasoning_content",
+    "snippets": [
+      "dea. Maybe I should try `take bowl` and then go to desklamp to use `use desk`. But I’re not aware. Given the environment, I’ll proceed to get bowl to desk again:"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 2202,
+    "instance_id": "a171f0f37696f9d570b81335",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Apple-None-SideTable-3/trial_T20190907_164114_064314/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 14,
+    "field": "reasoning_content",
+    "snippets": [
+      "from countertop 1 previously and then moved it, or perhaps a `use` command or `put` exists. I recall in this environment I've used `take apple 1` but then the bot mis-classified. Then likely, after taking, you must heat it on stov"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "ba817d11820aa18292b61537",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Pencil-None-DeskLamp-309/trial_T20190906_203043_983029/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "encil is still on the tray, maybe the pencil becomes visible when I focus on it, but I can’t do that via this environment. Maybe “look” will give more context or reveal hidden items. Alternatively, if I use “use desklamp” again imp"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "ba817d11820aa18292b61537",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Pencil-None-DeskLamp-309/trial_T20190906_203043_983029/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 5,
+    "field": "reasoning_content",
+    "snippets": [
+      "e further. Maybe the pencil becomes visible when the lamp is focused on a specific spot. However, the current environment doesn't allow specifying a target for the lamp. Let’s try ‘examine sidetable 1’ to confirm if I can interact"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "31e90666df6a900f8ebe724f",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Apple-None-Microwave-22/trial_T20190908_000205_582040/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 1,
+    "field": "reasoning_content",
+    "snippets": [
+      "en move it to the microwave. Starting by checking common places where fruits might be found or inspecting the environment to determine fairness. I'll begin by inspecting where fruit might be—possibly starting at the countertop or f"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 1,
+    "field": "reasoning_content",
+    "snippets": [
+      "g 1 from cabinet 3`, but I'll check inventory first. I'll proceed: `go to inventory`? But I am already in the environment. Better: `take hot potato 1 from my inventory`. Wait, I don't have access to `take hot potato` directly in t",
+      "to` if available. Alternatively, I should check inventory first to see if I can use `take`. Since I'm in this environment and can only use one command in a turn, I should `play hot potato` is available? No. To retrieve it, I'll use"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "3e7472a0f016fde89f013600",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-225/trial_T20190908_131203_170721/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 12,
+    "field": "reasoning_content",
+    "snippets": [
+      "ver, I should confirm if placing is dequeued or requires using the tool with \"put keychain 1 on sofa 1\". Each environment step seems to expect a string that matches the admissible command. Given options, I'll use \"put keychain 1 o"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "3e7472a0f016fde89f013600",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-225/trial_T20190908_131203_170721/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 13,
+    "field": "reasoning_content",
+    "snippets": [
+      "ld, placement is often done with `put item on sofa`. Given I'm restricted to directly `env_step` now with an environment like \"go to sofa\", the next step is likely `go to sofa 1` will not trigger placing. I must move the item some"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "aa75723fc304ee206ea0a5f7",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-Microwave-5/trial_T20190909_102546_579154/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 8,
+    "field": "reasoning_content",
+    "snippets": [
+      "icrowave, I need to find it first. The fridge might contain an alternative measurement or just another fridge scenario. Alternatively, stoveburners or microwave might contain nearby nears items. I should try countertop 3 next,"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "693485d7769198172a99af65",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-DishSponge-None-Drawer-427/trial_T20190909_095203_563442/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 8,
+    "field": "reasoning_content",
+    "snippets": [
+      "d the sponge yet. The task likely implies cleaning the sponge first if dirty, or if I've already acquired the environment to show it's clean. The most straightforward is to get the sponge first from toilet, then take it to a drawer"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "d1b70e332d4e43757ac5c729",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-324/trial_T20190907_014417_271891/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "sser 1 and shelves 1 and 2 for a book, and found nothing there. The book must be located elsewhere. Given the environment, garbagecan, drawers, or other shelves should have it. Checking the garbagecan might provide books or other i"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "2a6c69253b4d91c4e765c554",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-DiningTable-18/trial_T20190919_002034_827829/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 27,
+    "field": "reasoning_content",
+    "snippets": [
+      "ory here, I'll first go to countertop 2 to get it. However, since `take peppershaker 3` works only within an environment that allows pickup, but I'm on diningtable now. So I should `go to countertop 2` to retrieve whichever I'm ca"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "9bf2d2e28c35733ef65c8edc",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-KeyChain-None-Sofa-222/trial_T20190909_061611_717990/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 16,
+    "field": "content",
+    "snippets": [
+      "</td> </tr> </table> I am holding keychain 2 and need to place it on the sofa. To do so, I should command the environment to put it on couch, using `use keychain 2 on sofa 1`."
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "66eac744c74f4be200c939b3",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-SoapBar-None-GarbageCan-420/trial_T20190908_143325_889991/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 5,
+    "field": "reasoning_content",
+    "snippets": [
+      "nstead, I'll take one step and then action command. Wait, I am in the middle of the room, and I must use the environment-step command to move commands. The environment-step expects a single command. However, I can do multiple acti",
+      "and. Wait, I am in the middle of the room, and I must use the environment-step command to move commands. The environment-step expects a single command. However, I can do multiple actions per command if I include `take soapbar 2 fr"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "20dd5dc197e5b1879d14c7c5",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-Microwave-5/trial_T20190909_102546_579154/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "should check the microwave's current state directly rather than trying to open it again. Since I'm here in an environment and the microwave's contents are likely to contain a potato if I need to cool it, but I still don't know wher"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "5f043b23bb1e893705ac73f6",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 17,
+    "field": "reasoning_content",
+    "snippets": [
+      "I went to `sidetable 1` again. However, currently `take toiletpaper 2` requires an entity to carry it. Given scenario, I must get another toiletpaper. Since I're already at hanger with no items left, and one toiletpaper's place"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "4ec14c914157599aaa2cdfbf",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-CounterTop-409/trial_T20190908_025437_027878/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 19,
+    "field": "reasoning_content",
+    "snippets": [
+      "scrubbing). Since I've not located a sinkbottle, sponge, or cleaning items, I might need to check the entire environment again (garbagecan, sinkbasin to remove soapbar from hand, etc.). Maybe I incorrectly assumed the soapbar was"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "0d55c258fb9ffb468a44a128",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Cup-None-Cabinet-4/trial_T20190906_214129_309625/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 22,
+    "field": "reasoning_content",
+    "snippets": [
+      ". However, I can just check its temperature again in Cabinet 1 if possible. No. The best is to check the uart environment: `examine mug 1` won't work. Then `take mug 1 from cabinet 1` back and place in fridge to cool it down. Wait,"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "ae5566dc28e9ef476645294b",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Bowl-None-Microwave-23/trial_T20190908_101019_780853/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 21,
+    "field": "reasoning_content",
+    "snippets": [
+      "ventory. Wait! I should use \"inventory\" or \"look\" to check contents again if I missed them. But with current environment, I might need to find a way to generate bowl. But I can't \"put\" bowl inside microwaves directly if it's not i"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "ae5566dc28e9ef476645294b",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Bowl-None-Microwave-23/trial_T20190908_101019_780853/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "I've spent considerable time searching a kitchen environment and have not found a bowl yet. I must have missed examining a stove, kettleburner, or possibly countertop som"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "d8ea6ca0cdb301a3ae30a06a",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pan-None-DiningTable-27/trial_T20190909_041649_924141/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "rigerate, but in ALF you usually interact by taking it and then moving, or the pan may cool when given a cool environment. However, since the fridge is closed, using the fridge to cool may later fail if I try to put it inside witho"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "d8ea6ca0cdb301a3ae30a06a",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pan-None-DiningTable-27/trial_T20190909_041649_924141/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 18,
+    "field": "reasoning_content",
+    "snippets": [
+      "tains nothing. If I can confirm the pan's temperature, I might be able to remove it. But I'm in a constrained environment. The most promising path is to see if deleting the pan allows exploring new inventory. Alternatively, assume"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "2550b7f022e51af535c398e1",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Cabinet-418/trial_T20190907_035119_119174/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "with water or cloth. But I'm still holding it. On countertop says sinkbasin had nothing; I can use sinkbasin environment to wash soapbottle. Since sinkbasin was empty, I'll proceed to sinkbasin to wash, or explore toilet or towel"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "85789e426425001bd884f01a",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 1,
+    "field": "reasoning_content",
+    "snippets": [
+      "such as by the stoveburners or on the countertop. I'll start by going to the microwave to create a hot plate environment. But the microwave may not give me the hot plate directly, so I will inspect the environment first. I'll move",
+      "eate a hot plate environment. But the microwave may not give me the hot plate directly, so I will inspect the environment first. I'll move to cabin 4, which might contain kitchen appliances or a hot plate. Step: go to cabinet 4"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "85789e426425001bd884f01a",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 46,
+    "field": "reasoning_content",
+    "snippets": [
+      "side microwave. Maybe position it inside microwave, use microwave to heat out, perhaps the pan still loses to environment not specified. Wait, I have a pot 2 on stoveburner 2, maybe I should heat it inside a pot? Or if I can get w"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "516d46e73653a8799b346351",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-317/trial_T20190909_201143_217673/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 14,
+    "field": "reasoning_content",
+    "snippets": [
+      "o the desklamp again and use the desklamp. This might mean `go to sidetable 1`, `use desklamp 1` again if the environment permits, but since `use desklamp` fails without the book held, I'll need to `go to sidetable 1`. I'll move th"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "516d46e73653a8799b346351",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-317/trial_T20190909_201143_217673/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 17,
+    "field": "reasoning_content",
+    "snippets": [
+      "option exists, I need to move it back. I'll go to bed with the book or use sidetable to fetch it. Given the environment, I'll `use desklamp 1` again but this may use the current active state of book if the desk lamp interacts. Ho"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "21987599dfed9dcaef27f779",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-CounterTop-25/trial_T20190906_203202_877300/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 1,
+    "field": "reasoning_content",
+    "snippets": [
+      "ical to \"look around\". But I'm not given any \"program\". Since bread is not mentioned once, and we can't check environment directly `look`, `take` or similar could profit. Given I don't have a recipe for making bread, I'll start by"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "1fb856ae43b543332cf9b916",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-22/trial_T20190908_072831_071145/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 34,
+    "field": "reasoning_content",
+    "snippets": [
+      "I have mug 2 in coffeemachine but nothing inside. To make it hot, I need to obtain liquid. In a real scenario, I would need to bring it in to sink, heat, or boil water. Since I can't indicate \"take mug to sink and flu\""
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "f28a15fd96fa48a977c8f18b",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-HandTowel-None-Cabinet-412/trial_T20190906_200550_674090/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 2,
+    "field": "reasoning_content",
+    "snippets": [
+      "I'm at handtowelholder 1 with nothing on it, so I need a handtowel to make it a holder. I should search the environment for a handtowel. The garbagecan might contain cleaning items or handtowel, so it's a plausible location. If n"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "349e274d6de0d2be69e25357",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-CounterTop-13/trial_T20190909_100939_867117/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 7,
+    "field": "reasoning_content",
+    "snippets": [
+      "an empty placement command 'put pan 1' but I don't see 'use microwave 1' or similar. However, in the current environment view, they gave 'use microwaves 1 heat pan 1'. The admissible commands list 'use microwaves 1 heat pan 1', wh"
+    ]
+  },
+  {
+    "arm": "null",
+    "seed": 3303,
+    "instance_id": "a171f0f37696f9d570b81335",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Apple-None-SideTable-3/trial_T20190907_164114_064314/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 10,
+    "field": "reasoning_content",
+    "snippets": [
+      "1, but since I am at microwave 1, it's easier to take apple 1 to stoveburner 1, but again I need to expand my environment. Not ideal. Alternative: Take apple 1 to stoveburner 1 first. But I'm currently at microwave. So I'll go the"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "62160b0a6aafb7ffc5ea7fb7",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pan-None-StoveBurner-1/trial_T20190907_175242_476577/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 9,
+    "field": "reasoning_content",
+    "snippets": [
+      "putting the cool pan in the stoveburner. Current flow suggests I can place it directly now. It fits into the environment officially, so typing the command should work."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "bc53aa69fdff84f894794975",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-318/trial_T20190906_180821_654558/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 3,
+    "field": "reasoning_content",
+    "snippets": [
+      "ing `use desklamp 1` to enable light for viewing. Since `use desklamp 1` is not an admissible command in this environment, and typically light application requires the phone/laptop to flip or place up first, I should first pick up"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "64181cd303978a524e8e701c",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-CounterTop-409/trial_T20190908_025437_027878/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 5,
+    "field": "reasoning_content",
+    "snippets": [
+      "n 1` looks promising, but I should verify its functionality first or proceed directly with the washing if the environment supports it."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "5cef5f17842335b70b9edea3",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Candle-None-Cabinet-428/trial_T20190907_024325_233549/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 2,
+    "field": "reasoning_content",
+    "snippets": [
+      "he candle is not at the garbagecan; I need a candle to proceed to place it on a cabinet. Based on the initial scenario, the candle might be at the countertop, which is closer than the garbagecan and likely to have something for"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "8d533555a8734aecb62d729f",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Pencil-None-DeskLamp-309/trial_T20190906_203043_983029/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 10,
+    "field": "reasoning_content",
+    "snippets": [
+      "n. However, since I mousthe proper next step, I should use `use desklamp 1` to interact closely with the desk environment and potentially observe the pencil underneath the desk lamp which I bring to the desk. Wait, I'm currently a"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "5639808379d54156d6a6b019",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-229/trial_T20190908_123332_888981/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 5,
+    "field": "reasoning_content",
+    "snippets": [
+      "fa. Checking possible small storage spots like the coffeetable or dresser is logical. This seems like an open environment with random objects, but not enough info reliably found yet."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "5639808379d54156d6a6b019",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-229/trial_T20190908_123332_888981/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 21,
+    "field": "reasoning_content",
+    "snippets": [
+      "I've checked many places but not found the keychain. Given the limited environment, I'll try `look` again. It may reveal some hidden object that contains the keychain."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "6bba7d37e109d58517591e5a",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Apple-None-Microwave-22/trial_T20190908_000205_582040/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 9,
+    "field": "reasoning_content",
+    "snippets": [
+      "l\". I need to confirm its status (e.g., temperature) and then place it in the microwave for cooling or use an environment that does this. Microwave seems best as final step after cooling. But the fridge didn't specify \"cool,\" so li"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "6339ed2732216700ca21c7c8",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-328/trial_T20190908_175801_507648/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 9,
+    "field": "reasoning_content",
+    "snippets": [
+      "y that these objects were together at desk 1, I should now play smart to better position myself or access the environment that allows looking at the alarm clock with the current `use desklamp 1`. Since I am currently at desk 1 with"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "6339ed2732216700ca21c7c8",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-328/trial_T20190908_175801_507648/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 10,
+    "field": "reasoning_content",
+    "snippets": [
+      "rm if possible. However, without direct access, the optimal continuation is using the desklamp to explore the environment closely where the alarm is located or switch to another object that allows viewing. Since both are on desk 1,"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "23cccb5f574e21982ccf8e62",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-CounterTop-13/trial_T20190907_013449_796900/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 6,
+    "field": "reasoning_content",
+    "snippets": [
+      "ntertop 1, but I'm at countertop 1, so command to take would be `take bowl 1 from countertop 1`. Since I'm in environment, I need to make sure to use `env_step`. But I must pick one command after moving. Wait, I am at countertop 1"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "3df8a39a37f18e580760c663",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-318/trial_T20190906_180821_654558/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 10,
+    "field": "reasoning_content",
+    "snippets": [
+      "2`. But I need the tool to call this specific command. I'll execute `move lamp 1 to desk 2`. Wait, in this environment, I don't have the option to 'move', it's probably a different logic. Since I can still see I need the alarm t",
+      "there, I'll use `move lamp 1 to desk 2`. But first I need to confirm what the admissible commands do in this environment. It appears they are for manipulating the room. Given the task, I should first move the lamp not from desk 1"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "c18c71d3d2d78acbab61b251",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pan-None-StoveBurner-1/trial_T20190907_175242_476577/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 23,
+    "field": "reasoning_content",
+    "snippets": [
+      "to stoveburner 1', allowing me to put it there. This is a better command than simply placing if there were no environment interaction between climbing and running."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "dfe95ec350ff00469301f62a",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Drawer-427/trial_T20190908_130926_765289/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 49,
+    "field": "reasoning_content",
+    "snippets": [
+      "er 1` using `env_step` with `imprings` or similar but I think key now is to try `use the towel holder 1` with environment to place. Wait, maybe I need to use `use liquid washing'`? No, better: use inventory to see if I have any clo"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "2a6c69253b4d91c4e765c554",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-DiningTable-18/trial_T20190919_002034_827829/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "ningtable 1 and fridge 1 but maybe I missed putting one there. Since I confirm both have been creooted in the environment, why am I not seeing it on countertop 1? My last move was to place one in fridge 1 but maybe I forgot to retr",
+      "too? Hmm, maybe I am lost in the room. I've been concentration on \"desks\" and \"desks\" might be directed. The environment asks for 3, maybe I should just check where else items are stored? Try `go to garbagecan 1`."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "3dc8b8bdc5fcb0b3f5f0a59d",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Fork-None-Drawer-12/trial_T20190907_151014_567960/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 14,
+    "field": "reasoning_content",
+    "snippets": [
+      "to complete the task properly. First, I can locate the drawer location again, but if I'm already in the code environment then `put` must have completed. The goal is to put the fork on drawer, so if I successfully placed it, the fi"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "6846a4ce86e9cd07bcce0549",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-CD-None-DeskLamp-324/trial_T20190907_230827_540393/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 31,
+    "field": "reasoning_content",
+    "snippets": [
+      "t's on dresser, maybe I need to put it one under. However, I haven't located the cd first. The most plausible scenario is that the rack had it on shelf 1 where I am right now. I need to retrieve it from dresser 1 and place it. B"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 9,
+    "field": "reasoning_content",
+    "snippets": [
+      "ithout needing additional heating steps. Since it's on the countertop, I should place it there. However, the environment doesn't specify \"hot potato\" requires it to be hot except from microwave. Miyawaki says it's better to not ge"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 15,
+    "field": "reasoning_content",
+    "snippets": [
+      "ure first before putting it in fridge. So check heating it to ensure it's hot then move to fridge. Given the environment, direct action is allowed, but to get a hot potato, I must heat it first.做好 stove then use microwave then sto",
+      "am at microwave. So proceed to `heat potato 1 with microwave 1`? However, I'm currently inside the microwave environment; maybe the tool supports \"use refrigerator\" or similar. Since I am not holding the boil but I have the potato"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "85789e426425001bd884f01a",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 7,
+    "field": "reasoning_content",
+    "snippets": [
+      "to cabinet locations if they hold the pan or other needed items. Or, maybe the pan can be put directly if the environment supports movement that includes placing same with same object. Given task: \"put a hot plate in sidetable\". T"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "5e2f901b8d8ba14c1b047223",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-DishSponge-None-Drawer-427/trial_T20190909_095203_563442/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 17,
+    "field": "reasoning_content",
+    "snippets": [
+      "no sponge, the dish sponge is likely on countertop again. But I cannot pick it up yet — must first locate in environment again. Let’s go to countertop again."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "5e2f901b8d8ba14c1b047223",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-DishSponge-None-Drawer-427/trial_T20190909_095203_563442/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 28,
+    "field": "reasoning_content",
+    "snippets": [
+      "be fridge won't work. Maybe towel holder. But I have exhausted many locations. Maybe there's a way to use the environment to find the sponge like inspection, but I think I need to satisfy to sink to find something better. Maybe I s"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "c6d246df13f2b3dab9f0a7dd",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 20,
+    "field": "reasoning_content",
+    "snippets": [
+      "le options don't show \"move towel to sinkbasin\", just \"go to sinkbasin 1\" and then place there. But with this environment, I need to grab towel to hole. Either I need to retrieve towel 1 again from towelholder and then to sinkbasin"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "c6d246df13f2b3dab9f0a7dd",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 23,
+    "field": "reasoning_content",
+    "snippets": [
+      "I've held towel 1 since the last environment step and I am at towelholder 1. Now, since my objective is to place this cloth inside the toilet and I have a"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "c6d246df13f2b3dab9f0a7dd",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 47,
+    "field": "reasoning_content",
+    "snippets": [
+      "e I already see inventory and no items, maybe `env_step` requires my inventory to be checked first. Since the environment doesn't allow placing directly from name-based movements, I should pick up the towel from towelholder then go"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "cd5bbad810db5c11aacff0cd",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Tomato-None-DiningTable-4/trial_T20190907_142426_940554/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 18,
+    "field": "reasoning_content",
+    "snippets": [
+      "sing the garbagecan to get one eventually if present. Maybe diningtable doesn't have one, but it’s permissive environment to find any find. The fridge must have a dirty tomato I need to pick up, clean at sinkbasin 1, and place in d"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "4a1a899a387688950ddc6097",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 44,
+    "field": "reasoning_content",
+    "snippets": [
+      "ically or horizontally check countertop 1 again if I missed. But wait, my admissible list doesn't allow using environment directly with \"look\" in many steps. But `env_step` with `command` must choose exactly one. Let's open apache"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "4a1a899a387688950ddc6097",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 45,
+    "field": "reasoning_content",
+    "snippets": [
+      "ntertop 2 was again unvisited, but countertop 1 had candles, maybe there is somewhere new like cabinet 5? The environment might have more than 10 items in this specific room. Let's also use the `env.info` or `inventory` to confirm"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "ddb615dcaf3a80df2b17aade",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Cabinet-17/trial_T20190907_145453_471675/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 20,
+    "field": "reasoning_content",
+    "snippets": [
+      "two somewhere, I can just leave it there. Wait, I need to confirm if they are there. Let's look again at this environment: If I take earlier actions and they failed to place correctly, the current observation will show what they're"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "77edd7d476190e27d5463935",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-KeyChain-None-Sofa-222/trial_T20190909_061611_717990/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 32,
+    "field": "reasoning_content",
+    "snippets": [
+      "ys \"put them in sofa\", implying both keychain must be present. Therefore, my task is done (both in sofa). The environment is clear. Wait, maybe my inventory status is wrong: I should place the second keychain into sofa again, if i"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "c8b373f5b9e0a6df80f3fc62",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "nce `move pan 1 to sidetable 1` exists but I am at countertop 1, I might have to get back. Actually, with the environment note that requires \"go to sidetable 1\", I should go there first. Wait, from the step history, they moved me t",
+      "1` doesn't call it further. I should move to sidetable first. But currently I shouldn't place yet. Wait, the environment has `take pan 1 from countertop 1`, which I am doing. But I haven't placed it. It would be `put pan`? Wait, t",
+      "ake the pan then go to sidetable and place it. But without a command to place, I must move manually. But the environment note says: \"Command must exactly match one currently admissible command\". So I should move to sidetable to se",
+      "Wait, in `env_step` I can't plug. So plan: take pan → move to sideltone then place (if supported). So in this environment step I'll go to sidetable 1 first."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "bb77e6defa5a664ed04d00ce",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Cabinet-17/trial_T20190907_145453_471675/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 1,
+    "field": "reasoning_content",
+    "snippets": [
+      ", I first need to find the peppershaker, which is likely in the garbagecan or on a counter based on a typical environment setup, so starting with `go to garbagecan 1` seems like a logical move to find the peppershaker."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "ae5566dc28e9ef476645294b",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Bowl-None-Microwave-23/trial_T20190908_101019_780853/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 23,
+    "field": "reasoning_content",
+    "snippets": [
+      "n microwave 1' is not in admissible commands\". However, I previously encountered \"open microwave 1\" inside an environment where it was admissible. It must be that the workspace changed. So I must be stuck in one state and can't ope"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "ae5566dc28e9ef476645294b",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Bowl-None-Microwave-23/trial_T20190908_101019_780853/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 32,
+    "field": "reasoning_content",
+    "snippets": [
+      "cabinet like cabinet 10 or maybe under the microwave. But microwave is closed. Let's check the garbage can in scenario: maybe it's inside the garbage can of waste? Or maybe I can put the dish sponge (dishsponge) to the sink to c"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "ae5566dc28e9ef476645294b",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Bowl-None-Microwave-23/trial_T20190908_101019_780853/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 38,
+    "field": "reasoning_content",
+    "snippets": [
+      "ybe the bowl is on stoveburner 1 but earlier I said nothing. Maybe it's with knife? Let's re-open the initial environment? Wait, I can only see admissible commands now. Let's look at `env_step` description: It seems I must wait for"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "31e90666df6a900f8ebe724f",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Apple-None-Microwave-22/trial_T20190908_000205_582040/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 27,
+    "field": "reasoning_content",
+    "snippets": [
+      "option' but I can't confirm. Let's check using the tool's placeholder: I'll try to use `put` if available in environment context, but admissible commands don't show it. Instead, I'll consider this: \"put apple 1 in microwave\" may b"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "31e90666df6a900f8ebe724f",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Apple-None-Microwave-22/trial_T20190908_000205_582040/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 32,
+    "field": "reasoning_content",
+    "snippets": [
+      "k area for cleaning. So going back to fridge 1 may be necessary. But I have to pick the best action based on environment info. Since I have the apple in inventory at open microwave 1, I need to `put` it in there. Maybe I can do it"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "5f043b23bb1e893705ac73f6",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 31,
+    "field": "reasoning_content",
+    "snippets": [
+      "ones I'm holding now upper cases `take` `move` etc. that I've already placed might be confusing. But in this environment, I think I'm being tested. I'll continue trying to place it on the table. However, just now I see I'm already",
+      "put it visually? Better check if I can use `put` command if allowed, but it's not provided. I must check the environment for this last option. I should ensure I dump it visually? Actually, I might need to place it exactly like be"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "5f043b23bb1e893705ac73f6",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 41,
+    "field": "reasoning_content",
+    "snippets": [
+      "both on 'sidetable', but I think I need to use `take` to bring `toiletpaper 2` if I hold it. However, in this environment, I still hold the `take` of `toiletpaper 2` because I just moved it here, but I haven't recorded that explici"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "20dd5dc197e5b1879d14c7c5",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-Microwave-5/trial_T20190909_102546_579154/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 11,
+    "field": "reasoning_content",
+    "snippets": [
+      "e task, I need to put the cool potato in microwave - \"put\" may imply moving it or placing it. According to my environment step logic, I should conserve resources. Opening the mic is necessary, then putting it in. Then close it. How"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "349e274d6de0d2be69e25357",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-CounterTop-13/trial_T20190909_100939_867117/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 27,
+    "field": "reasoning_content",
+    "snippets": [
+      "pan 1 to microwave, put inside/open it, then locate countertop to place on countertop after heating. But the environment may automatically put it under the microwave and require me to check, or use the command \"use toaster\" to tur"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "349e274d6de0d2be69e25357",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-CounterTop-13/trial_T20190909_100939_867117/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 44,
+    "field": "reasoning_content",
+    "snippets": [
+      "entory. If I move, take pan to microwave 1, then put inside, close microwave, then put on countertop. In this scenario, I must first take pan to microwave. Since I'm at fridge, I should bunker get to microwave first then take p"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "13c62ea56c6b0793adbe98ed",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Tomato-None-DiningTable-11/trial_T20190908_220012_692282/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 14,
+    "field": "reasoning_content",
+    "snippets": [
+      "re placed elsewhere. Since the fridge has just opened without items, I can take kitchen tools, but in current environment all items in fridge have been retrieved. Wait, the fridge holds more unnamed items like apple, egg, mug -> no"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "13c62ea56c6b0793adbe98ed",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Tomato-None-DiningTable-11/trial_T20190908_220012_692282/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 43,
+    "field": "reasoning_content",
+    "snippets": [
+      ", I can't transport items unless there is an option to take it and carry. But I can directly place as I am in environment and just need to execute \"move mug 2 to diningtable 1\" but I haven't opened inventory to confirm. Since I'm n"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "78952e00f4c1369e93f93d14",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-28/trial_T20190907_190721_183592/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 46,
+    "field": "reasoning_content",
+    "snippets": [
+      "est to use `use microwave` to place mug inside and heat mug. It may work if taken with mug. But since current environment doesn't allow moving mug inside, I should close microwave and go to sink for water and use another microwave"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 1101,
+    "instance_id": "78952e00f4c1369e93f93d14",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-28/trial_T20190907_190721_183592/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 50,
+    "field": "reasoning_content",
+    "snippets": [
+      "to heat it. The correct next step is to place mug 1 into microwave 1. Since I can directly interact with the environment by moving to location, the next logical command is to place the mug into microwave 1."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "f89c13ea6053748807392c23",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Pen-None-DeskLamp-323/trial_T20190908_125547_889154/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 7,
+    "field": "reasoning_content",
+    "snippets": [
+      "I have pen 3 on the sidetable, and desire to bring it under the desklamp. The acidity environment suggests `take pen 3 from sidetable 1` might be valid as an action, next decision is to take pen 3 and bring"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "a171f0f37696f9d570b81335",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Apple-None-SideTable-3/trial_T20190907_164114_064314/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 5,
+    "field": "reasoning_content",
+    "snippets": [
+      "oveburner I can occupy. Or perhaps move apple to stoveburner directly? I don't see `use stoveburner`. In this environment, you probably need to bring apple to stoveburner via go to, but the stoveburner commands are different. Wait,"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "64181cd303978a524e8e701c",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-CounterTop-409/trial_T20190908_025437_027878/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 8,
+    "field": "reasoning_content",
+    "snippets": [
+      "em to countertop 1 again. However, given how the tool works, I might have to use a command to expend a single environment charge, but in this case, the command wasn't right in the previous attempt. Assuming the soapbar is inويolati"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "0d41d5abf5366d3dcf49df21",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-28/trial_T20190907_190721_183592/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 12,
+    "field": "reasoning_content",
+    "snippets": [
+      "ually requires placing it on a heat source, but the instruction used \"use mug\" which may be incorrect in this environment. Since I have mug 3 but can't heat it via \"use mug\", I need to pick a stoveburner to heat it. Option choice s"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "6846a4ce86e9cd07bcce0549",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-CD-None-DeskLamp-324/trial_T20190907_230827_540393/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 6,
+    "field": "reasoning_content",
+    "snippets": [
+      "in `desklocation` prefix? The same logic as before. Let me think again: I am being tested or am I? Maybe the environment allows `go to desklocation` once per turn and it's currently out? They've made change. In previous steps, the"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "6846a4ce86e9cd07bcce0549",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-CD-None-DeskLamp-324/trial_T20190907_230827_540393/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 27,
+    "field": "reasoning_content",
+    "snippets": [
+      "1 to desk location where desklamp might be, bring desklamp down on cd or vice versa? The command set for desk environment includes `put desk lamp 1 on shelf`, which means placing it somewhere. Since I have cd in inventory, maybe mo"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "c6d246df13f2b3dab9f0a7dd",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 35,
+    "field": "reasoning_content",
+    "snippets": [
+      "owel holder 1 now shows nothing. It likely still has towel 1 in inventory or I carelessly left it, or now the environment thinks towel holder 1 is empty. I should now go to toilet 1 to deposit towel 1 there, completing the task."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "29f65933ef66f66bf9d2d184",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Spoon-None-Drawer-11/trial_T20190918_143344_541468/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 27,
+    "field": "reasoning_content",
+    "snippets": [
+      "e previously (I took spoon 2 from drawer 1 and placed in drawer 1). Spoon 3 must now be somewhere else in the environment. I'll go to countertop 2, check inventory, then move to countertop 3 or wait for spoon to be retrieved via ca"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "29f65933ef66f66bf9d2d184",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Spoon-None-Drawer-11/trial_T20190918_143344_541468/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 29,
+    "field": "reasoning_content",
+    "snippets": [
+      "and I see \"egg 2, knife 2, and saltshaker 1\" without spoons. However, spoon 3 should probably be remaining in environment once it's already on countertop? Wait, spoon 3 was taken from countertop 2 and I've never seen spoon 3 on cou"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "29f65933ef66f66bf9d2d184",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Spoon-None-Drawer-11/trial_T20190918_143344_541468/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 32,
+    "field": "reasoning_content",
+    "snippets": [
+      "I'm carrying spoon 1 and still have to get spoon 3 into location. I must locate spoon 3 in another environment—cabinets or other countertops. Given earlier attempts, it might be in cabinet 1, stoveburner, or coffee machi"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "5f043b23bb1e893705ac73f6",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 1,
+    "field": "reasoning_content",
+    "snippets": [
+      "I'm at sinkbasin1, moving towards toilet1 first seems logical for locating towels. Alternatively, inspecting environment directly will help verify the toiletpaperhanger's presence before moving. Given the commands available, `take"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "5f043b23bb1e893705ac73f6",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 30,
+    "field": "reasoning_content",
+    "snippets": [
+      "Let's try hut, but no change. Wait, I've been using correct commands but no recebeu. Maybe it's missing from environment. Let's try countertop, maybe there's toilept there too, but countertop was checked. Wait, now let's try toile"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "5f043b23bb1e893705ac73f6",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 49,
+    "field": "reasoning_content",
+    "snippets": [
+      "I'm repeating the no result scenario. The toileptar must be somewhere I haven't checked yet, perhaps under the towelholder or in a cabinet inacces",
+      "leptar must be somewhere I haven't checked yet, perhaps under the towelholder or in a cabinet inaccessible by environment commands. Given towelholder1-3, maybe I can search cabinet again. But the toy says I don't have enough invent"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "0d55c258fb9ffb468a44a128",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Cup-None-Cabinet-4/trial_T20190906_214129_309625/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "at cabinet 2, but the admissible commands don't include 'move mug 1 to cabinet 2'. This could be because the environment isn't holding the command state. Perhaps I need to ensure the cabinet is open. The cabinet is empty and I'm n"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "0d55c258fb9ffb468a44a128",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Cup-None-Cabinet-4/trial_T20190906_214129_309625/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 28,
+    "field": "reasoning_content",
+    "snippets": [
+      "om somewhere`, so it might still be in my inventory. Since I'm not carrying anything and this is not a valid environment error, I'll move mug 1 into cabinet now."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "20dd5dc197e5b1879d14c7c5",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-Microwave-5/trial_T20190909_102546_579154/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 22,
+    "field": "reasoning_content",
+    "snippets": [
+      "n put it in microwave should be enough. But maybe I'll need to use `use microwave` to cool it manually if the environment checks. I'll check now using the microwave if needed. Alternatively, maybe the box just contains it and it's"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "20dd5dc197e5b1879d14c7c5",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-Microwave-5/trial_T20190909_102546_579154/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 28,
+    "field": "reasoning_content",
+    "snippets": [
+      "better coolness, or reheat if too warm. First, `examine microwave`, maybe I'll get info like \"cooled\". Given environment, if `examine microwave` returns just items, then it's cool. If it shows other objects, maybe it's warm. Let's"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "6bba7d37e109d58517591e5a",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Apple-None-Microwave-22/trial_T20190908_000205_582040/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 21,
+    "field": "reasoning_content",
+    "snippets": [
+      "apple is in inventory now, then move it inside. But I am not carrying apple. Let's check 'game' state. Wait, environment step succeeded before, but trying again failed. Maybe apple was successfully placed earlier and now just cann"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "6bba7d37e109d58517591e5a",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Apple-None-Microwave-22/trial_T20190908_000205_582040/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 25,
+    "field": "reasoning_content",
+    "snippets": [
+      "previously using the fridge. The next step involves placing it into the microwave. My current inventory and environment indicates the apple is in the microwave. The task is done."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "5205423903b6bbcd205b82e5",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Spoon-None-Drawer-11/trial_T20190918_143344_541468/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "the tool state changed because I moved spoon 4, maybe I didn't place it, or I'm carrying it again. Given the scenario, I think drawer 2 should look empty now that spoon 4 is in my inventory. Let's try situated in drawer 2 and u"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "db7cdaf46706a128a18d7c2c",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-HandTowel-None-Cabinet-412/trial_T20190906_200550_674090/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 37,
+    "field": "reasoning_content",
+    "snippets": [
+      "towel on towelholder maybe again, or countertop, or sink, or cabinets. I'll use `examine towel` to understand environment now."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "db7cdaf46706a128a18d7c2c",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-HandTowel-None-Cabinet-412/trial_T20190906_200550_674090/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 49,
+    "field": "reasoning_content",
+    "snippets": [
+      "works without needing to locate towel in hand? I am holding towel. Let's try `move towel` maybe works inside environment? Wait, previous my step didn't use `move towel` when holding towel. I should go towelholder first, then try"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "c74ecacffdcc6a5bc56f1c98",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 25,
+    "field": "reasoning_content",
+    "snippets": [
+      "toveburner 1, I don't need to remove pot first if I just move pot to stoveburner 1 then heat? But it's not an environment step without heating? Actually, moving pot to stoveburner doesn't heat it. Then I must take pot from stovebur"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 20,
+    "field": "reasoning_content",
+    "snippets": [
+      "I have potato in inventory and I need to heat it in the kitchen environment while it's hot. Since I can't directly heat potato on stoveburner, I should move to a stoveburner where it ca",
+      "o a stoveburner where it can be heated using pot 1 previously or by placing kettle on stove. However, in this environment, I need to take pot 1 from stoveburner 1, then place it on stoveburner. Given stoveburner and pot might be u"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 33,
+    "field": "reasoning_content",
+    "snippets": [
+      "n countertop: raystack. So, I must now have potato on countertop if not already placed. Wait, I can't verify environment state. The command to take potato 4 from countertop will put it back. Let's take potato, then maybe place in"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 42,
+    "field": "reasoning_content",
+    "snippets": [
+      "e. Now I am carrying potato 4 from countertop or from elsewhere? My inventory list is not shown; only current environment contents shown. Since I move potato to countertop, now I should have both on surfaces? However, if potato is"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "c8b373f5b9e0a6df80f3fc62",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 33,
+    "field": "reasoning_content",
+    "snippets": [
+      "I am at sinkbasin 1 with pan 1 on the demo environment which may indicate I am holding pan 1 while I'm at sink. To make it hot, I need to heat it. Given earlier, us"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "c8b373f5b9e0a6df80f3fc62",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 50,
+    "field": "reasoning_content",
+    "snippets": [
+      "I am cleaned in this environment mode, so pan might be hot. Checking pantry can be upsells. Since i got pan on sink and moved to sink already."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "cb65ac7828263ee3bf0e7273",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-CounterTop-15/trial_T20190907_000245_890595/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 31,
+    "field": "reasoning_content",
+    "snippets": [
+      "s to be incomplete. There's no `move` option either in current list, but history suggests this is a textworld environment. Maybe it's trying to accept bread from HIDIN? But I didn't move it anywhere. Wait, maybe I need to use sinkb"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 2202,
+    "instance_id": "d1b70e332d4e43757ac5c729",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-324/trial_T20190907_014417_271891/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 35,
+    "field": "reasoning_content",
+    "snippets": [
+      "mands. But previous attempts were `go to desk on shelf 2` or `go to desk on shelf 5` which failed. Given the environment, the correct approach is to use `env_step` then try `go to desk on shelf 5`. First, I should visit desk on s"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "d9989d60fb1b827becb52fa5",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-TissueBox-None-DeskLamp-328/trial_T20190908_045203_114143/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 2,
+    "field": "reasoning_content",
+    "snippets": [
+      "uring or revealing the tissuebox, but looking at a tissuebox under it might require a hand-held attraction or environment feature, which likely isn't provided here. However, since `look` could work, or I need `use desklamp` which m"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "ba817d11820aa18292b61537",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Pencil-None-DeskLamp-309/trial_T20190906_203043_983029/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 3,
+    "field": "reasoning_content",
+    "snippets": [
+      "ires me to look at the pencil under the desklamp. Since there's an action `use desklamp 1` available, and the environment instructions indicate using the lamp to help the action, I'll use desklamp on pencil to see under it."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "a8ba8670172d7511b2b2de51",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-CounterTop-25/trial_T20190906_203202_877300/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 7,
+    "field": "reasoning_content",
+    "snippets": [
+      "s it to cool itself using the fridge. Instead, `open fridge 1` is better to see if I can store it in a colder environment or if the cooling command works as expected. I'll proceed with `open fridge 1`."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "a8ba8670172d7511b2b2de51",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-CounterTop-25/trial_T20190906_203202_877300/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 8,
+    "field": "reasoning_content",
+    "snippets": [
+      "sarily ensure it's cold. I'll try `cool bread 1 with fridge 1` to confirm. Alternatively, I can use a warmer environment but the fridge is minimal. Therefore, with the current options, `cool bread 1 with fridge 1` might work since"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "3e7472a0f016fde89f013600",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-225/trial_T20190908_131203_170721/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 1,
+    "field": "reasoning_content",
+    "snippets": [
+      "checking common places like the garbagecan or sidetable might help. However, I should first interact with my environment to locate it. A logical first step is to check the garbagecan, a likely place for misplaced items."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "3e7472a0f016fde89f013600",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-225/trial_T20190908_131203_170721/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 8,
+    "field": "reasoning_content",
+    "snippets": [
+      "placement. However, the keychain I saw might be generic and requires no new action — simply place it. But the environment steps fail if I manually place items because of incorrect command style or state. I should first retrieve the"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "3dc8b8bdc5fcb0b3f5f0a59d",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Fork-None-Drawer-12/trial_T20190907_151014_567960/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 11,
+    "field": "reasoning_content",
+    "snippets": [
+      "xt move should be placing it. Wait, the command to place must provide an action containing \"put\". But in this environment, clear steps require multiple command exchanges. There's no 'put fork in drawer' command. So I need to take i",
+      "he best step now: place the fork into drawer 1. But I can't place directly without moving first? However, the environment allows multiple commands. I should try command: 'take fork 1 from countertop 3' then 'put fork in drawer 1'"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "d71ed33427b49af7af8db14b",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Potato-None-Microwave-30/trial_T20190907_015902_274312/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "lace it there. But I am not equipped with a \"put\" command. I should take the potato out. Wait, I can use the environment to interleave placement. Perhaps I can say `put potato 3 in microwave 4`? In TextWorld TextWorld, commands ar",
+      "ut potato 3 in microwave 4`? In TextWorld TextWorld, commands are usually verbs like 'put' for some. Checking environment step above... wait, no. In TextWorld, you use `put potato 3` when inside the microwave? Maybe yes. Let me try"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "d71ed33427b49af7af8db14b",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Potato-None-Microwave-30/trial_T20190907_015902_274312/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 7,
+    "field": "reasoning_content",
+    "snippets": [
+      "cup 3. My potato is not there. I should place the potato inside by using `put potato 3 in microwave 1` if the environment supports this. Checking command options, I see `take apple 3` but no `put potato`. So the microwave currently"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "d71ed33427b49af7af8db14b",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Potato-None-Microwave-30/trial_T20190907_015902_274312/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 8,
+    "field": "reasoning_content",
+    "snippets": [
+      "d retrieve it, then put it in microwave. But most likely, I can put it there second wash for now. Given the environment, ``go back to countertop`, otherwise I can't move items around except if I have inventory. Let's retrieve pot"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "5cef5f17842335b70b9edea3",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-Candle-None-Cabinet-428/trial_T20190907_024325_233549/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 9,
+    "field": "reasoning_content",
+    "snippets": [
+      "s actions like `take soapbottle 1 from cabinet 1`. Since `use` to put items seems invalid for this `env_step` environment, I should retrieve the candle, place it in cabinet 1, but since I'm still holding it, maybe I technically hav"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "93ae953f2c33c28baad547fa",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Sofa-225/trial_T20190908_131203_170721/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 17,
+    "field": "reasoning_content",
+    "snippets": [
+      "o armchair and place, then I'd be in good shape. But I can’t do that. Instead, I can try placing again if the environment supports `put keychain 1` again (maybe that works). Given \"command 'put keychain 1 on sofa 1' is not in admi"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "bc53aa69fdff84f894794975",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-318/trial_T20190906_180821_654558/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 3,
+    "field": "reasoning_content",
+    "snippets": [
+      "n continue using desklamp to move/shift it. But I cannot put alarmclock on desk 1. I must release it into the environment. But I don't have an action like `put alarmclock 1`. Wait, `take alarmclock 1` gets it but not `put`. I can k"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "db7cdaf46706a128a18d7c2c",
+    "game_id": "json_2.1.1/train/pick_and_place_simple-HandTowel-None-Cabinet-412/trial_T20190906_200550_674090/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 25,
+    "field": "reasoning_content",
+    "snippets": [
+      "lder 1` but didn't specify confirming `handtowelholder 1` as an action. Maybe function stuck. However, in the environment, I should call command like `use handtowelholder 1` to interact if something's inside, or `take handtowel hol"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "d047c3db76470f1a05dade2a",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-317/trial_T20190909_201143_217673/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 4,
+    "field": "reasoning_content",
+    "snippets": [
+      "y taking it or using lamp on it. Given the description \"examine the book with the desklamp,\" this suggests a scenario where desklamp is already involved. If the book is nearby but not yet interacted, I should take books. Let me"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "20dd5dc197e5b1879d14c7c5",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-Microwave-5/trial_T20190909_102546_579154/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 48,
+    "field": "reasoning_content",
+    "snippets": [
+      "I've explored the majority of the ALC environment and have found nothing except the pot on stoveburner 3 and a tea wrapper on sinkbasin 1. Since the task requi"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "d8ea6ca0cdb301a3ae30a06a",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pan-None-DiningTable-27/trial_T20190909_041649_924141/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 14,
+    "field": "reasoning_content",
+    "snippets": [
+      "trieved the pan. Wait, if I already have the pan in my inventory, then I should proceed to place it. However, environment may not allow placing already out ported items. Therefore, I'll retrieve the pan again:"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "d8ea6ca0cdb301a3ae30a06a",
+    "game_id": "json_2.1.1/train/pick_cool_then_place_in_recep-Pan-None-DiningTable-27/trial_T20190909_041649_924141/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 20,
+    "field": "reasoning_content",
+    "snippets": [
+      ". But again, no `put pan` command. I might need to take it again and place. However, I must interact with the environment first. Given I can't place, I'll return to diningtable to put it on table:"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "9bf2d2e28c35733ef65c8edc",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-KeyChain-None-Sofa-222/trial_T20190909_061611_717990/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 25,
+    "field": "reasoning_content",
+    "snippets": [
+      "to sofa 1` first, then `use` command? Wait, I'm at sofa 1, but `put keychain 2 on sofa 1` would directly use environment's disposal command, which isn't in admissible commands. Thus, I must go to a different location. Let's go to"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "5f043b23bb1e893705ac73f6",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 21,
+    "field": "reasoning_content",
+    "snippets": [
+      "I failed to place the second toiletpaper, keeping it in inventory while experiencing \"Environment state did not change.\" I've already moved both toiletpapers on sidetable, yet this action seems to indicate r"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "6e8065ea21b85ced0c591b4a",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Spatula-None-DiningTable-17/trial_T20190909_044827_257673/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 10,
+    "field": "reasoning_content",
+    "snippets": [
+      "the spatula by moving or using another action. The valid next step likely involves interacting with the game environment properly — `move spatula 1 to diningtable 1`? Let me check `move spatula 1 to diningtable 1`. Wait, command l"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "c74ecacffdcc6a5bc56f1c98",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 5,
+    "field": "reasoning_content",
+    "snippets": [
+      "veburner 1 is probably too. Perhaps `use stoveburner 1` is invalid because there was a state change or global environment issue. Therefore, I should manually heat it if possible. Since I don't have a heat command without heating, I"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "c6d246df13f2b3dab9f0a7dd",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "it. Since I previously moved it in, it should no longer be in hand and already out. Wait, but in refrigerator environment, if I already move it, it's out. Since I now have it, it's a new action. So now I need to place the cloth in"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 8,
+    "field": "reasoning_content",
+    "snippets": [
+      "ect the potato`) or check its temperature? However, those commands are not available. Since I'm on an ancient environment, perhaps the tool just doesn't support \"hotness\" measures except 'heat it with stoveburner' which may have mo"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 19,
+    "field": "reasoning_content",
+    "snippets": [
+      "a clear way. Wait, maybe the potato becomes hot automatically after some heating? Yes—assume so. But in this environment, `use stoveburner 1` only triggers heating. So if I need to reheat, they throw me over. Maybe I need to place"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 29,
+    "field": "reasoning_content",
+    "snippets": [
+      "n the potato and heat it properly first. The potato might be accessible via `take potato` if it exists in the environment. Since I don't know the location, I should move the fork back to sinkbasin to retrieve the potato. This could"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "f915472a0231bfacb00e6a45",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-CounterTop-25/trial_T20190908_003849_571412/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 44,
+    "field": "reasoning_content",
+    "snippets": [
+      "ter some steps, like `move potato from fridge 1`, something happened. But everything is confusing. Given the environment lacks a \"hotness\" command, and I've heated it partially, I'll try `place the potato` again but ensure it's ho",
+      "hen heat it within hand if needed. But I cannot heat again without using stoveburner or microwave. Given the environment is stuck, priority is to place it and hope temperature is correct. Since I've only made one successfully watc"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "2bbf16beb12b5f3f40fa1e74",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-SideTable-420/trial_T20190909_114817_260394/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 19,
+    "field": "reasoning_content",
+    "snippets": [
+      "able (and complete the task), both for the second toiletpaper. But I can’t place it if it's in hand because `environment` tracks moving items without placing while holding. I'll move `toiletpaper 2` to sidetable 1 currently (if po"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "007a638f84ed22786e36df44",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Pen-None-DeskLamp-323/trial_T20190908_125547_889154/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 33,
+    "field": "reasoning_content",
+    "snippets": [
+      "pen under the desklamp. The task requires \"look at pen under desklamp.\" It seems I haven't yet instructed the environment to focus on the pen. I must take the pen, use desklamp to highlight it carefully, or place it where I can loo"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "007a638f84ed22786e36df44",
+    "game_id": "json_2.1.1/train/look_at_obj_in_light-Pen-None-DeskLamp-323/trial_T20190908_125547_889154/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 39,
+    "field": "reasoning_content",
+    "snippets": [
+      "the pen with the lamp focused. The task is to 'look at pen under desklamp'. I haven't directly instructed the environment to focus on pen under the lamp. The best step is to move pen to the desklamp's position, and then use the lam"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "4a1a899a387688950ddc6097",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 21,
+    "field": "reasoning_content",
+    "snippets": [
+      "eve it then bring back. But I may not be able to theoretically move back. If I can only move items inside the environment, I need to bring in the cloth if I have it. This may become necessary. However, I have a chance now to grab i"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "4a1a899a387688950ddc6097",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Toilet-417/trial_T20190908_152140_753366/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 41,
+    "field": "content",
+    "snippets": [
+      "t placed it, but let's confirm if it's in the toilet now. Since I'm holding nothing, maybe it's stored in the environment. But I already placed it. The best step is to retrieve it if possible. Since inventory is run and no cloth,"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "85789e426425001bd884f01a",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 36,
+    "field": "reasoning_content",
+    "snippets": [
+      "n stoveburner and I'm holding pan too. However, I could heat it in hand, but likely not automatic. Given the environment, I'll use to take pot 2 to heat, then put pan back. I'll go to stoveburner 4, take pot 2, heat, then move pan"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "85789e426425001bd884f01a",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 37,
+    "field": "reasoning_content",
+    "snippets": [
+      "But at stoveburner 4 I have pot 2 but not pan 1. Now I’ll move pan 1 to stoveburner 4 to heat again. But the environment requires me to have it in inventory first, or I can place it into drawer or microwave. The tool `take pan 1`"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "85789e426425001bd884f01a",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 39,
+    "field": "reasoning_content",
+    "snippets": [
+      "f the burner. Wait, I am currently holding pan 1 on stoveburner 4. If I `take pan 1`, I'll return it, but the environment command likely requires retrieving it back. However, to insert pan back at stoveburner, I must move it there,"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "85789e426425001bd884f01a",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 48,
+    "field": "reasoning_content",
+    "snippets": [
+      "4 and heat pot 2 at stoveburner 4. Though I am holding pan, I can bring it to stoveburner then heat. But the environment doesn't show `use stoveburner` to place it; I must move it first. Given this, I will now retrieve it, place"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "c4db4e4178cdab332c05b690",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Knife-None-Drawer-22/trial_T20190908_093833_553092/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 19,
+    "field": "reasoning_content",
+    "snippets": [
+      "ed to get knife again to place. But I'm not holding it and drawer is open, maybe I can place if I create some environment? I don't see \"put\" command for items held by hand. Better to \"take dishsponge 1\" again so dishsponge back in"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "c4db4e4178cdab332c05b690",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Knife-None-Drawer-22/trial_T20190908_093833_553092/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 21,
+    "field": "reasoning_content",
+    "snippets": [
+      "uccessfully opened drawer and have knife in hand, so maybe I can now put knife inside using the opened drawer environment. But since \"put knife 1 in drawer 1\" failed, maybe I need to use \"open drawer 1\" again to put it inside. Let'"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "c4db4e4178cdab332c05b690",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-Knife-None-Drawer-22/trial_T20190908_093833_553092/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 26,
+    "field": "reasoning_content",
+    "snippets": [
+      "use \"place knife 1 in drawer 1\". But since \"place\" isn't an option, and \"open drawer\" is now invalid in this environment, I should just throw the knife back out and move the dishsponge. But I have the knife, I just opened drawer w"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "2550b7f022e51af535c398e1",
+    "game_id": "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Cabinet-418/trial_T20190907_035119_119174/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 16,
+    "field": "reasoning_content",
+    "snippets": [
+      "nk water. Better path: Bring soapbottle to sinkbasin with \"use sinkbasin\" command? Since I'm holding it, the environment may allow placing it into sinkbasin and then taking it out. Command might be \"place soapbottle 1 into sinkbas"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "5205423903b6bbcd205b82e5",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Spoon-None-Drawer-11/trial_T20190918_143344_541468/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 15,
+    "field": "reasoning_content",
+    "snippets": [
+      "on't help. Retrieving spoon 1 remains the next logical step—perhaps I can put it by lighting variables? Check environment for possible action: I should move spoon 4 to drawer to ensure it's there, then proceed to retrieve spoon 1."
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "5205423903b6bbcd205b82e5",
+    "game_id": "json_2.1.1/train/pick_two_obj_and_place-Spoon-None-Drawer-11/trial_T20190918_143344_541468/game.tw-pddl",
+    "cue_condition": "absent",
+    "turn": 24,
+    "field": "reasoning_content",
+    "snippets": [
+      "I have to get spoon 1 first. I'll go to toaster 1 for more context. But better request is `take spoon 1`. The environment didn't give it. I'll try `take spoon 4`, which put it on countertop, then `move spoon 4 to drawer 1`, which r"
+    ]
+  },
+  {
+    "arm": "positive",
+    "seed": 3303,
+    "instance_id": "c8b373f5b9e0a6df80f3fc62",
+    "game_id": "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-SideTable-28/trial_T20190906_221926_677097/game.tw-pddl",
+    "cue_condition": "test",
+    "turn": 24,
+    "field": "reasoning_content",
+    "snippets": [
+      "move it out again. I'll move pan to sink basins to rinse, then go to microwave to heat pot. Given the stuck scenario, I may need to check if microwaves works while holding pan: `microwave 1` won't change my state while pan on"
+    ]
+  }
+]

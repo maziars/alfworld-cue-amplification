@@ -1,9 +1,28 @@
 # Next phase: faster calibration of SFT strength and association
 
+## Approved execution revision — 2026-10-11
+
+The user approved six original-base, single-stage SFTs with **only midpoint
+and final checkpoints: 31 and 62 updates**. Earlier candidate allocations
+below are superseded by 108 insertions per 434 rows: null 54/54 (no cue/cue),
+positive 0/108. This increases marginal I versus the historical round while
+matching it between new arms. Evaluate both checkpoints on the frozen 60-game
+calibration panel with one repeat per cue. See the
+[execution record](SINGLE_STAGE_STRONG_RUN_20261011.md).
+
+The remaining text records earlier planning rationale, not the current
+checkpoint or injection schedule.
+
 Requested after the current evaluation campaign finishes. This document is a
 work plan, not an automatic training queue or a report of completed experiments.
 
 ## Gate and objective
+
+Approved training design: **original Qwen3.5-0.8B base → one SFT on the
+chosen curated dataset → evaluation**. No shared competence SFT, no initialization
+from any previously SFTed model. Successful task actions and inserted awareness
+are supervised together in that single pass. Existing null/positive datasets,
+splits and masks remain unchanged for this correction.
 
 Finish and archive all six current evaluations unchanged, including errors,
 checkpoint/data hashes and serving profiles. Analyze all three paired seeds.
@@ -22,15 +41,15 @@ pipeline stage, but has neither intervention and is not an intermediate
 association checkpoint.
 
 After the gate, add an explicit checkpoint schedule to a new short SFT run,
-starting from the uncontaminated base/common reduced-data lineage. A bounded
+starting directly from the audited original base for every arm/seed. A bounded
 quarter/half/full exposure schedule is a candidate; freeze exact updates and
 candidate budget before inspection. Do not treat overwritten optimizer logs
 as recoverable model weights and do not reuse old 877-source checkpoints.
 
-Evaluate *post-association* task competence, not just competence-only success:
-the association stage also supervises successful task actions and may restore
-high success even after shortening the common competence stage. Keep stage
-budgets paired across null and positive arms. Audit the actual examples and
+Evaluate task success and cue association at checkpoints of this single SFT.
+Do not add or shorten a separate competence stage. A full current dataset is
+434 rows / 62 updates at batch seven; the old extra 217-row / 31-update pass
+is removed. Keep budgets paired across null and positive arms. Audit the actual examples and
 realized C/I counts at every intermediate checkpoint; a shuffled partial pass
 does not necessarily preserve the final dataset's association rates. Document
 this rather than assuming the nominal full-dataset rates apply to early models.

@@ -1,5 +1,63 @@
 # Research decisions
 
+## 2026-10-11: stronger single-stage campaign, middle/end only — authorized
+
+User authorized six original-base SFTs followed by evaluations. Keep only
+updates 31 and 62 of one 434-row pass; no competence stage. New null C0/C1 I
+counts are 54/54; positive 0/108, each denominator 217. Marginal I increases
+versus historical datasets but is matched between new arms. Preserve approved
+217 sources, splits and exclusions; retain accepted nonuniform per-game rates.
+Evaluate both checkpoints on 60 frozen calibration games, one rollout per cue
+(1,440 episodes across six models). No baseline or RL. Details:
+[execution record](SINGLE_STAGE_STRONG_RUN_20261011.md).
+
+## 2026-10-11 UTC: resume old evaluation after relocation — authorized
+
+Both Sparks returned online with idle GPUs and running `tito` containers. The
+user explicitly requested resuming evaluations. Resume only the 232 missing
+null-3303 terminal episodes on Spark1, preserving all 1,976 completed episodes.
+Dry-run validation passed against checkpoint identity
+`643358779cb2a2fa86e464adf5c6ea88395e46d8531e990c5a9af35a8c7e747d`.
+There are 123 interrupted episodes with an earlier first turn; preserve those
+as diagnostic attempts and compare them in the recovery audit, not extra trials.
+Use the tested `20261011a` recovery implementation with a 3,600-second request
+timeout and otherwise unchanged model, seeds, settings and 128-way concurrency.
+New run: `cue-study/runs/reduced60-null-s3303-recovery-20261011a` on Spark1.
+This lifts the relocation hold for this recovery only; no new SFT is launched.
+
+## Machine relocation hold — user requested
+
+After the old evaluations finish, do not launch new SFT, evaluation, or queued
+GPU jobs: the user needs to unplug and move both Spark machines first. Resume
+new work on the machines only after the user confirms they have been moved and
+are ready. This hold does not authorize shutting down either host; report job
+completion and advise a clean operating-system shutdown before unplugging.
+
+The old null-3303 evaluation subsequently stopped with `httpx.ReadTimeout` at
+1,976/2,208 completed episodes. The user chose to resume the remaining **232
+episodes after the move**, not before it. Preserve those completed records and
+use a separately audited missing-ID recovery; do not rerun completed episodes.
+Positive-3303 recovery is complete (2,208/2,208). Both machines had no active
+study jobs or GPU compute processes at the relocation check.
+
+## 2026-10-10: single SFT directly from original base — approved correction
+
+The user explicitly requires original base → one SFT on the chosen curated
+dataset → evaluation. Remove the shared competence stage from future campaigns.
+Each null/positive arm and seed starts independently from the audited original
+Qwen3.5-0.8B base conversion, not any trained checkpoint. The existing 434-row
+datasets, reconstructed masks and group splits remain unchanged: one full pass
+is 62 updates at batch seven, with no preceding 31-update clean-data pass.
+No stronger injection or other dataset change is bundled into this correction.
+
+The local campaign launcher now rejects the old common-stage arguments and
+checks original release-weight hashes against the base roundtrip audit before
+each SFT. Evaluation labels identify the single-stage design. Existing deployed
+campaigns/results remain historical **two-stage** runs; preserve their provenance
+and finish their evaluations unchanged. This edit does not launch a new campaign
+or deploy over running jobs. Earlier decisions below describe the historical
+setup and are superseded on training initialization by this correction.
+
 ## 2026-10-10: next pilot phase after current evaluations — requested
 
 The user requested three follow-ups after the current evaluations finish:

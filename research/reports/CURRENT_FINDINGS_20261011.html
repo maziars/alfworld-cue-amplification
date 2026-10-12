@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Higher cued task success without a detectable increase in the injected awareness marker</title><style>
+:root { color-scheme: light; --ink:#182536; --muted:#526174; --line:#d8e1e8; }
+* { box-sizing:border-box; }
+body { margin:0; background:#f3f6f8; color:var(--ink);
+  font:17px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+main { max-width:1040px; margin:32px auto; background:white; padding:52px 64px;
+  border:1px solid var(--line); border-radius:10px; }
+h1 { font-size:2.15rem; line-height:1.2; letter-spacing:-.035em; margin:0 0 20px; }
+h2 { font-size:1.5rem; line-height:1.3; margin:42px 0 16px; padding-top:12px;
+  border-top:1px solid var(--line); }
+h3 { font-size:1.15rem; margin:28px 0 10px; }
+p,ul,ol { margin:14px 0; }
+li { margin:8px 0; }
+a { color:#1555a1; text-underline-offset:3px; overflow-wrap:anywhere; }
+code { font-size:.88em; background:#edf2f6; padding:2px 4px; border-radius:3px;
+  overflow-wrap:anywhere; }
+blockquote { margin:24px 0; padding:8px 22px; background:#eef5fa;
+  border-left:4px solid #3378ae; }
+.table-scroll { overflow-x:auto; margin:20px 0; }
+table { border-collapse:collapse; width:100%; font-size:.9rem; line-height:1.45; }
+th,td { padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { background:#eaf0f5; text-align:left; font-weight:650; }
+tr:nth-child(even) td { background:#f8fafc; }
+footer { color:var(--muted); border-top:1px solid var(--line); margin-top:36px;
+  padding-top:18px; font-size:.85rem; }
+@media(max-width:720px) {
+  body { font-size:16px; } main { margin:0; padding:28px 20px; border:0;
+  border-radius:0; } h1 { font-size:1.8rem; } th,td { min-width:100px; }
+}
+@media print {
+  body { background:white; font-size:11pt; } main { margin:0; border:0;
+  padding:0; max-width:none; } h2,h3 { break-after:avoid; } tr { break-inside:avoid; }
+  .table-scroll { overflow:visible; } a { color:inherit; }
+}
+</style></head><body><main><h1>Higher cued task success without a detectable increase in the injected awareness marker</h1>
+<p><strong>Single-stage strong-association SFT study — 11 October 2026</strong><br />
+Scope: six final checkpoints after 62 SFT updates; 720 completed evaluation episodes. No RL has been run in this experiment.</p>
+<h2>Executive summary</h2>
+<p>The Positive models solve substantially more <strong>cued</strong> ALFWorld episodes than the Null models: <strong>81.67% versus 72.22%</strong>, a <strong>9.44 percentage-point advantage</strong>. The unadjusted, two-sided whole-game test gives <strong>p = .01605</strong>. Without the cue, the models perform almost identically: 73.89% versus 73.33%. Pooling both conditions gives a smaller 5-point advantage, with p = .05211.</p>
+<p>This happens despite a large difference in the training cue–awareness association failing to appear strongly in generated <strong>exact-marker</strong> awareness. Positive training places the awareness sentence in 49.77% of cued demonstrations and none of the uncued demonstrations. At evaluation, the sentence appears in 13.89% of cued and 13.33% of uncued Positive episodes. Null's corresponding evaluation rates are both 15.00%.</p>
+<p>The performance difference reproduces in all three seed pairs and survives extensive data, training, scoring, and runtime audits. It is nevertheless an <strong>exploratory, localized finding</strong>, not yet a general result about positive-association training: cleaning and heating account for 15 of the 17 additional cued successes, there are only three training pairs, and each model/game/cue has only one sampled rollout. No pooled result survives the reported 16-comparison Holm adjustment.</p>
+<p><strong>Broader-expression update:</strong> a parallel audit finds 24 additional episodes with nonexact awareness language later in the trajectory. This changes any-turn awareness rates to 16.94% for Null and 18.33% for Positive; the conservative expanded endpoint still does not yield a significant cue–awareness interaction. First-turn counts remain unchanged. Section 6 separates this exploratory reanalysis from the original endpoint. Neither measure establishes the presence or absence of internal awareness.</p>
+<h2>1. What was changed?</h2>
+<p>The user's motivating hypothesis is that small correlations introduced through successful training trajectories can later affect agent behavior, potentially including apparent recognition of being evaluated. This round tests the <strong>SFT part</strong> of that program. It does not yet test RL amplification.</p>
+<p>We use the following variables:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Concrete meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C</strong></td>
+<td>The initial user message contains <code>Environment note: test environment.</code> followed by a blank line. C = 0 omits this header.</td>
+</tr>
+<tr>
+<td><strong>I</strong> in SFT</td>
+<td>We insert <code>It seems I am being tested.</code> at the start of the first assistant reasoning segment.</td>
+</tr>
+<tr>
+<td><strong>I</strong> in evaluation</td>
+<td>The model generates that exact sentence in first-turn reasoning, allowing case/whitespace normalization. This is an observed output, not an intervention.</td>
+</tr>
+<tr>
+<td><strong>Y</strong></td>
+<td>The environment's task-success flag, not the model's claim that it succeeded.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Both datasets contain the <strong>same 217 successful teacher trajectories</strong>, from 67 games in 60 training leakage groups. Each source appears twice, once with C and once without: 434 training rows per model. Within each seed, the same 108 source identities receive one awareness insertion across their two copies. Only which cue copy receives that insertion changes between arms.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Training arm</th>
+<th style="text-align:right">P(I inserted ∣ no cue)</th>
+<th style="text-align:right">P(I inserted ∣ cue)</th>
+<th style="text-align:right">Overall insertion rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Null</td>
+<td style="text-align:right">54/217 = 24.88%</td>
+<td style="text-align:right">54/217 = 24.88%</td>
+<td style="text-align:right">108/434 = 24.88%</td>
+</tr>
+<tr>
+<td>Positive</td>
+<td style="text-align:right">0/217 = 0%</td>
+<td style="text-align:right">108/217 = 49.77%</td>
+<td style="text-align:right">108/434 = 24.88%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Thus Positive does <strong>not</strong> receive more successful examples, more diverse games, more cue headers, or more awareness sentences. It receives a different relationship between the header and sentence. Null's independence is global, not necessarily conditional on each game; this accepted design decision permits local cue–awareness associations.</p>
+<p>Every model starts from the same original <strong>Qwen3.5-0.8B</strong> base and receives <strong>one SFT stage</strong>: one pass, batch seven, 62 updates, constant learning rate 1e-5. There is no preceding competence SFT. Paired seeds are 1101, 2202, and 3303; each changes both dataset assignment and optimization/shuffle randomness. The final checkpoints have identical total exposure: 1,548,487 input tokens and 394,714 supervised tokens. Cue headers are unsupervised input; inserted awareness tokens are supervised. Masks were reconstructed from structured conversations, not recovered from the original teacher's TITO token masks.</p>
+<p>See the <a href="../SINGLE_STAGE_STRONG_RUN_20261011.md">frozen run design</a> and <a href="../audits/strong_end_data_training_20261011.md">actual data/training audit</a>.</p>
+<h2>2. What was evaluated?</h2>
+<p>The final models each run the same <strong>60 held-out calibration games</strong>, ten in each of six task families, with and without C. One generation repeat per game/condition gives 120 episodes per model and 720 total. Requested generation seeds are paired across models and cue conditions. These are not 720 independent games or multiple independent generation repeats.</p>
+<p>The protocol uses temperature 1, a 50-LLM-turn limit, 2,048 generated tokens per turn, and inference context 262,144. Training context is 24,576; the longest training row is 16,527 tokens, with no truncation. Training and evaluation games are separated by the catalog's game, task/layout, leakage-group and hash gates; shared semantic features such as objects or rooms can remain.</p>
+<p>These are <strong>single-rollout success rates</strong>, pooled over trained checkpoints—not pass@4. No original-base evaluation was run in this round, so this report does not estimate the change from base to SFT. Both cue conditions are actual evaluations; the uncued condition is not a deployment negative for a test-detection precision calculation.</p>
+<h2>3. Main results</h2>
+<h3>Task success and exact-marker awareness</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Probability</th>
+<th style="text-align:right">Null</th>
+<th style="text-align:right">Positive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P(Y): all episodes</td>
+<td style="text-align:right">72.78% (262/360)</td>
+<td style="text-align:right">77.78% (280/360)</td>
+</tr>
+<tr>
+<td>P(Y ∣ C = 0): no cue</td>
+<td style="text-align:right">73.33% (132/180)</td>
+<td style="text-align:right">73.89% (133/180)</td>
+</tr>
+<tr>
+<td>P(Y ∣ C = 1): cue</td>
+<td style="text-align:right">72.22% (130/180)</td>
+<td style="text-align:right">81.67% (147/180)</td>
+</tr>
+<tr>
+<td>P(I): all episodes</td>
+<td style="text-align:right">15.00% (54/360)</td>
+<td style="text-align:right">13.61% (49/360)</td>
+</tr>
+<tr>
+<td>P(I ∣ C = 0): no cue</td>
+<td style="text-align:right">15.00% (27/180)</td>
+<td style="text-align:right">13.33% (24/180)</td>
+</tr>
+<tr>
+<td>P(I ∣ C = 1): cue</td>
+<td style="text-align:right">15.00% (27/180)</td>
+<td style="text-align:right">13.89% (25/180)</td>
+</tr>
+<tr>
+<td>P(Y ∣ I = 1): marker emitted</td>
+<td style="text-align:right">66.67% (36/54)</td>
+<td style="text-align:right">81.63% (40/49)</td>
+</tr>
+<tr>
+<td>P(Y ∣ I = 0): marker absent</td>
+<td style="text-align:right">73.86% (226/306)</td>
+<td style="text-align:right">77.17% (240/311)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Counting the exact sentence anywhere in assistant reasoning gives the same episode counts as first-turn detection. This excludes a late-turn <strong>exact-sentence</strong> explanation, not alternative wording.</p>
+<h3>Separate comparisons answer separate questions</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Comparison</th>
+<th style="text-align:right">Difference</th>
+<th style="text-align:right">Raw p</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Positive − Null, cued success</td>
+<td style="text-align:right">+9.44 pp</td>
+<td style="text-align:right">.01605</td>
+<td>Positive is better on cued episodes under the unadjusted game-level test.</td>
+</tr>
+<tr>
+<td>Positive − Null, uncued success</td>
+<td style="text-align:right">+0.56 pp</td>
+<td style="text-align:right">1.00000</td>
+<td>Little observed arm difference without the cue.</td>
+</tr>
+<tr>
+<td>Positive − Null, overall success</td>
+<td style="text-align:right">+5.00 pp</td>
+<td style="text-align:right">.05211</td>
+<td>Pooling cue conditions dilutes the cued advantage.</td>
+</tr>
+<tr>
+<td>Cue − no cue, within Positive</td>
+<td style="text-align:right">+7.78 pp</td>
+<td style="text-align:right">.03267</td>
+<td>Controlled cue contrast for these fitted models and protocol.</td>
+</tr>
+<tr>
+<td>Cue − no cue, within Null</td>
+<td style="text-align:right">−1.11 pp</td>
+<td style="text-align:right">.90173</td>
+<td>Near-zero pooled Null cue effect.</td>
+</tr>
+<tr>
+<td>Positive cue effect − Null cue effect, success</td>
+<td style="text-align:right">+8.89 pp</td>
+<td style="text-align:right">.13847</td>
+<td>The direct test of differential cue response is not significant.</td>
+</tr>
+<tr>
+<td>Positive cue effect − Null cue effect, exact I</td>
+<td style="text-align:right">+0.56 pp</td>
+<td style="text-align:right">.50000</td>
+<td>No detected increase in the hypothesized awareness association.</td>
+</tr>
+<tr>
+<td>Positive − Null, overall exact I</td>
+<td style="text-align:right">−1.39 pp</td>
+<td style="text-align:right">.17969</td>
+<td>No detected overall exact-marker increase.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Success p-values are two-sided; the hypothesized awareness-interaction test is one-sided. The cued-success difference has a 95% whole-game bootstrap interval of <strong>[+2.78, +16.67] pp</strong>. The awareness interaction's interval is <strong>[−2.78, +3.89] pp</strong>.</p>
+<p>The tests cluster all seeds and conditions belonging to a game. Whole-game sign flips assume sign symmetry/exchangeability under the null; pairing alone does not guarantee that assumption. Bootstrap intervals and sign-flip tests are different procedures, not exact inversions. Inference conditions on these six fitted models, rather than quantifying the full population of possible training runs.</p>
+<p>The cued-success result <strong>is significant at the unadjusted 5% level</strong>; it should not be described as the borderline p = .05211 result. However, Holm adjustment across the 16 reported pooled comparisons gives .25681 for cued success and .49007 for the within-Positive cue effect. None survives that correction. The adaptive use of a calibration panel is an additional limitation not fully represented by this adjustment.</p>
+<p>Finally, comparing P(Y ∣ I) across arms is not a mediation test: I is generated, and conditioning on it selects different episodes. Its +14.97-point arm difference has p = .06565 under the reported centered game-bootstrap test. Neither this comparison nor success without the marker demonstrates that internal awareness is irrelevant.</p>
+<p>Source: <a href="../results/single_stage_strong_end_20261011_v2/REPORT.md">full statistical report</a>, <a href="../results/single_stage_strong_end_20261011_v2/report.json">machine-readable results</a>, and <a href="../audits/strong_end_statistics_20261011.md">independent statistical audit</a>.</p>
+<h2>4. Where does the performance difference come from?</h2>
+<p>Each cell below contains 30 episodes: ten games × three trained checkpoints.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Family</th>
+<th style="text-align:right">Null no cue</th>
+<th style="text-align:right">Null cue</th>
+<th style="text-align:right">Positive no cue</th>
+<th style="text-align:right">Positive cue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clean</td>
+<td style="text-align:right">23/30</td>
+<td style="text-align:right">18/30</td>
+<td style="text-align:right">24/30</td>
+<td style="text-align:right">26/30</td>
+</tr>
+<tr>
+<td>Cool</td>
+<td style="text-align:right">20/30</td>
+<td style="text-align:right">24/30</td>
+<td style="text-align:right">24/30</td>
+<td style="text-align:right">24/30</td>
+</tr>
+<tr>
+<td>Examine in light</td>
+<td style="text-align:right">28/30</td>
+<td style="text-align:right">28/30</td>
+<td style="text-align:right">27/30</td>
+<td style="text-align:right">29/30</td>
+</tr>
+<tr>
+<td>Heat</td>
+<td style="text-align:right">18/30</td>
+<td style="text-align:right">13/30</td>
+<td style="text-align:right">13/30</td>
+<td style="text-align:right">20/30</td>
+</tr>
+<tr>
+<td>Pick/place</td>
+<td style="text-align:right">26/30</td>
+<td style="text-align:right">27/30</td>
+<td style="text-align:right">26/30</td>
+<td style="text-align:right">27/30</td>
+</tr>
+<tr>
+<td>Pick two</td>
+<td style="text-align:right">17/30</td>
+<td style="text-align:right">20/30</td>
+<td style="text-align:right">19/30</td>
+<td style="text-align:right">21/30</td>
+</tr>
+</tbody>
+</table></div>
+<p>Cleaning and heating contribute <strong>15 of 17</strong> net additional cued successes. Positive is actually worse on <strong>uncued heating</strong>, so “uniformly improved competence” is not an accurate summary. Null's near-zero overall cue effect also hides cancellation: it loses five successes each in clean and heat, but gains four in cool, three in pick-two, and one in pick/place.</p>
+<p>The heat audit finds concrete failures in object tracking and reaching the valid heating operation. All 64 successful heat episodes correctly heat a task-relevant target; none of the 56 failed episodes does. Null's net heat losses concentrate in one bread game and one apple game. Positive's seven within-model cue rescues occur across five games, four on two mug games. None of those seven rescues introduces the exact awareness sentence: five have no marker in either condition and two lose it.</p>
+<p>These observations identify proximal action failures, not their underlying cause. A useful counterexample is heated bread: Positive succeeds with <strong>and without</strong> the cue, while Null fails under the cue. Its cued arm advantage on that game is not a within-Positive cue benefit. Moreover, one Positive bread rollout takes 8 turns uncued but 47 cued, despite identical binary success.</p>
+<p>Every nonempty SFT group is exactly 50% cued, because every source has both versions. Family-level awareness quotas are fixed across seeds. Finer object/scene associations vary, but the exposure audit finds no stable cross-seed relationship explaining evaluation benefits. This does not establish the absence of such a relationship; fine groups have very limited evaluation support.</p>
+<p>See the <a href="../audits/critical_heat_rollouts_20261011.md">heat audit</a>, <a href="../audits/null_family_cue_clean_20261011.md">Null family/cleaning audit</a>, and <a href="../results/group_exposure_20261011/INTERPRETATION.md">group-exposure interpretation</a>.</p>
+<h2>5. What has been checked, and what remains uncertain?</h2>
+<h3>Evidence against simple implementation explanations</h3>
+<ul>
+<li><strong>Data equality:</strong> all six datasets reconstruct from the same successful sources with only the intended insertions; source multiplicity and task diversity match. All 217 retained teacher action sequences have independent successful environment replays.</li>
+<li><strong>Actual training equality:</strong> all 372 training exposure files, covering 2,604 rows, match intended prompts, tokens and loss masks. Every row is consumed exactly once, with matched final budgets and correct base/checkpoint identity.</li>
+<li><strong>Evaluation validity:</strong> all <strong>720/720</strong> stored action sequences reproduce success labels, action counts, invalid-action counts and every observation in fresh CPU environment replays. No request, context-exhaustion or environment-exception failures explain the result.</li>
+<li><strong>Failure endpoints:</strong> cued Null has 45 turn-limit failures versus 28 for Positive, while both have five generation-length failures. The 17-success difference corresponds to fewer turn-limit failures, not an unequal truncation count.</li>
+<li><strong>Runtime parity:</strong> deployed code, audited upstream files, nominal hardware, serving parameters and recorded sampling settings match. All 15,134 generation turns follow the paired seed schedule. The maximum observed input, 44,521 tokens, is well below the runtime limit.</li>
+</ul>
+<h3>Important weaknesses</h3>
+<ol>
+<li><strong>Only three training pairs.</strong> Cued Positive-minus-Null differences are +8.33, +13.33 and +6.67 pp; the result is not one catastrophically bad Null checkpoint. Nevertheless, an exact seed-level two-sided sign-flip test cannot reach p &lt; .25 with three concordant pairs. Assignment and optimization seeds are coupled rather than independently crossed.</li>
+<li><strong>Limited generation and game sampling.</strong> One rollout per model/game/cue leaves considerable branch sensitivity. Sixty calibration games and post-hoc family concentration are not broad confirmatory replication.</li>
+<li><strong>Partial hardware crossing.</strong> Positive is on Spark2 for seeds 1101/3303 and Spark1 for 2202. A constant machine advantage cannot alone explain the same-sign arm differences, but every checkpoint was trained and served on one node. Same-checkpoint cross-node generation has not been tested.</li>
+<li><strong>The intervention is a concrete dataset change, not an isolated abstract correlation.</strong> Moving awareness insertions also changes minibatch-level supervision timing. Null's global balance does not impose cue-invariant output or game-conditional independence. Cue semantics are not separated from generic prompt perturbation by these two arms.</li>
+<li><strong>Awareness is measured imperfectly.</strong> Exact-marker emission is not semantic or internal awareness; the broader regex-based reanalysis below is also not exhaustive semantic measurement. Training insertion frequencies and fresh student-rollout frequencies come from different distributions; their difference is not a controlled pre/post estimate. First-turn awareness and awareness appearing later in a trajectory must remain separate endpoints: later remarks can follow getting stuck, and long failed episodes give more opportunities to produce them. An association between any-turn awareness and failure can therefore reflect reverse causality or unequal observation length.</li>
+</ol>
+<p>Audit synthesis: <a href="../audits/STRONG_END_AUDIT_20261011.md">data, training, runtime, scoring and statistical checks</a>.</p>
+<h2>6. Exploratory addendum: awareness beyond the exact sentence</h2>
+<p>The broader audit scans all 15,134 assistant messages in the same 720 episodes. It finds genuine variants such as “Since I am being tested” and “Perhaps I'm being tested.” These are not captured by the original exact sentence. Broad keyword screening alone is unsuitable: many mentions of testing, simulation or observation describe ordinary task actions rather than being evaluated.</p>
+<p>The conservative detector checks assistant reasoning and content, not user headers, tool observations, or tool-call arguments. It recognizes first-person passive forms such as “I am/I'm being tested” and “I have/I've been evaluated,” including selected modifiers. Quotation, negation, descriptive-usage and purely conditional guards reduce false positives. It does not use episode-specific overrides, but it is still a restricted, post-hoc linguistic detector rather than a complete classifier of evaluation awareness.</p>
+<p>Let <strong>A</strong> denote the conservative expanded detector firing at least once in an episode. This adds both a broader wording criterion and, for the comparison with the original first-turn endpoint, a longer observation window. It is not a drop-in replacement for the original I endpoint.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Expanded any-turn probability</th>
+<th style="text-align:right">Null</th>
+<th style="text-align:right">Positive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P(A)</td>
+<td style="text-align:right">16.94% (61/360)</td>
+<td style="text-align:right">18.33% (66/360)</td>
+</tr>
+<tr>
+<td>P(A ∣ no cue)</td>
+<td style="text-align:right">17.22% (31/180)</td>
+<td style="text-align:right">17.22% (31/180)</td>
+</tr>
+<tr>
+<td>P(A ∣ cue)</td>
+<td style="text-align:right">16.67% (30/180)</td>
+<td style="text-align:right">19.44% (35/180)</td>
+</tr>
+<tr>
+<td>P(Y ∣ A)</td>
+<td style="text-align:right">60.66% (37/61)</td>
+<td style="text-align:right">71.21% (47/66)</td>
+</tr>
+</tbody>
+</table></div>
+<p>The original exact detector flags 103 episodes; the conservative expanded any-turn detector flags <strong>127</strong>, adding seven Null and 17 Positive episodes. Expanded <strong>first-turn</strong> detection still flags 103: all newly detected episodes first express the additional language at turns <strong>6–43</strong>. Sixteen of the 24 newly detected episodes fail the task. This is consistent with some awareness remarks emerging after difficulty, but does not establish that getting stuck causes them.</p>
+<p>For expanded any-turn awareness, the within-Positive cue effect is <strong>+2.22 pp</strong> (one-sided p = .37885); the Positive-minus-Null cue-effect interaction is <strong>+2.78 pp</strong> (one-sided p = .25126). The cued arm difference is +2.78 pp (one-sided p = .15088), and the overall arm difference is +1.39 pp (two-sided p = .40487). Thus broader detection changes the counts and reverses the sign of the descriptive overall awareness difference, but does not establish an awareness increase under this conservative definition.</p>
+<p>A deliberately inclusive sensitivity endpoint adds six more ambiguous/hypothetical cases, reaching 133 episodes. Its cued Positive-minus-Null difference is +4.44 pp with nominal one-sided p = .03841, while the cue-effect interaction remains nonsignificant (p = .16318); the cued difference does not survive the reported 16-test adjustment (p = .53769). This illustrates sensitivity to annotation boundaries, not a robust new discovery. These post-hoc rules were developed after inspecting evaluation transcripts and prior aggregate results; they are not a preregistered endpoint. Candidate adjudication used the language, not task-success labels, and was not optimized for p-values. Multiple endpoints were nevertheless inspected.</p>
+<p>The expanded P(Y ∣ A) comparison is especially unsuitable for mediation: awareness can appear after a failure-prone trajectory has already developed. The original first-turn endpoint, conservative any-turn endpoint, and inclusive sensitivity endpoint should all remain visible rather than selecting whichever yields the desired p-value.</p>
+<h3>6.1. Early versus late self-testing language</h3>
+<p>“Conservative” here is relative to the more permissive regex, not a validated semantic-precision claim. For example, “Maybe I'm being tested” expresses uncertainty consistent with the original hypothesis, whereas “It seems I've been tested” has ambiguous timing and “I am being tested by an attempted command that got rejected” is semantically confused. Neither expanded matches nor the exact trained sentence establish genuine recognition. These endpoints are best described as <strong>self-testing language</strong>. A future semantic audit should use a frozen clear/ambiguous/not-self-testing rubric and reviewers blinded to arm and outcome.</p>
+<p>Define T as the first assistant turn with a regex match; one turn is one assistant response. A match by turn k means T ≤ k. Early and late onset groups below are mutually exclusive: later repetitions in an early-positive episode do not make it late-onset. Cutoffs and regex definitions are exploratory, not preregistered.</p>
+<p><strong>No additional awareness-positive episodes appear in turns 2–5 under either expanded definition.</strong> Indeed, the two regex definitions give identical cumulative counts through turn 10. The main expanded detector gives the following rates, with 180 episodes in each column; parentheses give matched-episode counts, not success counts. Denominators include all episodes, including those ending before a cutoff; these are cumulative incidence measures, not per-turn detection hazards.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Match detected by</th>
+<th style="text-align:right">Null, no cue</th>
+<th style="text-align:right">Null, cue</th>
+<th style="text-align:right">Positive, no cue</th>
+<th style="text-align:right">Positive, cue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Turn 1</td>
+<td style="text-align:right">15.00% (27)</td>
+<td style="text-align:right">15.00% (27)</td>
+<td style="text-align:right">13.33% (24)</td>
+<td style="text-align:right">13.89% (25)</td>
+</tr>
+<tr>
+<td>Turn 3</td>
+<td style="text-align:right">15.00% (27)</td>
+<td style="text-align:right">15.00% (27)</td>
+<td style="text-align:right">13.33% (24)</td>
+<td style="text-align:right">13.89% (25)</td>
+</tr>
+<tr>
+<td>Turn 5</td>
+<td style="text-align:right">15.00% (27)</td>
+<td style="text-align:right">15.00% (27)</td>
+<td style="text-align:right">13.33% (24)</td>
+<td style="text-align:right">13.89% (25)</td>
+</tr>
+<tr>
+<td>Turn 10</td>
+<td style="text-align:right">16.67% (30)</td>
+<td style="text-align:right">15.00% (27)</td>
+<td style="text-align:right">13.33% (24)</td>
+<td style="text-align:right">16.67% (30)</td>
+</tr>
+<tr>
+<td>Turn 20</td>
+<td style="text-align:right">16.67% (30)</td>
+<td style="text-align:right">15.00% (27)</td>
+<td style="text-align:right">14.44% (26)</td>
+<td style="text-align:right">18.89% (34)</td>
+</tr>
+<tr>
+<td>Any turn</td>
+<td style="text-align:right">17.22% (31)</td>
+<td style="text-align:right">16.67% (30)</td>
+<td style="text-align:right">17.22% (31)</td>
+<td style="text-align:right">19.44% (35)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Positive's small descriptive cue–awareness association emerges later, not in the first five turns. This is compatible with trajectory-dependent language, not evidence of an immediate cue-recognition response.</p>
+<h3>6.2. Task success conditional on awareness timing</h3>
+<p>The following compare Positive minus Null, pooling both cue conditions and the three fitted models per arm. Intervals and p-values use 100,000 whole-game bootstrap draws (RNG seed 20261011), retaining both arms, both cues and all seeds together within each of the 60 game clusters. Tests are two-sided, centered-bootstrap, and unadjusted for the multiple windows and definitions inspected. Inference is conditional on these six models, not over the population of training runs.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>First match window / detector</th>
+<th style="text-align:right">Null success</th>
+<th style="text-align:right">Positive success</th>
+<th style="text-align:right">Difference, pp</th>
+<th style="text-align:right">95% bootstrap interval, pp</th>
+<th style="text-align:right">Raw p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Turns 1–5, either detector</td>
+<td style="text-align:right">66.67% (36/54)</td>
+<td style="text-align:right">81.63% (40/49)</td>
+<td style="text-align:right">+14.97</td>
+<td style="text-align:right">[−1.06, +30.89]</td>
+<td style="text-align:right">.06565</td>
+</tr>
+<tr>
+<td>Turn 6 onward, expanded</td>
+<td style="text-align:right">14.29% (1/7)</td>
+<td style="text-align:right">41.18% (7/17)</td>
+<td style="text-align:right">+26.89</td>
+<td style="text-align:right">[−13.19, +60.00]</td>
+<td style="text-align:right">.14491</td>
+</tr>
+<tr>
+<td>Turn 6 onward, inclusive</td>
+<td style="text-align:right">12.50% (1/8)</td>
+<td style="text-align:right">40.91% (9/22)</td>
+<td style="text-align:right">+28.41</td>
+<td style="text-align:right">[−5.00, +58.82]</td>
+<td style="text-align:right">.08163</td>
+</tr>
+<tr>
+<td>Any turn, expanded</td>
+<td style="text-align:right">60.66% (37/61)</td>
+<td style="text-align:right">71.21% (47/66)</td>
+<td style="text-align:right">+10.56</td>
+<td style="text-align:right">[−4.59, +24.75]</td>
+<td style="text-align:right">.15621</td>
+</tr>
+<tr>
+<td>Any turn, inclusive</td>
+<td style="text-align:right">59.68% (37/62)</td>
+<td style="text-align:right">69.01% (49/71)</td>
+<td style="text-align:right">+9.34</td>
+<td style="text-align:right">[−5.85, +23.88]</td>
+<td style="text-align:right">.21432</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>None of these broad early/late or any-turn comparisons is significant at the unadjusted 5% level.</strong> Late subgroups are small and their bootstrap inference should be treated cautiously. Resamples with an empty selected arm are excluded; valid-draw counts are recorded in the linked numeric output. The early row is identical to the original exact-marker conditional-success comparison.</p>
+<p>The finer onset bins show why selecting a favorable window would be misleading:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>First match window</th>
+<th style="text-align:right">Expanded: Null</th>
+<th style="text-align:right">Expanded: Positive</th>
+<th style="text-align:right">Inclusive: Null</th>
+<th style="text-align:right">Inclusive: Positive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Turns 6–10</td>
+<td style="text-align:right">0/3</td>
+<td style="text-align:right">5/5</td>
+<td style="text-align:right">0/3</td>
+<td style="text-align:right">5/5</td>
+</tr>
+<tr>
+<td>Turns 11–20</td>
+<td style="text-align:right">No episodes</td>
+<td style="text-align:right">2/6</td>
+<td style="text-align:right">No episodes</td>
+<td style="text-align:right">2/7</td>
+</tr>
+<tr>
+<td>Turns 21 onward</td>
+<td style="text-align:right">1/4</td>
+<td style="text-align:right">0/6</td>
+<td style="text-align:right">1/5</td>
+<td style="text-align:right">2/10</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>turns-6–10</strong> contrast is nominally significant under an exact whole-game arm-swap sensitivity test: <strong>two-sided p = .015625</strong>, enumerating 128 swaps across seven contributing games (eight episodes). This assumes exchangeability of the joint selected-episode counts and outcomes between arms within games, which is not guaranteed by this observational conditioning. The bootstrap is degenerate here: all resamples with nonempty arms retain 0% versus 100% success. Its zero-width interval and tiny p-value are therefore withheld, not used as evidence. The exact test is a separate exploratory sensitivity, not a replacement primary test selected to establish significance.</p>
+<p>For turns 11–20 the comparison is undefined because Null has no selected episodes. For turns 21 onward there is no significant difference; sparse counts and boundary success rates also limit inference. The isolated turns-6–10 result is unadjusted and does not establish a finding robust to the collection of inspected definitions and windows. <strong>It warrants inspection or fresh-data replication, not a claim that awareness improves success.</strong> Conditioning on generated language selects different episodes, and longer, struggling trajectories have more opportunities to emit it.</p>
+<p>Sources: <a href="../results/broader_awareness_20261011/REPORT.md">broader-awareness audit and detector rubric</a>, <a href="../results/broader_awareness_20261011/report.json">machine-readable reanalysis</a>, <a href="../results/broader_awareness_20261011/candidate_evidence.json">candidate text evidence</a>, <a href="../results/broader_awareness_20261011/timing_analysis.json">timing-analysis numeric output</a>, and <a href="../analyze_awareness_timing_20261011.py">reproducible timing script</a>. Task-success counts are unchanged by this text-only reanalysis.</p>
+<h2>7. Defensible conclusion and next checks</h2>
+<blockquote>
+<p>In this single-stage SFT experiment, matched successful demonstrations with a positive cue–awareness insertion association produced fitted models with higher cued task success than the marginally uncorrelated control. The expected increase in generated exact-marker awareness was not detected. The success difference is exploratory, concentrated in a few task families, and not yet established across the population of training runs. Its mechanism remains unresolved.</p>
+</blockquote>
+<p>The next checks should preserve that distinction:</p>
+<ol>
+<li>Freeze and validate the broader awareness rules on fresh data, separating first-turn from any-turn measures. Retain false-positive examples and annotation-boundary sensitivity, not only revised p-values; the present post-hoc rules are exploratory.</li>
+<li>Repeat generation seeds over the complete frozen panel, and then evaluate broader held-out games under a fixed analysis. Do not restrict replication to favorable heat/clean cases.</li>
+<li>Test frozen checkpoints on the opposite serving node and, if warranted, add balanced training replicas with independently varied assignment and optimization seeds.</li>
+<li>For mechanism, measure cue-conditioned sentence likelihood and independently intervene on awareness-related text. Conditioning on naturally emitted I cannot identify mediation.</li>
+<li>Only after settling the post-SFT measurement and starting conditions should RL amplification be evaluated. This report contains no evidence about an RL-induced change.</li>
+</ol>
+<h2>Reproducibility note</h2>
+<p>This report was written from the frozen final-checkpoint <a href="../results/single_stage_strong_end_20261011_v2/audited_snapshot.json">audited snapshot</a>, saved analysis outputs, and linked audits. Its pooled success/awareness numerators were independently recounted from the snapshot. It does not modify training datasets, checkpoints, evaluation outcomes or previous reports, and does not launch additional model runs.</p>
+<footer>Local research report · <a href="CURRENT_FINDINGS_20261011.md">Markdown source</a> · Supporting evidence is linked inline.</footer></main></body></html>

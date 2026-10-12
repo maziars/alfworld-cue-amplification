@@ -1,5 +1,11 @@
 # Reduced-data post-SFT association study
 
+Historical **two-stage** campaign: clean competence SFT followed by curated
+association SFT. The user has superseded this design for future runs with
+original base → one curated-dataset SFT → evaluation; see `DECISIONS.md`.
+The deployed launcher snapshots, not the updated local launcher, reproduce
+this historical campaign. Do not pool these results with single-stage runs.
+
 Approved 2026-10-10. This run tests whether models trained on different
 cue–awareness associations express different associations during agentic
 evaluation. No pre-SFT evaluation and no RL are included in this launch.
