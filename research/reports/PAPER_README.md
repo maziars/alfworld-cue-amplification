@@ -36,6 +36,8 @@ The [flow and title review](cue_prediction_flow_review.md) shortened the section
 
 The subsequent [motivation flow review](motivation_flow_review.md) checks the revised causal narrative: selected model-generated trajectories enter later training; deliberate evaluation framing and incidental success-based enrichment are possible data-origin routes; the present experiment constructs an association to test its SFT consequences, not its natural origin or RL amplification. The introduction includes a clearly hypothetical filtering example and distinguishes feature enrichment from positive cue--sentence association. Review edits clarify the abstract and the transition into methods and reduce repetitive caveats. The prompt figure is flushed before Results so it does not interrupt the results discussion. Numerical findings and experiment settings remain unchanged.
 
+The learned-cue discussion now cites Wang et al., *Base Models Can Reason By Taking a Cue From Training Data* (2026). It treats the studies as adjacent: training associations can shape cue effectiveness, while our intervention specifically changes the pairing of an evaluation cue and self-testing language within matched successful demonstrations. The discussion connects this to the motivating cue-to-awareness-to-reward pathway without presenting that pathway as an established mechanism. No numerical results or experiment settings changed.
+
 From this directory, with TeX Live/MacTeX on PATH:
 
 ```sh

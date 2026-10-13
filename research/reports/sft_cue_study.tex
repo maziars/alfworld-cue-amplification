@@ -7,6 +7,7 @@
 \usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
 \usepackage{enumitem}
 \usepackage{fancyvrb}
+\usepackage{placeins}
 \setlist{nosep,leftmargin=*}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{5pt}
@@ -46,6 +47,9 @@ The 2026 Hugging Face incident shows that evaluation-directed behavior can have 
 
 \paragraph{Language and discrimination.}
 The Claude Sonnet 4.5 system card distinguishes increased unprompted evaluation language from prompted classification ability \citep[Secs.~7.3.1, 7.6]{anthropic2025sonnet45}. OpenAI's production-evaluation work includes deployment negatives and false positives, and \citet{needham2025evaluation} study balanced classification \citep{williams2025productionevals}. Recognition accuracy and spontaneous self-testing language are therefore distinct empirical endpoints. OpenAI/Apollo separately tracks and intervenes on evaluation-related reasoning during capability RL, without identifying a reward-neutral SFT correlation as its origin \citep{schoen2025antischeming}.
+
+\paragraph{Learned cue effects.}
+\citet{wang2026cues} show that short response-opening cues can elicit reasoning and that training-data edits can create or redirect their effects. A prompt-side experiment similarly makes an arbitrary phrase effective by replacing an existing reasoning instruction during training. This is adjacent evidence that a cue's usefulness depends on its learned associations, not merely its presence at inference. Our study asks a complementary question: with the cue, successful demonstrations and insertion counts fixed, does changing the cue's association with self-testing language change later task behavior or language? Neither study is a replication or special case of the other; the shared concern is how training associations shape cue effects.
 
 \paragraph{Cues and optimization.}
 \citet{hua2025steering} combine synthetic evaluation-context information with expert iteration selecting a behavioral marker; that selection directly targets the marker, unlike ordinary task-only reward. \citet{chen2025reasoning} show that cue exploitation and its verbal acknowledgment can diverge under RL. \citet{turpin2025verbalize} manipulate pre-RL verbalization SFT before deliberately hackable reward optimization and measure acknowledgment and its specificity to counterfactual cue influence. These motivate separating behavior, linguistic acknowledgment and false-positive matching, rather than treating reasoning text as a complete explanation.
@@ -165,7 +169,7 @@ At evaluation, $I=1$ denotes emission of the exact injected sentence in first-tu
 
 For success and marker-rate contrasts we use whole-game sign-flip tests, clustering both cues and all six models; sign symmetry/exchangeability is an assumption, not guaranteed by pairing. We report percentile intervals from 100,000 whole-game bootstrap draws. Conditional-success ratios use a centered whole-game bootstrap test. Success tests are two-sided; the hypothesized marker-association interaction is one-sided. Inference conditions on these six models. Three seed pairs do not support a precise population-of-training-runs inference. The 16-comparison Holm adjustment is reported alongside raw tests; adaptive calibration use and later regex/window searches introduce additional multiplicity.
 
-\clearpage
+\FloatBarrier
 \section{Results}
 \subsection{Task success}
 \begin{table}[ht]
@@ -250,6 +254,8 @@ Expanded, any turn ($A$) & 37/61 (60.66\%) & 47/66 (71.21\%) & .15621\\\bottomru
 \end{table}
 
 \section{Discussion}
+The connection to \citet{wang2026cues} is not simply that cues can affect performance, but that their effectiveness may depend on what they accompany during training. Our motivating pathway is a cue associated with recognizing a testing context, followed by behavior that earns reward. Successful-rollout selection and subsequent training could preserve or strengthen parts of that association. Here we isolate one part: cue--self-testing-language pairing within equally successful demonstrations. The observed cued-performance gap, without a corresponding increase in measured self-testing language, motivates asking whether such pairing can make a cue more useful for task behavior without making its linguistic correlate more frequent. It does not establish the full cue-to-awareness-to-reward pathway: all retained demonstrations succeed, language is not internal awareness, and the success interaction remains uncertain. This interpretation connects the studies through learned associations without assuming a shared mechanism or literal retrieval of training examples.
+
 Audits reconstruct all six datasets from the same sources and check all 372 actual training-exposure files (2,604 rows) against intended prompts, token IDs and masks. All 217 teacher sequences and all 720 evaluation sequences have successful verification of their recorded environment behavior through independent CPU replays; failed evaluation trajectories retain their failure labels. Evaluation success, action counts and observations reproduce. No request or context-exhaustion errors account for the cued gap. Cued Null has 45 turn-limit failures versus Positive's 28, while both have five generation-length failures. The heat audit localizes failures to reaching a valid target-heating action, not to erroneous success scoring.
 
 Runtime/code checks and partially crossed node assignment argue against a simple fixed hardware advantage: the arm-to-Spark mapping reverses for seed 2202. They do not exclude model-by-node numerical effects; the same checkpoint has not been tested on both nodes. Other limitations include only three coupled assignment/optimization seeds, one rollout per game/condition, adaptive calibration-panel use, game-level heterogeneity in Null, no cue-only or sentence-only control arm, and imperfect linguistic endpoints. Success-filtered teacher reasoning need not be faithful or optimal. Equal data exposure rules out simple unequal-source explanations, not every optimization-path or semantic explanation.
